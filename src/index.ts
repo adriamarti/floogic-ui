@@ -32,6 +32,8 @@ export * from './components/Tabs';
 export * from './components/Slider';
 export * from './components/TextArea';
 export * from './components/Switch';
+export * from './recipes';
+
 
 export { colors, darkTheme } from './tokens/colors.stylex';
 export { spacing } from './tokens/spacing.stylex';

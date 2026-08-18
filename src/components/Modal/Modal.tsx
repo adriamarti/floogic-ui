@@ -136,9 +136,11 @@ export const ModalDescription = React.forwardRef<HTMLParagraphElement, ModalDesc
 );
 ModalDescription.displayName = 'Modal.Description';
 
-export interface ModalCloseButtonProps extends Omit<React.ComponentPropsWithoutRef<typeof IconButton>, 'style'> {
+export interface ModalCloseButtonProps extends Omit<React.ComponentPropsWithoutRef<typeof IconButton>, 'style' | 'children'> {
+  children?: React.ReactNode;
   style?: stylex.StyleXStyles;
 }
+
 
 export const ModalCloseButton = React.forwardRef<HTMLButtonElement, ModalCloseButtonProps>(
   ({ 'aria-label': ariaLabel = "Close modal", style, ...props }, ref) => {

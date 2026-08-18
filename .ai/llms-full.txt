@@ -1,0 +1,86 @@
+# Floogic UI — Full Technical API & Agent Reference (`floogic-ui`)
+
+> Comprehensive, token-driven, machine-readable reference for AI coding agents generating React interfaces with `floogic-ui`.
+
+---
+
+## 1. Architectural Principles & Rules
+
+### Rule 1: Compound Component API
+All multi-part components are exposed strictly via static properties attached to the main compound root component.
+- **Pattern**: `<Parent>` contains `<Parent.Child1>`, `<Parent.Child2>`, etc.
+- **DO NOT** attempt to import child components directly (`import { CardContent }` is invalid).
+- **Export Syntax**: `export const Card = Object.assign(CardRoot, { Content: CardContent, Heading: CardHeading, ... })`
+
+### Rule 2: StyleX Styling Engine Only
+Components do NOT support native CSS classes (`className="..."`) or native inline style objects (`style={{ color: 'red' }}`).
+- Custom styling is applied exclusively using StyleX with `style?: stylex.StyleXStyles`.
+- Inside components, styles are resolved using `stylex.props(styles.root, style)`.
+
+### Rule 3: Strict Token Hierarchy
+No hardcoded raw numbers, hex colors, or font names.
+- All values must reference design tokens exported by `floogic-ui`:
+  `import { colors, spacing, shape, borders, fonts, fontSizes, fontWeights, elevation, durations, easings } from 'floogic-ui'`
+
+### Rule 4: Accessibility & Radix Primitives
+Underneath, interactive components (Modal, Select, Popover, Accordion, CheckboxGroup, RadioGroup, Tabs, Tooltip, HoverCard) wrap Radix UI primitives.
+- All standard HTML attributes (`id`, `aria-*`, `data-*`, `onClick`, `onKeyDown`) and Radix props (`open`, `defaultOpen`, `onOpenChange`, `value`, `onValueChange`) are inherited and supported.
+
+---
+
+## 2. Complete Component API Catalog
+
+### Accordion
+- **Compound API**: `<Accordion type="single"|"multiple">`, `<Accordion.Item>`, `<Accordion.Trigger>`, `<Accordion.Content>`
+
+### Alert & AlertGlobal
+- **Alert**: `<Alert tone="error"|"warning"|"success"|"information"|"neutral">`, `<Alert.Icon />`, `<Alert.Heading>`, `<Alert.Description>`, `<Alert.Actions>`
+
+### Avatar
+- **Compound API**: `<Avatar size="small"|"medium"|"large">`, `<Avatar.Image />`, `<Avatar.Fallback>`, `<Avatar.Badge><BadgeDot status="online" /></Avatar.Badge>`, `<Avatar.Group limit={3}>`
+
+### Badge, BadgeCount & BadgeDot
+- **Badge**: `<Badge tone="brand"|"neutral"|"success"|"warning"|"error">`, `<Badge.Label>`, `<Badge.Icon>`
+- **BadgeCount**: `<BadgeCount count={12} max={99} />`
+- **BadgeDot**: `<BadgeDot status="online"|"busy"|"away"|"offline"|"notification" />`
+
+### Button & ButtonGroup
+- **Button Props**: `variant?: 'primary'|'secondary'|'tertiary'`, `tone?: 'brand'|'neutral'|'destructive'|'inverse'`, `size?: 'small'|'medium'|'large'`
+- **Button Subcomponents**: `<Button.Label>`, `<Button.Icon>`
+- **ButtonGroup**: `<ButtonGroup><Button ... /></ButtonGroup>`
+
+### Card
+- **Compound API**: `<Card variant="elevated"|"outlined"|"flat">`, `<Card.Media />`, `<Card.Content>`, `<Card.Heading>`, `<Card.Description>`, `<Card.Footer>`
+
+### CheckboxGroup
+- **Compound API**: `<CheckboxGroup value={[...]} onValueChange={...}>`, `<CheckboxGroup.Label>`, `<CheckboxGroup.Item value="...">`, `<CheckboxGroup.Hint>`, `<CheckboxGroup.Error>`
+
+### DatePicker & Divider
+- **DatePicker**: `<DatePicker date={date} onDateChange={setDate} />`
+- **Divider**: `<Divider orientation="horizontal"|"vertical" />`
+
+### Drawer
+- **Compound API**: `<Drawer open={open} onOpenChange={setOpen}>`, `<Drawer.Content position="left"|"right"|"bottom">`, `<Drawer.Header>`, `<Drawer.Title>`, `<Drawer.CloseButton aria-label="Close" />`, `<Drawer.Body>`, `<Drawer.Footer>`
+
+### Modal
+- **Compound API**: `<Modal open={open} onOpenChange={setOpen}>`, `<Modal.Content size="small"|"medium"|"large">`, `<Modal.Header>`, `<Modal.Title>`, `<Modal.CloseButton aria-label="Close" />`, `<Modal.Body>`, `<Modal.Footer>`
+
+### Select
+- **Compound API**: `<Select value={val} onValueChange={setVal}>`, `<Select.Label>`, `<Select.Trigger placeholder="..." />`, `<Select.Content>`, `<Select.Item value="...">`
+
+### Switch
+- **Compound API**: `<Switch>`, `<Switch.Label>`, `<Switch.Field checked={val} onCheckedChange={setVal} />`
+
+### Tabs
+- **Compound API**: `<Tabs defaultValue="tab1">`, `<Tabs.List>`, `<Tabs.Item value="tab1">`, `<Tabs.Panel value="tab1">`
+
+### TextArea & TextInput
+- **TextInput**: `<TextInput required>`, `<TextInput.Label>`, `<TextInput.Field placeholder="..." value={val} onChange={...} />`
+- **TextArea**: `<TextArea>`, `<TextArea.Label>`, `<TextArea.Field placeholder="..." value={val} onChange={...} />`
+
+### Toast & Tooltip
+- **Toast**: `<Toast open={open} onOpenChange={setOpen}>`, `<Toast.Title>`, `<Toast.Description>`, `<Toast.Close />`
+- **Tooltip**: `<Tooltip>`, `<Tooltip.Trigger asChild>`, `<Tooltip.Content>`
+
+### Typography
+- **Props**: `variant?: 'h1'|'h2'|'h3'|'h4'|'h5'|'h6'|'body'|'caption'`, `color?: 'strong'|'weak'|'brand'|'danger'`

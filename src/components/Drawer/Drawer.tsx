@@ -116,9 +116,11 @@ export const DrawerDescription = React.forwardRef<HTMLParagraphElement, DrawerDe
 );
 DrawerDescription.displayName = 'Drawer.Description';
 
-export interface DrawerCloseButtonProps extends Omit<React.ComponentPropsWithoutRef<typeof IconButton>, 'style'> {
+export interface DrawerCloseButtonProps extends Omit<React.ComponentPropsWithoutRef<typeof IconButton>, 'style' | 'children'> {
+  children?: React.ReactNode;
   style?: stylex.StyleXStyles;
 }
+
 
 export const DrawerCloseButton = React.forwardRef<HTMLButtonElement, DrawerCloseButtonProps>(
   ({ 'aria-label': ariaLabel = "Close drawer", style, ...props }, ref) => {

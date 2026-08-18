@@ -1,0 +1,87 @@
+# Floogic UI Design System (`floogic-ui`)
+
+> A modern, highly accessible, token-driven React Design System built with StyleX (`@stylexjs/stylex`) and Radix UI Primitives.
+
+## AI Assistant Guidelines & System Instructions
+
+When generating React code using `floogic-ui`, AI assistants MUST follow these mandatory rules strictly:
+
+### 1. Compound Component Syntax Only
+All multi-part components export child components exclusively as static properties on the main component.
+- **CORRECT**: `<Card.Content>`, `<Modal.Title>`, `<Accordion.Item>`, `<Alert.Heading>`, `<Select.Item>`, `<Tabs.List>`
+- **FORBIDDEN**: `import { CardContent, ModalTitle } from 'floogic-ui'` (Child components are NOT exported as standalone imports).
+
+### 2. StyleX Styling Engine Only
+Every component accepts custom styling exclusively via the `style?: stylex.StyleXStyles` prop.
+- **CORRECT**: `<Card style={styles.cardCustom}>` where `styles` is created via `stylex.create(...)`.
+- **FORBIDDEN**: Inline style objects (`style={{ marginTop: '16px' }}`) and native CSS class names (`className="card-item"`).
+
+### 3. Token-Driven Styling (Zero Hardcoded CSS Values)
+Never use hardcoded pixel values, hex colors, or raw fonts. Always import and use design tokens exported by `floogic-ui`.
+- **Imports**: `import { colors, spacing, shape, borders, fonts, fontSizes, fontWeights, elevation, durations } from 'floogic-ui'`
+- **Examples**: `colors.fillBrandStrong`, `spacing.space4`, `shape.radiusMd`, `borders.hairline`, `fontSizes.body`.
+
+### 4. Mandatory Imports & Setup
+Be sure to include the generated StyleX CSS file at application entry point:
+```tsx
+import 'floogic-ui/style.css';
+import { Button, Card, Modal, colors, spacing } from 'floogic-ui';
+```
+
+---
+
+## Token Reference
+
+| Token Group | Export Name | Sample Keys |
+| :--- | :--- | :--- |
+| **Colors** | `colors` | `backgroundBase`, `backgroundRaised`, `fillBrandStrong`, `fillNeutralWeak`, `textStrong`, `textWeak`, `strokeWeak`, `statusError` |
+| **Spacing** | `spacing` | `space1` (4px), `space2` (8px), `space3` (12px), `space4` (16px), `space6` (24px), `space8` (32px) |
+| **Shape / Radius** | `shape` | `radiusNone`, `radiusSm`, `radiusMd`, `radiusLg`, `radiusFull` |
+| **Borders** | `borders` | `hairline`, `medium`, `thick`, `accent` |
+| **Typography** | `fonts`, `fontSizes`, `fontWeights` | `fonts.sans`, `fontSizes.h1` to `h6`, `fontSizes.body`, `fontWeights.medium`, `semiBold`, `bold` |
+| **Elevation** | `elevation` | `elev1`, `elev2`, `elev3` |
+| **Motion** | `durations`, `easings` | `durations.fast`, `easings.standard` |
+
+---
+
+## Component Catalog Summary
+
+- **Accordion**: `<Accordion.Item>`, `<Accordion.Trigger>`, `<Accordion.Content>`
+- **Alert**: `<Alert.Icon>`, `<Alert.Heading>`, `<Alert.Description>`, `<Alert.Actions>`
+- **AlertGlobal**: `<AlertGlobal.Icon>`, `<AlertGlobal.Description>`, `<AlertGlobal.Actions>`
+- **Avatar**: `<Avatar.Image>`, `<Avatar.Fallback>`, `<Avatar.Badge>`, `<Avatar.Group>`
+- **Badge**: `<Badge.Label>`, `<Badge.Icon>`
+- **BadgeCount**: `<BadgeCount count={5} />`
+- **BadgeDot**: `<BadgeDot status="online" />`
+- **Breadcrumbs**: `<Breadcrumbs.Item href="#">`
+- **Button**: `<Button.Label>`, `<Button.Icon>`
+- **ButtonGroup**: `<ButtonGroup>`
+- **Card**: `<Card.Media>`, `<Card.Content>`, `<Card.Heading>`, `<Card.Description>`, `<Card.Footer>`
+- **CheckboxGroup**: `<CheckboxGroup.Label>`, `<CheckboxGroup.Item>`, `<CheckboxGroup.Hint>`, `<CheckboxGroup.Error>`
+- **DatePicker**: `<DatePicker date={date} onDateChange={setDate} />`
+- **Divider**: `<Divider orientation="horizontal"|"vertical" />`
+- **Drawer**: `<Drawer.Content>`, `<Drawer.Header>`, `<Drawer.Body>`, `<Drawer.Footer>`
+- **HoverCard**: `<HoverCard.Trigger>`, `<HoverCard.Content>`
+- **IconButton**: `<IconButton aria-label="Action description"><Icon /></IconButton>`
+- **IconContainer**: `<IconContainer size="md" shape="circle"><Icon /></IconContainer>`
+- **Modal**: `<Modal.Content>`, `<Modal.Header>`, `<Modal.Title>`, `<Modal.Body>`, `<Modal.Footer>`, `<Modal.CloseButton aria-label="Close" />`
+- **Pagination**: `<Pagination currentPage={1} totalPages={10} onPageChange={...} />`
+- **Popover**: `<Popover.Trigger>`, `<Popover.Content>`, `<Popover.Close>`
+- **Progress**: `<Progress value={60} max={100} />`
+- **RadioGroup**: `<RadioGroup.Label>`, `<RadioGroup.Item>`, `<RadioGroup.Hint>`, `<RadioGroup.Error>`
+- **SegmentedControl**: `<SegmentedControl.Item value="a">`
+- **Select**: `<Select.Trigger>`, `<Select.Content>`, `<Select.Item>`, `<Select.Group>`
+- **Slider**: `<Slider value={[50]} min={0} max={100} />`
+- **Steps**: `<Steps currentStep={2} steps={[{ title: 'Step 1' }, { title: 'Step 2' }]} />`
+- **Switch**: `<Switch.Field>`, `<Switch.Label>`
+- **Tabs**: `<Tabs.List>`, `<Tabs.Item>`, `<Tabs.Panel>`
+- **TextArea**: `<TextArea.Label>`, `<TextArea.Field>`
+- **TextInput**: `<TextInput.Label>`, `<TextInput.Field>`
+- **Toast**: `<Toast.Title>`, `<Toast.Description>`, `<Toast.Action>`, `<Toast.Close />`
+- **Tooltip**: `<Tooltip.Trigger>`, `<Tooltip.Content>`
+- **Typography**: `<Typography variant="h1"|"h2"|"h3"|"body"|"caption">`
+
+---
+
+## Detailed Specification
+For full TypeScript signatures, props interfaces, and complete recipe code examples, refer to [llms-full.txt](./llms-full.txt).

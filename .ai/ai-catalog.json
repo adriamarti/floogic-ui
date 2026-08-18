@@ -1,0 +1,350 @@
+{
+  "name": "floogic-ui",
+  "description": "Token-driven React Design System built with StyleX and Radix UI Primitives",
+  "generatedAt": "2026-08-18T16:48:22.691Z",
+  "components": [
+    {
+      "name": "Accordion",
+      "compoundExport": "Accordion.Item, Accordion.Header, Accordion.Trigger, Accordion.Content",
+      "subcomponents": [
+        "Item",
+        "Header",
+        "Trigger",
+        "Content"
+      ],
+      "path": "src/components/Accordion"
+    },
+    {
+      "name": "Alert",
+      "compoundExport": "Alert.Icon, Alert.Content, Alert.Heading, Alert.Description, Alert.Actions, Alert.CloseButton",
+      "subcomponents": [
+        "Icon",
+        "Content",
+        "Heading",
+        "Description",
+        "Actions",
+        "CloseButton"
+      ],
+      "path": "src/components/Alert"
+    },
+    {
+      "name": "AlertGlobal",
+      "compoundExport": "AlertGlobal.Icon, AlertGlobal.Content, AlertGlobal.Description, AlertGlobal.Actions, AlertGlobal.CloseButton",
+      "subcomponents": [
+        "Icon",
+        "Content",
+        "Description",
+        "Actions",
+        "CloseButton"
+      ],
+      "path": "src/components/AlertGlobal"
+    },
+    {
+      "name": "Avatar",
+      "compoundExport": "Avatar.Image, Avatar.Fallback, Avatar.Badge, Avatar.Label, Avatar.Group",
+      "subcomponents": [
+        "Image",
+        "Fallback",
+        "Badge",
+        "Label",
+        "Group"
+      ],
+      "path": "src/components/Avatar"
+    },
+    {
+      "name": "Badge",
+      "compoundExport": "Badge.Label, Badge.Icon",
+      "subcomponents": [
+        "Label",
+        "Icon"
+      ],
+      "path": "src/components/Badge"
+    },
+    {
+      "name": "BadgeCount",
+      "compoundExport": "BadgeCount",
+      "subcomponents": [],
+      "path": "src/components/BadgeCount"
+    },
+    {
+      "name": "BadgeDot",
+      "compoundExport": "BadgeDot",
+      "subcomponents": [],
+      "path": "src/components/BadgeDot"
+    },
+    {
+      "name": "Breadcrumbs",
+      "compoundExport": "Breadcrumbs.Item",
+      "subcomponents": [
+        "Item"
+      ],
+      "path": "src/components/Breadcrumbs"
+    },
+    {
+      "name": "Button",
+      "compoundExport": "Button.Label, Button.Icon",
+      "subcomponents": [
+        "Label",
+        "Icon"
+      ],
+      "path": "src/components/Button"
+    },
+    {
+      "name": "ButtonGroup",
+      "compoundExport": "ButtonGroup",
+      "subcomponents": [],
+      "path": "src/components/ButtonGroup"
+    },
+    {
+      "name": "Card",
+      "compoundExport": "Card.Media, Card.Content, Card.Icon, Card.Heading, Card.Description, Card.Footer",
+      "subcomponents": [
+        "Media",
+        "Content",
+        "Icon",
+        "Heading",
+        "Description",
+        "Footer"
+      ],
+      "path": "src/components/Card"
+    },
+    {
+      "name": "CheckboxGroup",
+      "compoundExport": "CheckboxGroup.Label, CheckboxGroup.Hint, CheckboxGroup.Error, CheckboxGroup.Item",
+      "subcomponents": [
+        "Label",
+        "Hint",
+        "Error",
+        "Item"
+      ],
+      "path": "src/components/CheckboxGroup"
+    },
+    {
+      "name": "DatePicker",
+      "compoundExport": "DatePicker.Label, DatePicker.Hint, DatePicker.Error, DatePicker.Trigger",
+      "subcomponents": [
+        "Label",
+        "Hint",
+        "Error",
+        "Trigger"
+      ],
+      "path": "src/components/DatePicker"
+    },
+    {
+      "name": "Divider",
+      "compoundExport": "Divider",
+      "subcomponents": [],
+      "path": "src/components/Divider"
+    },
+    {
+      "name": "Drawer",
+      "compoundExport": "Drawer.Trigger, Drawer.Content, Drawer.Header, Drawer.Title, Drawer.Description, Drawer.CloseButton, Drawer.Body, Drawer.Footer",
+      "subcomponents": [
+        "Trigger",
+        "Content",
+        "Header",
+        "Title",
+        "Description",
+        "CloseButton",
+        "Body",
+        "Footer"
+      ],
+      "path": "src/components/Drawer"
+    },
+    {
+      "name": "HoverCard",
+      "compoundExport": "HoverCard.Trigger, HoverCard.Content",
+      "subcomponents": [
+        "Trigger",
+        "Content"
+      ],
+      "path": "src/components/HoverCard"
+    },
+    {
+      "name": "IconButton",
+      "compoundExport": "IconButton",
+      "subcomponents": [],
+      "path": "src/components/IconButton"
+    },
+    {
+      "name": "IconContainer",
+      "compoundExport": "IconContainer",
+      "subcomponents": [],
+      "path": "src/components/IconContainer"
+    },
+    {
+      "name": "Modal",
+      "compoundExport": "Modal.Trigger, Modal.Content, Modal.Header, Modal.Title, Modal.Description, Modal.CloseButton, Modal.Body, Modal.Footer",
+      "subcomponents": [
+        "Trigger",
+        "Content",
+        "Header",
+        "Title",
+        "Description",
+        "CloseButton",
+        "Body",
+        "Footer"
+      ],
+      "path": "src/components/Modal"
+    },
+    {
+      "name": "Pagination",
+      "compoundExport": "Pagination",
+      "subcomponents": [],
+      "path": "src/components/Pagination"
+    },
+    {
+      "name": "Popover",
+      "compoundExport": "Popover.Trigger, Popover.Content, Popover.Close",
+      "subcomponents": [
+        "Trigger",
+        "Content",
+        "Close"
+      ],
+      "path": "src/components/Popover"
+    },
+    {
+      "name": "Progress",
+      "compoundExport": "Progress",
+      "subcomponents": [],
+      "path": "src/components/Progress"
+    },
+    {
+      "name": "RadioGroup",
+      "compoundExport": "RadioGroup.Label, RadioGroup.Hint, RadioGroup.Error, RadioGroup.Item",
+      "subcomponents": [
+        "Label",
+        "Hint",
+        "Error",
+        "Item"
+      ],
+      "path": "src/components/RadioGroup"
+    },
+    {
+      "name": "SegmentedControl",
+      "compoundExport": "SegmentedControl.Item, SegmentedControl.Label, SegmentedControl.Icon",
+      "subcomponents": [
+        "Item",
+        "Label",
+        "Icon"
+      ],
+      "path": "src/components/SegmentedControl"
+    },
+    {
+      "name": "Select",
+      "compoundExport": "Select.Label, Select.Hint, Select.Error, Select.Trigger, Select.Content, Select.Item",
+      "subcomponents": [
+        "Label",
+        "Hint",
+        "Error",
+        "Trigger",
+        "Content",
+        "Item"
+      ],
+      "path": "src/components/Select"
+    },
+    {
+      "name": "Slider",
+      "compoundExport": "Slider",
+      "subcomponents": [],
+      "path": "src/components/Slider"
+    },
+    {
+      "name": "Steps",
+      "compoundExport": "Steps",
+      "subcomponents": [],
+      "path": "src/components/Steps"
+    },
+    {
+      "name": "Switch",
+      "compoundExport": "Switch.Field, Switch.Label",
+      "subcomponents": [
+        "Field",
+        "Label"
+      ],
+      "path": "src/components/Switch"
+    },
+    {
+      "name": "Tabs",
+      "compoundExport": "Tabs.List, Tabs.Item, Tabs.Panel, Tabs.Label, Tabs.Icon",
+      "subcomponents": [
+        "List",
+        "Item",
+        "Panel",
+        "Label",
+        "Icon"
+      ],
+      "path": "src/components/Tabs"
+    },
+    {
+      "name": "TextArea",
+      "compoundExport": "TextArea.Label, TextArea.Hint, TextArea.Error, TextArea.Field",
+      "subcomponents": [
+        "Label",
+        "Hint",
+        "Error",
+        "Field"
+      ],
+      "path": "src/components/TextArea"
+    },
+    {
+      "name": "TextInput",
+      "compoundExport": "TextInput.Label, TextInput.Hint, TextInput.Error, TextInput.Field",
+      "subcomponents": [
+        "Label",
+        "Hint",
+        "Error",
+        "Field"
+      ],
+      "path": "src/components/TextInput"
+    },
+    {
+      "name": "Toast",
+      "compoundExport": "Toast.Provider, Toast.Viewport, Toast.Title, Toast.Description, Toast.Action, Toast.Close",
+      "subcomponents": [
+        "Provider",
+        "Viewport",
+        "Title",
+        "Description",
+        "Action",
+        "Close"
+      ],
+      "path": "src/components/Toast"
+    },
+    {
+      "name": "Tooltip",
+      "compoundExport": "Tooltip.Provider, Tooltip.Trigger, Tooltip.Content",
+      "subcomponents": [
+        "Provider",
+        "Trigger",
+        "Content"
+      ],
+      "path": "src/components/Tooltip"
+    },
+    {
+      "name": "Typography",
+      "compoundExport": "Typography",
+      "subcomponents": [],
+      "path": "src/components/Typography"
+    }
+  ],
+  "tokens": [
+    "colors",
+    "spacing",
+    "shape",
+    "borders",
+    "fonts",
+    "fontSizes",
+    "fontWeights",
+    "lineHeights",
+    "elevation",
+    "durations",
+    "easings"
+  ],
+  "rules": [
+    "Use compound exports exclusively (e.g. Card.Content, Modal.Header)",
+    "Use StyleX style prop exclusively (style?: stylex.StyleXStyles)",
+    "Never use inline styles style={{ ... }} or native CSS className",
+    "Import tokens from floogic-ui instead of hardcoding raw pixel or color values"
+  ]
+}
