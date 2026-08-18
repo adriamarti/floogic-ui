@@ -1,9 +1,12 @@
 import React, { forwardRef } from 'react';
 import { Button, ButtonProps } from '../Button';
 
+import * as stylex from '@stylexjs/stylex';
+
 export interface IconButtonProps extends Omit<ButtonProps, 'iconOnly' | 'children'> {
   children: React.ReactNode;
   'aria-label': string; // Enforce aria-label for accessibility since there's no visible text label
+  style?: stylex.StyleXStyles;
 }
 
 /**

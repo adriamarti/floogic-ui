@@ -9,10 +9,22 @@ export type TooltipProps = TooltipPrimitive.TooltipProps;
 
 const Root = TooltipPrimitive.Root;
 
-export type TooltipTriggerProps = TooltipPrimitive.TooltipTriggerProps;
+export type TooltipTriggerProps = Omit<TooltipPrimitive.TooltipTriggerProps, 'style'> & {
+  style?: stylex.StyleXStyles;
+};
 
 const Trigger = forwardRef<HTMLButtonElement, TooltipTriggerProps>(
-  (props, ref) => <TooltipPrimitive.Trigger ref={ref} {...props} />
+  ({ style, ...props }, ref) => {
+    const resolved = stylex.props(style);
+    return (
+      <TooltipPrimitive.Trigger
+        ref={ref}
+        className={resolved.className}
+        style={resolved.style}
+        {...props}
+      />
+    );
+  }
 );
 Trigger.displayName = 'Tooltip.Trigger';
 
@@ -23,7 +35,6 @@ export type TooltipContentProps = Omit<TooltipPrimitive.TooltipContentProps, 'st
 
 const Content = forwardRef<HTMLDivElement, TooltipContentProps>(
   ({ style, sideOffset = 4, showArrow = true, children, ...props }, ref) => {
-    // Dynamic styles based on side
     const sideClass = props.side === 'top' ? styles.sideTop :
                       props.side === 'right' ? styles.sideRight :
                       props.side === 'bottom' ? styles.sideBottom :

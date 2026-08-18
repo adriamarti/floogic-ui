@@ -6,8 +6,6 @@ import { spacing } from '../../tokens/spacing.stylex';
 import { borders } from '../../tokens/borders.stylex';
 import { shape } from '../../tokens/shape.stylex';
 
-const MOBILE = '@media (max-width: 767px)';
-
 const overlayShow = stylex.keyframes({
   from: { opacity: 0 },
   to: { opacity: 1 },
@@ -18,14 +16,9 @@ const contentShow = stylex.keyframes({
   to: { opacity: 1, transform: 'translate(-50%, -50%) scale(1)' },
 });
 
-const slideUp = stylex.keyframes({
-  from: { transform: 'translateY(100%)' },
-  to: { transform: 'translateY(0)' },
-});
-
 export const styles = stylex.create({
   overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    backgroundColor: colors.fillOverlay,
     backdropFilter: 'blur(4px)',
     position: 'fixed',
     inset: 0,
@@ -42,7 +35,6 @@ export const styles = stylex.create({
     flexDirection: 'column',
     boxShadow: elevation.elev3,
     
-    // Desktop styles (centered modal)
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
@@ -55,15 +47,15 @@ export const styles = stylex.create({
 
   // Size Variants
   sizeSmall: {
-    width: '400px',
+    width: '25rem',
     maxWidth: '90vw',
   },
   sizeMedium: {
-    width: '600px',
+    width: '37.5rem',
     maxWidth: '90vw',
   },
   sizeLarge: {
-    width: '800px',
+    width: '50rem',
     maxWidth: '90vw',
   },
 
@@ -71,7 +63,10 @@ export const styles = stylex.create({
     display: 'flex',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
-    padding: `${spacing.space4} ${spacing.space5}`,
+    paddingTop: spacing.space4,
+    paddingBottom: spacing.space4,
+    paddingLeft: spacing.space5,
+    paddingRight: spacing.space5,
     borderBottomStyle: 'solid',
     borderBottomWidth: borders.hairline,
     borderBottomColor: colors.strokeWeak,
@@ -86,9 +81,12 @@ export const styles = stylex.create({
   footer: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-end', // Usually modals have actions on the right
+    justifyContent: 'flex-end',
     gap: spacing.space3,
-    padding: `${spacing.space4} ${spacing.space5}`,
+    paddingTop: spacing.space4,
+    paddingBottom: spacing.space4,
+    paddingLeft: spacing.space5,
+    paddingRight: spacing.space5,
     borderTopStyle: 'solid',
     borderTopWidth: borders.hairline,
     borderTopColor: colors.strokeWeak,

@@ -36,8 +36,8 @@ export const Progress = React.forwardRef<
   React.ElementRef<typeof ProgressPrimitive.Root>,
   ProgressProps
 >(({ value = 0, showLabel = false, style, trackStyle, indicatorStyle, ...props }, ref) => {
-  // Clamp value between 0 and 100 to ensure valid transform
   const clampedValue = Math.min(Math.max(value, 0), 100);
+  const offset = 100 - clampedValue;
 
   const progressNode = (
     <ProgressPrimitive.Root
@@ -47,8 +47,7 @@ export const Progress = React.forwardRef<
       {...stylex.props(styles.root, trackStyle)}
     >
       <ProgressPrimitive.Indicator
-        {...stylex.props(styles.indicator, indicatorStyle)}
-        style={{ transform: `translateX(-${100 - clampedValue}%)` }}
+        {...stylex.props(styles.indicator, styles.indicatorDynamic(offset), indicatorStyle)}
       />
     </ProgressPrimitive.Root>
   );
@@ -64,9 +63,6 @@ export const Progress = React.forwardRef<
     );
   }
 
-  // If there's no label but a style was passed, we wrap it in a container
-  // to allow setting width/margin consistently, or we apply it to the root if we want.
-  // We'll apply the outer style to the root if no label.
   return (
     <ProgressPrimitive.Root
       ref={ref}
@@ -75,8 +71,7 @@ export const Progress = React.forwardRef<
       {...stylex.props(styles.root, trackStyle, style)}
     >
       <ProgressPrimitive.Indicator
-        {...stylex.props(styles.indicator, indicatorStyle)}
-        style={{ transform: `translateX(-${100 - clampedValue}%)` }}
+        {...stylex.props(styles.indicator, styles.indicatorDynamic(offset), indicatorStyle)}
       />
     </ProgressPrimitive.Root>
   );

@@ -2,7 +2,9 @@ import * as stylex from '@stylexjs/stylex';
 import { colors } from '../../tokens/colors.stylex';
 import { spacing } from '../../tokens/spacing.stylex';
 import { borders } from '../../tokens/borders.stylex';
-import { fonts } from '../../tokens/typography.stylex';
+import { shape } from '../../tokens/shape.stylex';
+import { fonts, fontSizes, fontWeights } from '../../tokens/typography.stylex';
+import { durations, easings } from '../../tokens/motion.stylex';
 
 export const styles = stylex.create({
   root: {
@@ -18,16 +20,16 @@ export const styles = stylex.create({
   },
   label: {
     fontFamily: fonts.sans,
-    fontSize: '14px',
-    fontWeight: 500,
+    fontSize: fontSizes.h6,
+    fontWeight: fontWeights.medium,
     color: colors.textStrong,
   },
   requiredAsterisk: {
     color: colors.textError,
   },
   hint: {
-    fontFamily: 'var(--font-sans)',
-    fontSize: '13px',
+    fontFamily: fonts.sans,
+    fontSize: fontSizes.caption,
     color: colors.textWeak,
     marginBottom: spacing.space05,
   },
@@ -43,8 +45,8 @@ export const styles = stylex.create({
     marginTop: spacing.space05,
   },
   errorText: {
-    fontFamily: 'var(--font-sans)',
-    fontSize: '13px',
+    fontFamily: fonts.sans,
+    fontSize: fontSizes.caption,
     color: colors.textError,
   },
   fieldWrapper: {
@@ -55,27 +57,32 @@ export const styles = stylex.create({
   },
   field: {
     width: '100%',
-    fontFamily: 'var(--font-sans)',
-    fontSize: '14px',
+    fontFamily: fonts.sans,
+    fontSize: fontSizes.h6,
     color: colors.textStrong,
     backgroundColor: {
       default: colors.backgroundBase,
       ':hover': colors.fillWeak,
       ':active': colors.fillPress,
     },
-    borderWidth: '1px',
+    borderWidth: borders.hairline,
     borderStyle: 'solid',
     borderColor: {
       default: colors.strokeStrong,
       ':hover': colors.strokeStrong,
       ':focus': colors.strokeFocus,
     },
-    borderRadius: '6px',
-    padding: `${spacing.space2} ${spacing.space3}`,
+    borderRadius: shape.radiusMd,
+    paddingTop: spacing.space2,
+    paddingBottom: spacing.space2,
+    paddingLeft: spacing.space3,
+    paddingRight: spacing.space3,
     outline: 'none',
-    transition: 'all 0.2s ease',
+    transitionProperty: 'border-color, background-color, color, box-shadow',
+    transitionDuration: durations.fast,
+    transitionTimingFunction: easings.standard,
     resize: 'vertical',
-    minHeight: '60px',
+    minHeight: '3.75rem',
     '::placeholder': {
       color: colors.textWeak,
     },
@@ -83,7 +90,7 @@ export const styles = stylex.create({
       outlineWidth: borders.medium,
       outlineStyle: 'solid',
       outlineColor: colors.focus,
-      outlineOffset: '2px',
+      outlineOffset: spacing.space05,
     }
   },
   fieldDisabled: {
@@ -99,8 +106,8 @@ export const styles = stylex.create({
       borderColor: colors.strokeErrorStrong,
       outlineWidth: borders.medium,
       outlineStyle: 'solid',
-      outlineColor: colors.textError, // Or a specific error focus token if it existed
-      outlineOffset: '2px',
+      outlineColor: colors.textError,
+      outlineOffset: spacing.space05,
     }
   }
 });

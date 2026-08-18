@@ -3,6 +3,7 @@ import { colors } from '../../tokens/colors.stylex';
 import { spacing } from '../../tokens/spacing.stylex';
 import { fonts, fontSizes, fontWeights } from '../../tokens/typography.stylex';
 import { borders } from '../../tokens/borders.stylex';
+import { shape } from '../../tokens/shape.stylex';
 import { durations, easings } from '../../tokens/motion.stylex';
 
 export const styles = stylex.create({
@@ -17,7 +18,7 @@ export const styles = stylex.create({
     borderBottomWidth: borders.hairline,
     borderBottomStyle: 'solid',
     borderBottomColor: colors.strokeWeak,
-    gap: spacing.space6, // Assuming they want generous spacing between tabs based on the design
+    gap: spacing.space6,
   },
 
   item: {
@@ -51,11 +52,11 @@ export const styles = stylex.create({
     },
     
     ':focus-visible': {
-      outlineWidth: '2px',
+      outlineWidth: borders.medium,
       outlineStyle: 'solid',
       outlineColor: colors.focus,
-      outlineOffset: '2px',
-      borderRadius: '2px',
+      outlineOffset: spacing.space05,
+      borderRadius: shape.radiusSm,
     },
 
     ':disabled': {
@@ -83,14 +84,14 @@ export const styles = stylex.create({
   },
 
   panel: {
-    paddingTop: spacing.space5, // Standard padding between the tabs list and the panel content
+    paddingTop: spacing.space5,
     outline: 'none',
     ':focus-visible': {
-      outlineWidth: '2px',
+      outlineWidth: borders.medium,
       outlineStyle: 'solid',
       outlineColor: colors.focus,
-      outlineOffset: '2px',
-      borderRadius: '4px',
+      outlineOffset: spacing.space05,
+      borderRadius: shape.radiusSm,
     },
   },
 

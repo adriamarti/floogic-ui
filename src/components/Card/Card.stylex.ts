@@ -2,9 +2,10 @@ import * as stylex from '@stylexjs/stylex';
 import { colors } from '../../tokens/colors.stylex';
 import { spacing } from '../../tokens/spacing.stylex';
 import { shape } from '../../tokens/shape.stylex';
-import { fonts } from '../../tokens/typography.stylex';
+import { fonts, fontSizes, fontWeights, lineHeights } from '../../tokens/typography.stylex';
 import { elevation } from '../../tokens/elevation.stylex';
 import { borders } from '../../tokens/borders.stylex';
+import { durations, easings } from '../../tokens/motion.stylex';
 
 export const styles = stylex.create({
   root: {
@@ -18,20 +19,22 @@ export const styles = stylex.create({
     position: 'relative',
     textDecoration: 'none',
     color: 'inherit',
-    transition: 'border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease',
+    transitionProperty: 'border-color, box-shadow, transform',
+    transitionDuration: durations.fast,
+    transitionTimingFunction: easings.standard,
   },
   rootInteractive: {
     cursor: 'pointer',
-    '::after': { // State overlay (hover/press)
+    '::after': {
       content: '""',
       position: 'absolute',
       inset: 0,
       backgroundColor: 'transparent',
       transitionProperty: 'background-color',
-      transitionDuration: '0.2s',
-      transitionTimingFunction: 'ease',
+      transitionDuration: durations.fast,
+      transitionTimingFunction: easings.standard,
       pointerEvents: 'none',
-      zIndex: 1, // Ensure it covers media and content
+      zIndex: 1,
     },
     ':hover::after': {
       backgroundColor: colors.fillHover,
@@ -43,23 +46,23 @@ export const styles = stylex.create({
       outlineWidth: borders.medium,
       outlineStyle: 'solid',
       outlineColor: colors.focus,
-      outlineOffset: '2px',
+      outlineOffset: spacing.space05,
     },
   },
   rootReactive: {
     cursor: 'pointer',
     boxShadow: elevation.elev1,
     borderStyle: 'none',
-    '::after': { // State overlay (hover/press)
+    '::after': {
       content: '""',
       position: 'absolute',
       inset: 0,
       backgroundColor: 'transparent',
       transitionProperty: 'background-color',
-      transitionDuration: '0.2s',
-      transitionTimingFunction: 'ease',
+      transitionDuration: durations.fast,
+      transitionTimingFunction: easings.standard,
       pointerEvents: 'none',
-      zIndex: 1, // Ensure it covers media and content
+      zIndex: 1,
     },
     ':hover::after': {
       backgroundColor: colors.fillWeaker,
@@ -75,7 +78,7 @@ export const styles = stylex.create({
       outlineWidth: borders.medium,
       outlineStyle: 'solid',
       outlineColor: colors.focus,
-      outlineOffset: '2px',
+      outlineOffset: spacing.space05,
     },
   },
 
@@ -95,8 +98,8 @@ export const styles = stylex.create({
     display: 'flex',
     flexDirection: 'column',
     flex: '1 1 auto',
-    minWidth: 0, // Prevent flex items from overflowing
-    padding: spacing.space6, // 24px is standard for cards usually, or maybe space5 (20px). We'll use space6
+    minWidth: 0,
+    padding: spacing.space6,
     gap: spacing.space4,
   },
 
@@ -108,10 +111,10 @@ export const styles = stylex.create({
     flexShrink: 0,
   },
   mediaVertical: {
-    height: '160px', // Standard height for top images
+    height: spacing.space20,
   },
   mediaHorizontal: {
-    width: '140px', // Fixed width for horizontal images as proposed
+    width: spacing.space20,
     height: 'auto',
   },
 
@@ -120,8 +123,8 @@ export const styles = stylex.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '40px',
-    height: '40px',
+    width: spacing.space10,
+    height: spacing.space10,
     borderRadius: shape.radiusMd,
     backgroundColor: colors.fillWeak,
     color: colors.iconNeutral,
@@ -131,19 +134,19 @@ export const styles = stylex.create({
   // Typography
   heading: {
     fontFamily: fonts.sans,
-    fontSize: '15px',
-    fontWeight: 600,
+    fontSize: fontSizes.h5,
+    fontWeight: fontWeights.semiBold,
     color: colors.textStrong,
     margin: 0,
-    lineHeight: 1.3,
+    lineHeight: lineHeights.h5,
   },
   description: {
     fontFamily: fonts.sans,
-    fontSize: '13.5px',
-    fontWeight: 400,
+    fontSize: fontSizes.caption,
+    fontWeight: fontWeights.regular,
     color: colors.textWeak,
     margin: 0,
-    lineHeight: 1.5,
+    lineHeight: lineHeights.body,
   },
 
   // Footer
@@ -151,6 +154,6 @@ export const styles = stylex.create({
     display: 'flex',
     alignItems: 'center',
     gap: spacing.space3,
-    marginTop: spacing.space2, // push it slightly away from description
+    marginTop: spacing.space2,
   },
 });

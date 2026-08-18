@@ -24,14 +24,14 @@ export const styles = stylex.create({
 
   label: {
     fontFamily: fonts.sans,
-    fontSize: '14px',
-    fontWeight: 500,
+    fontSize: fontSizes.h6,
+    fontWeight: fontWeights.medium,
     color: colors.textStrong,
   },
 
   value: {
     fontFamily: fonts.sans,
-    fontSize: '14px',
+    fontSize: fontSizes.h6,
     fontWeight: fontWeights.regular,
     color: colors.textWeak,
   },
@@ -43,7 +43,7 @@ export const styles = stylex.create({
     userSelect: 'none',
     touchAction: 'none',
     width: '100%',
-    height: '20px', // Hit area for mobile
+    height: spacing.space5,
   },
 
   track: {
@@ -51,8 +51,8 @@ export const styles = stylex.create({
     position: 'relative',
     flexGrow: 1,
     borderRadius: shape.radiusFull,
-    height: '6px',
-    overflow: 'hidden', // To keep the range inside rounded corners if needed
+    height: spacing.space15,
+    overflow: 'hidden',
   },
 
   range: {
@@ -64,8 +64,8 @@ export const styles = stylex.create({
 
   thumb: {
     display: 'block',
-    width: '20px',
-    height: '20px',
+    width: spacing.space5,
+    height: spacing.space5,
     backgroundColor: colors.backgroundRaised,
     boxShadow: elevation.elev1,
     borderWidth: borders.hairline,
@@ -90,7 +90,7 @@ export const styles = stylex.create({
       outlineWidth: borders.medium,
       outlineStyle: 'solid',
       outlineColor: colors.focus,
-      outlineOffset: '2px',
+      outlineOffset: spacing.space05,
     },
   },
 

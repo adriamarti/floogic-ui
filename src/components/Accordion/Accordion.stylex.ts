@@ -66,8 +66,8 @@ export const styles = stylex.create({
     transitionProperty: 'transform',
     transitionDuration: durations.fast,
     transitionTimingFunction: easings.standard,
-    width: '16px',
-    height: '16px',
+    width: spacing.space4,
+    height: spacing.space4,
     '[data-state="open"]': {
       transform: 'rotate(180deg)',
     },

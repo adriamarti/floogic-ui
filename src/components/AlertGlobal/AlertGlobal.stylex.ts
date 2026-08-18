@@ -3,12 +3,14 @@ import { colors } from '../../tokens/colors.stylex';
 import { spacing } from '../../tokens/spacing.stylex';
 import { fonts, fontSizes, fontWeights, lineHeights } from '../../tokens/typography.stylex';
 
+import { borders } from '../../tokens/borders.stylex';
+
 export const alertGlobalTokens = stylex.defineVars({
   paddingX: spacing.space4,
   paddingY: spacing.space3,
   gap: spacing.space3,
-  iconSize: '20px',
-  borderWidth: '1px',
+  iconSize: spacing.space5,
+  borderWidth: borders.hairline,
 });
 
 export const styles = stylex.create({
@@ -149,7 +151,7 @@ export const styles = stylex.create({
     display: 'flex',
     flexDirection: 'column',
     flex: 1, // Take up remaining space, pushing actions to the right
-    minWidth: '200px', // Prevent crushing on very small screens
+    minWidth: 0, // Prevent flex item overflow on small screens
     gap: spacing.space2,
   },
 

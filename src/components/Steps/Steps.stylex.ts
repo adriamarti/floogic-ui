@@ -2,19 +2,22 @@ import * as stylex from '@stylexjs/stylex';
 import { colors } from '../../tokens/colors.stylex';
 import { spacing } from '../../tokens/spacing.stylex';
 import { shape } from '../../tokens/shape.stylex';
+import { fonts, fontSizes, fontWeights } from '../../tokens/typography.stylex';
+import { borders } from '../../tokens/borders.stylex';
+import { durations, easings } from '../../tokens/motion.stylex';
 
 export const styles = stylex.create({
   container: {
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
-    fontFamily: 'inherit',
+    fontFamily: fonts.sans,
   },
   
   label: {
     color: colors.textStrong,
-    fontSize: '14px',
-    fontWeight: 600,
+    fontSize: fontSizes.h6,
+    fontWeight: fontWeights.semiBold,
     marginBottom: spacing.space2,
   },
   
@@ -27,10 +30,12 @@ export const styles = stylex.create({
   
   segment: {
     flexGrow: 1,
-    height: '6px',
+    height: spacing.space15,
     borderRadius: shape.radiusFull,
     backgroundColor: colors.fillDisabled,
-    transition: 'background-color 0.3s ease',
+    transitionProperty: 'background-color',
+    transitionDuration: durations.fast,
+    transitionTimingFunction: easings.standard,
   },
   
   segmentActive: {
@@ -47,19 +52,23 @@ export const styles = stylex.create({
     borderStyle: 'none',
     padding: 0,
     marginTop: spacing.space3,
-    fontSize: '14px',
-    fontWeight: 500,
+    fontSize: fontSizes.h6,
+    fontWeight: fontWeights.medium,
     cursor: 'pointer',
-    fontFamily: 'inherit',
-    transition: 'opacity 0.2s',
+    fontFamily: fonts.sans,
+    transitionProperty: 'opacity',
+    transitionDuration: durations.fast,
+    transitionTimingFunction: easings.standard,
 
     ':hover': {
       opacity: 0.8,
     },
     
     ':focus-visible': {
-      outline: `2px solid ${colors.strokeFocus}`,
-      outlineOffset: '2px',
+      outlineWidth: borders.medium,
+      outlineStyle: 'solid',
+      outlineColor: colors.focus,
+      outlineOffset: spacing.space05,
       borderRadius: shape.radiusSm,
     }
   }

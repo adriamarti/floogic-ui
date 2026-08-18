@@ -1,5 +1,6 @@
 import * as stylex from '@stylexjs/stylex';
 import { spacing } from '../../tokens/spacing.stylex';
+import { durations, easings } from '../../tokens/motion.stylex';
 
 const VIEWPORT_PADDING = spacing.space4;
 
@@ -27,13 +28,13 @@ export const styles = stylex.create({
     flexDirection: 'column',
     padding: VIEWPORT_PADDING,
     gap: spacing.space3,
-    width: '390px',
+    width: '24.375rem',
     maxWidth: '100vw',
     margin: 0,
     listStyle: 'none',
     zIndex: 2147483647,
     outline: 'none',
-    pointerEvents: 'none', // Allow clicking through the empty space of the viewport
+    pointerEvents: 'none',
   },
   listItem: {
     width: '100%',
@@ -43,29 +44,30 @@ export const styles = stylex.create({
     pointerEvents: 'auto',
     width: '100%',
     
-    // Animations
     '@media (prefers-reduced-motion: no-preference)': {
       ':not([data-state="closed"])': {
         animationName: slideIn,
-        animationDuration: '150ms',
-        animationTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
+        animationDuration: durations.fast,
+        animationTimingFunction: easings.decelerate,
       },
       '[data-state="closed"]': {
         animationName: hide,
-        animationDuration: '100ms',
-        animationTimingFunction: 'ease-in',
+        animationDuration: durations.fast,
+        animationTimingFunction: easings.standard,
       },
       '[data-swipe="move"]': {
         transform: 'translateX(var(--radix-toast-swipe-move-x))',
       },
       '[data-swipe="cancel"]': {
         transform: 'translateX(0)',
-        transition: 'transform 200ms ease-out',
+        transitionProperty: 'transform',
+        transitionDuration: durations.fast,
+        transitionTimingFunction: easings.standard,
       },
       '[data-swipe="end"]': {
         animationName: swipeOut,
-        animationDuration: '100ms',
-        animationTimingFunction: 'ease-out',
+        animationDuration: durations.fast,
+        animationTimingFunction: easings.standard,
       },
     }
   }

@@ -29,7 +29,7 @@ const slideInBottom = stylex.keyframes({
 
 export const styles = stylex.create({
   overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    backgroundColor: colors.fillOverlay,
     backdropFilter: 'blur(4px)',
     position: 'fixed',
     inset: 0,
@@ -95,15 +95,15 @@ export const styles = stylex.create({
 
   // Size Variants (applied based on position)
   sizeSmallHorizontal: {
-    width: '320px',
+    width: '20rem',
     maxWidth: '100vw',
   },
   sizeMediumHorizontal: {
-    width: '400px',
+    width: '25rem',
     maxWidth: '100vw',
   },
   sizeLargeHorizontal: {
-    width: '480px',
+    width: '30rem',
     maxWidth: '100vw',
   },
   sizeSmallVertical: {
@@ -123,7 +123,10 @@ export const styles = stylex.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: `${spacing.space4} ${spacing.space5}`,
+    paddingTop: spacing.space4,
+    paddingBottom: spacing.space4,
+    paddingLeft: spacing.space5,
+    paddingRight: spacing.space5,
     borderBottomStyle: 'solid',
     borderBottomWidth: borders.hairline,
     borderBottomColor: colors.strokeWeak,
@@ -139,7 +142,10 @@ export const styles = stylex.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
     gap: spacing.space3,
-    padding: `${spacing.space4} ${spacing.space5}`,
+    paddingTop: spacing.space4,
+    paddingBottom: spacing.space4,
+    paddingLeft: spacing.space5,
+    paddingRight: spacing.space5,
     borderTopStyle: 'solid',
     borderTopWidth: borders.hairline,
     borderTopColor: colors.strokeWeak,

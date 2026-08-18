@@ -3,6 +3,8 @@ import { colors } from '../../tokens/colors.stylex';
 import { spacing } from '../../tokens/spacing.stylex';
 import { borders } from '../../tokens/borders.stylex';
 import { shape } from '../../tokens/shape.stylex';
+import { fonts, fontSizes } from '../../tokens/typography.stylex';
+import { durations, easings } from '../../tokens/motion.stylex';
 
 export const styles = stylex.create({
   container: {
@@ -31,9 +33,10 @@ export const styles = stylex.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    minWidth: '36px',
-    height: '36px',
-    padding: `0 ${spacing.space2}`,
+    minWidth: spacing.space9,
+    height: spacing.space9,
+    paddingLeft: spacing.space2,
+    paddingRight: spacing.space2,
     borderStyle: 'solid',
     borderWidth: borders.hairline,
     borderColor: 'transparent',
@@ -41,9 +44,11 @@ export const styles = stylex.create({
     backgroundColor: 'transparent',
     color: colors.textWeak,
     cursor: 'pointer',
-    transition: 'background-color 0.2s, color 0.2s, border-color 0.2s',
-    fontFamily: 'inherit',
-    fontSize: '14px',
+    transitionProperty: 'background-color, color, border-color',
+    transitionDuration: durations.fast,
+    transitionTimingFunction: easings.standard,
+    fontFamily: fonts.sans,
+    fontSize: fontSizes.h6,
     lineHeight: 1,
 
     ':hover': {
@@ -67,10 +72,10 @@ export const styles = stylex.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    minWidth: '36px',
-    height: '36px',
+    minWidth: spacing.space9,
+    height: spacing.space9,
     color: colors.textWeak,
-    fontSize: '14px',
+    fontSize: fontSizes.h6,
   },
 
   // Desktop Prev/Next buttons
@@ -78,16 +83,19 @@ export const styles = stylex.create({
     display: 'flex',
     alignItems: 'center',
     gap: spacing.space2,
-    height: '36px',
-    padding: `0 ${spacing.space3}`,
+    height: spacing.space9,
+    paddingLeft: spacing.space3,
+    paddingRight: spacing.space3,
     borderStyle: 'none',
     backgroundColor: 'transparent',
     color: colors.textWeak,
     cursor: 'pointer',
     borderRadius: shape.radiusMd,
-    fontFamily: 'inherit',
-    fontSize: '14px',
-    transition: 'background-color 0.2s, color 0.2s',
+    fontFamily: fonts.sans,
+    fontSize: fontSizes.h6,
+    transitionProperty: 'background-color, color',
+    transitionDuration: durations.fast,
+    transitionTimingFunction: easings.standard,
 
     ':hover': {
       backgroundColor: colors.fillHover,
@@ -102,7 +110,7 @@ export const styles = stylex.create({
 
   mobileText: {
     color: colors.textWeak,
-    fontSize: '14px',
-    fontFamily: 'inherit',
+    fontSize: fontSizes.h6,
+    fontFamily: fonts.sans,
   }
 });

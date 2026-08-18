@@ -1,6 +1,7 @@
 import * as stylex from '@stylexjs/stylex';
 import { colors } from '../../tokens/colors.stylex';
 import { spacing } from '../../tokens/spacing.stylex';
+import { shape } from '../../tokens/shape.stylex';
 
 export const styles = stylex.create({
   root: {
@@ -8,7 +9,7 @@ export const styles = stylex.create({
     alignItems: 'center',
     justifyContent: 'center',
     boxSizing: 'border-box',
-    borderRadius: '9999px',
+    borderRadius: shape.radiusFull,
     flexShrink: 0,
   },
   

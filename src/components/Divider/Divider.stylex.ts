@@ -1,5 +1,6 @@
 import * as stylex from '@stylexjs/stylex';
 import { colors } from '../../tokens/colors.stylex';
+import { borders } from '../../tokens/borders.stylex';
 
 export const styles = stylex.create({
   root: {
@@ -7,12 +8,12 @@ export const styles = stylex.create({
   },
   // Orientations
   horizontal: {
-    height: '1px',
+    height: borders.hairline,
     width: '100%',
   },
   vertical: {
     height: '100%',
-    width: '1px',
+    width: borders.hairline,
   },
   // Types
   weak: {

@@ -4,6 +4,8 @@ import { spacing } from '../../tokens/spacing.stylex';
 import { borders } from '../../tokens/borders.stylex';
 import { shape } from '../../tokens/shape.stylex';
 import { elevation } from '../../tokens/elevation.stylex';
+import { fonts, fontSizes, fontWeights } from '../../tokens/typography.stylex';
+import { durations, easings } from '../../tokens/motion.stylex';
 
 const fadeIn = stylex.keyframes({
   from: { opacity: 0, transform: 'translateY(-4px)' },
@@ -23,17 +25,17 @@ export const styles = stylex.create({
     gap: spacing.space1,
   },
   label: {
-    fontFamily: 'var(--font-sans)',
-    fontSize: '14px',
-    fontWeight: 500,
+    fontFamily: fonts.sans,
+    fontSize: fontSizes.h6,
+    fontWeight: fontWeights.medium,
     color: colors.textStrong,
   },
   requiredAsterisk: {
     color: colors.textError,
   },
   hint: {
-    fontFamily: 'var(--font-sans)',
-    fontSize: '13px',
+    fontFamily: fonts.sans,
+    fontSize: fontSizes.caption,
     color: colors.textWeak,
     marginBottom: spacing.space05,
   },
@@ -49,8 +51,8 @@ export const styles = stylex.create({
     marginTop: spacing.space05,
   },
   errorText: {
-    fontFamily: 'var(--font-sans)',
-    fontSize: '13px',
+    fontFamily: fonts.sans,
+    fontSize: fontSizes.caption,
     color: colors.textError,
   },
   trigger: {
@@ -58,31 +60,36 @@ export const styles = stylex.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
-    fontFamily: 'var(--font-sans)',
-    fontSize: '14px',
+    fontFamily: fonts.sans,
+    fontSize: fontSizes.h6,
     color: colors.textStrong,
     backgroundColor: {
       default: colors.backgroundBase,
       ':hover': colors.fillWeak,
       ':active': colors.fillPress,
     },
-    borderWidth: '1px',
+    borderWidth: borders.hairline,
     borderStyle: 'solid',
     borderColor: {
       default: colors.strokeStrong,
       ':hover': colors.strokeStrong,
     },
-    borderRadius: '6px',
-    padding: `${spacing.space2} ${spacing.space3}`,
+    borderRadius: shape.radiusMd,
+    paddingTop: spacing.space2,
+    paddingBottom: spacing.space2,
+    paddingLeft: spacing.space3,
+    paddingRight: spacing.space3,
     outline: 'none',
-    transition: 'all 0.2s ease',
+    transitionProperty: 'border-color, background-color, color, box-shadow',
+    transitionDuration: durations.fast,
+    transitionTimingFunction: easings.standard,
     cursor: 'pointer',
     textAlign: 'left',
     ':focus': {
       outlineWidth: borders.medium,
       outlineStyle: 'solid',
       outlineColor: colors.focus,
-      outlineOffset: '2px',
+      outlineOffset: spacing.space05,
       borderColor: colors.strokeFocus,
     },
   },
@@ -97,7 +104,7 @@ export const styles = stylex.create({
       outlineWidth: borders.medium,
       outlineStyle: 'solid',
       outlineColor: colors.textError,
-      outlineOffset: '2px',
+      outlineOffset: spacing.space05,
     },
   },
   triggerDisabled: {
@@ -113,20 +120,20 @@ export const styles = stylex.create({
   },
   popoverContent: {
     backgroundColor: colors.backgroundRaised,
-    borderRadius: '6px',
-    borderWidth: '1px',
+    borderRadius: shape.radiusMd,
+    borderWidth: borders.hairline,
     borderStyle: 'solid',
     borderColor: colors.strokeWeak,
     boxShadow: elevation.elev3,
     padding: spacing.space3,
     animationName: fadeIn,
-    animationDuration: '0.2s',
-    animationTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
+    animationDuration: durations.fast,
+    animationTimingFunction: easings.standard,
     zIndex: 50,
   },
   // react-day-picker styles mapping
   rdpRoot: {
-    fontFamily: 'var(--font-sans)',
+    fontFamily: fonts.sans,
     position: 'relative',
     color: colors.textStrong,
   },
@@ -145,11 +152,11 @@ export const styles = stylex.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
-    height: '28px',
+    height: spacing.space8,
   },
   rdpCaptionLabel: {
-    fontSize: '14px',
-    fontWeight: 600,
+    fontSize: fontSizes.h6,
+    fontWeight: fontWeights.semiBold,
     color: colors.textStrong,
   },
   rdpNav: {
@@ -158,8 +165,8 @@ export const styles = stylex.create({
     justifyContent: 'space-between',
     position: 'absolute',
     width: '100%',
-    height: '28px',
-    pointerEvents: 'none', // to let clicks pass through to the caption
+    height: spacing.space8,
+    pointerEvents: 'none',
     top: 0,
     left: 0,
     zIndex: 10,
@@ -170,45 +177,37 @@ export const styles = stylex.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '28px',
-    height: '28px',
-    borderRadius: '4px',
+    width: spacing.space8,
+    height: spacing.space8,
+    borderRadius: shape.radiusSm,
     cursor: 'pointer',
     pointerEvents: 'auto',
     backgroundColor: {
       default: 'transparent',
       ':hover': colors.fillWeak,
     },
-    transition: 'background-color 0.2s',
+    transitionProperty: 'background-color',
+    transitionDuration: durations.fast,
+    transitionTimingFunction: easings.standard,
   },
-  rdpNavButtonPrevious: {
-    // specific styles if needed
-  },
-  rdpNavButtonNext: {
-    // specific styles if needed
-  },
+  rdpNavButtonPrevious: {},
+  rdpNavButtonNext: {},
   rdpHead: {
     marginBottom: spacing.space2,
   },
-  rdpHeadRow: {
-    // default tr
-  },
+  rdpHeadRow: {},
   rdpHeadCell: {
     color: colors.textWeak,
-    fontSize: '12px',
-    fontWeight: 500,
-    width: '32px',
-    height: '32px',
+    fontSize: fontSizes.caption,
+    fontWeight: fontWeights.medium,
+    width: spacing.space8,
+    height: spacing.space8,
     textAlign: 'center',
     verticalAlign: 'middle',
     padding: 0,
   },
-  rdpTbody: {
-    // default tbody
-  },
-  rdpRow: {
-    // default tr
-  },
+  rdpTbody: {},
+  rdpRow: {},
   rdpCell: {
     position: 'relative',
     padding: 0,
@@ -221,16 +220,18 @@ export const styles = stylex.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: '32px',
-    height: '32px',
-    borderRadius: '4px',
-    fontSize: '13px',
+    width: spacing.space8,
+    height: spacing.space8,
+    borderRadius: shape.radiusSm,
+    fontSize: fontSizes.caption,
     cursor: 'pointer',
     backgroundColor: {
       default: 'transparent',
       ':hover': colors.fillWeak,
     },
-    transition: 'all 0.2s',
+    transitionProperty: 'background-color, color',
+    transitionDuration: durations.fast,
+    transitionTimingFunction: easings.standard,
   },
   rdpDaySelected: {
     backgroundColor: {
@@ -238,11 +239,11 @@ export const styles = stylex.create({
       ':hover': colors.fillBrandStrong,
     },
     color: colors.textInverseStrong,
-    fontWeight: 500,
+    fontWeight: fontWeights.medium,
     borderRadius: shape.radiusMd,
   },
   rdpDayToday: {
-    fontWeight: 600,
+    fontWeight: fontWeights.semiBold,
     color: colors.textBrand,
   },
   rdpDayOutside: {

@@ -1,7 +1,8 @@
 import * as stylex from '@stylexjs/stylex';
 import { colors } from '../../tokens/colors.stylex';
 import { spacing } from '../../tokens/spacing.stylex';
-import { fonts } from '../../tokens/typography.stylex';
+import { shape } from '../../tokens/shape.stylex';
+import { fonts, fontSizes, fontWeights, lineHeights } from '../../tokens/typography.stylex';
 
 export const styles = stylex.create({
   root: {
@@ -10,13 +11,12 @@ export const styles = stylex.create({
     alignItems: 'center',
     justifyContent: 'center',
     verticalAlign: 'middle',
-    overflow: 'visible', // Visible to allow badge out of bounds
+    overflow: 'visible',
     flexShrink: 0,
-    borderRadius: '9999px',
-    backgroundColor: colors.backgroundBase, // Prevents transparency overlap when stacked
+    borderRadius: shape.radiusFull,
+    backgroundColor: colors.backgroundBase,
   },
 
-  // The actual circle container for the image/fallback
   container: {
     position: 'relative',
     display: 'flex',
@@ -24,12 +24,11 @@ export const styles = stylex.create({
     justifyContent: 'center',
     width: '100%',
     height: '100%',
-    borderRadius: '9999px',
+    borderRadius: shape.radiusFull,
     overflow: 'hidden',
     userSelect: 'none',
   },
 
-  // Fallback defaults (when not using a specific tone)
   fallbackBase: {
     display: 'flex',
     alignItems: 'center',
@@ -37,11 +36,10 @@ export const styles = stylex.create({
     width: '100%',
     height: '100%',
     fontFamily: fonts.sans,
-    fontWeight: 600,
+    fontWeight: fontWeights.semiBold,
     borderRadius: 'inherit',
   },
 
-  // Image
   image: {
     width: '100%',
     height: '100%',
@@ -50,21 +48,20 @@ export const styles = stylex.create({
   },
 
   // Sizes
-
   sizeSmall: {
-    width: '28px',
-    height: '28px',
-    fontSize: '11px',
+    width: spacing.space7,
+    height: spacing.space7,
+    fontSize: fontSizes.caption,
   },
   sizeMedium: {
-    width: '40px',
-    height: '40px',
-    fontSize: '14px',
+    width: spacing.space10,
+    height: spacing.space10,
+    fontSize: fontSizes.h6,
   },
   sizeLarge: {
-    width: '64px',
-    height: '64px',
-    fontSize: '22px',
+    width: spacing.space16,
+    height: spacing.space16,
+    fontSize: fontSizes.h3,
   },
 
   // Stack/Group styles
@@ -74,8 +71,8 @@ export const styles = stylex.create({
   },
   groupItem: {
     position: 'relative',
-    boxShadow: `0 0 0 2.5px ${colors.backgroundBase}`, // Ring effect to separate overlapping avatars
-    borderRadius: '9999px',
+    boxShadow: `0 0 0 2.5px ${colors.backgroundBase}`,
+    borderRadius: shape.radiusFull,
   },
   groupItemOverlap: {
     marginLeft: `-${spacing.space3}`,
@@ -87,7 +84,7 @@ export const styles = stylex.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    zIndex: 1, // Above the avatar image
+    zIndex: 1,
   },
   badgeBottomRight: {
     bottom: '-1px',
@@ -95,10 +92,10 @@ export const styles = stylex.create({
   },
   badgeTopRight: {
     top: '-1px',
-    right: 0, // In the HTML, notification badge uses right: 0
+    right: 0,
   },
   badgeRing: {
-    borderRadius: '9999px',
+    borderRadius: shape.radiusFull,
     boxShadow: `0 0 0 2.5px ${colors.backgroundBase}`,
   },
 
@@ -106,7 +103,7 @@ export const styles = stylex.create({
   labelled: {
     display: 'flex',
     alignItems: 'center',
-    gap: spacing.space3, // Approx 11-13px in the design
+    gap: spacing.space3,
   },
   labelContainer: {
     display: 'flex',
@@ -115,22 +112,45 @@ export const styles = stylex.create({
   },
   labelTitle: {
     fontFamily: fonts.sans,
-    fontWeight: 600,
+    fontWeight: fontWeights.semiBold,
     color: colors.textStrong,
     margin: 0,
-    // Font sizes adjust based on avatar size, but we'll apply them dynamically
+  },
+  labelTitleSmall: {
+    fontSize: fontSizes.h6,
+    lineHeight: lineHeights.h6,
+  },
+  labelTitleMedium: {
+    fontSize: fontSizes.h6,
+    lineHeight: lineHeights.h6,
+  },
+  labelTitleLarge: {
+    fontSize: fontSizes.h5,
+    lineHeight: lineHeights.h5,
   },
   labelDescription: {
     fontFamily: fonts.sans,
-    fontWeight: 400,
+    fontWeight: fontWeights.regular,
     color: colors.textWeak,
     margin: 0,
+  },
+  labelDescriptionSmall: {
+    fontSize: fontSizes.caption,
+    lineHeight: lineHeights.body,
+  },
+  labelDescriptionMedium: {
+    fontSize: fontSizes.caption,
+    lineHeight: lineHeights.body,
+  },
+  labelDescriptionLarge: {
+    fontSize: fontSizes.h6,
+    lineHeight: lineHeights.body,
   },
   
   // Tones for fallback backgrounds
   toneNeutral: {
     backgroundColor: colors.fillWeak,
-    color: colors.textWeak, // text-secondary
+    color: colors.textWeak,
     boxShadow: `inset 0 0 0 1px ${colors.strokeWeak}`,
   },
   toneBrand: {
@@ -158,4 +178,10 @@ export const styles = stylex.create({
     color: colors.textInformation,
     boxShadow: `inset 0 0 0 1px ${colors.strokeInformationWeak}`,
   },
+});
+
+export const dynamicStyles = stylex.create({
+  zIndex: (level: number) => ({
+    zIndex: level,
+  }),
 });

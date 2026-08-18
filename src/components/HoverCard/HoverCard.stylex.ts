@@ -2,8 +2,8 @@ import * as stylex from '@stylexjs/stylex';
 import { colors } from '../../tokens/colors.stylex';
 import { elevation } from '../../tokens/elevation.stylex';
 import { borders } from '../../tokens/borders.stylex';
+import { shape } from '../../tokens/shape.stylex';
 import { durations, easings } from '../../tokens/motion.stylex';
-
 import { spacing } from '../../tokens/spacing.stylex';
 
 const slideUpAndFade = stylex.keyframes({
@@ -27,7 +27,7 @@ export const styles = stylex.create({
   content: {
     boxSizing: 'border-box',
     backgroundColor: colors.backgroundRaised,
-    borderRadius: '6px',
+    borderRadius: shape.radiusMd,
     paddingTop: spacing.space3,
     paddingBottom: spacing.space3,
     paddingLeft: spacing.space3,

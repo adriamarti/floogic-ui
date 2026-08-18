@@ -65,7 +65,7 @@ const Label = forwardRef<HTMLLabelElement, SwitchLabelProps>(
       >
         {children}
         {context.required && (
-          <span style={{ color: 'var(--textError)' }}> *</span>
+          <span {...stylex.props(styles.requiredAsterisk)}> *</span>
         )}
       </LabelPrimitive.Root>
     );

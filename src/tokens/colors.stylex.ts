@@ -1,6 +1,6 @@
 import * as stylex from '@stylexjs/stylex';
 
-// Mapeo semántico generado automáticamente (Practical UI)
+// Automatically generated semantic mapping (Practical UI)
 export const colors = stylex.defineVars({
   textStrong: 'rgba(0, 6, 38, 0.9)',
   textWeak: 'rgba(0, 8, 51, 0.65)',

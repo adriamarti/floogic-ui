@@ -27,7 +27,7 @@ export const styles = stylex.create({
     transitionDuration: durations.fast,
     transitionTimingFunction: easings.standard,
     outline: 'none',
-    overflow: 'hidden', // Contain the ::after pseudo-element for hover states
+    overflow: 'hidden',
     ':active': {
       transform: 'translateY(1px)',
       boxShadow: 'none',
@@ -36,9 +36,9 @@ export const styles = stylex.create({
       outlineWidth: borders.medium,
       outlineStyle: 'solid',
       outlineColor: colors.focus,
-      outlineOffset: '2px',
+      outlineOffset: spacing.space05,
     },
-    '::after': { // State overlay (hover/press)
+    '::after': {
       content: '""',
       position: 'absolute',
       inset: 0,
@@ -64,19 +64,19 @@ export const styles = stylex.create({
   
   // -- Sizes --
   small: {
-    height: '32px',
+    height: spacing.space8,
     paddingLeft: spacing.space3,
     paddingRight: spacing.space3,
     fontSize: fontSizes.body,
   },
   medium: {
-    height: '40px',
+    height: spacing.space10,
     paddingLeft: spacing.space4,
     paddingRight: spacing.space4,
     fontSize: fontSizes.body,
   },
   large: {
-    height: '48px',
+    height: spacing.space12,
     paddingLeft: spacing.space5,
     paddingRight: spacing.space5,
     fontSize: fontSizes.body,
@@ -84,17 +84,17 @@ export const styles = stylex.create({
 
   // -- Icon Only --
   iconOnly_small: {
-    width: '32px',
+    width: spacing.space8,
     paddingLeft: 0,
     paddingRight: 0,
   },
   iconOnly_medium: {
-    width: '40px',
+    width: spacing.space10,
     paddingLeft: 0,
     paddingRight: 0,
   },
   iconOnly_large: {
-    width: '48px',
+    width: spacing.space12,
     paddingLeft: 0,
     paddingRight: 0,
   },
@@ -104,17 +104,17 @@ export const styles = stylex.create({
     ':not(:first-child)': {
       borderTopLeftRadius: 0,
       borderBottomLeftRadius: 0,
-      marginLeft: '-1px', // Collapse borders to prevent double-thickness
+      marginLeft: '-1px',
     },
     ':not(:last-child)': {
       borderTopRightRadius: 0,
       borderBottomRightRadius: 0,
     },
     ':hover': {
-      zIndex: 1, // Elevate hovered button so borders overlap cleanly
+      zIndex: 1,
     },
     ':focus-visible': {
-      zIndex: 2, // Elevate focused button even higher
+      zIndex: 2,
     }
   },
 
@@ -131,9 +131,7 @@ export const styles = stylex.create({
     borderColor: 'transparent',
   },
 
-  // -- Tones (Applied depending on Type) --
-
-  // Primary Tones
+  // -- Tones --
   primary_brand: {
     backgroundColor: colors.fillBrandStrong,
     color: colors.textInverseStrong,
@@ -186,7 +184,7 @@ export const styles = stylex.create({
 
   // Sub-components
   label: {
-    zIndex: 1, // Keep above ::after overlay
+    zIndex: 1,
   },
   icon: {
     zIndex: 1,

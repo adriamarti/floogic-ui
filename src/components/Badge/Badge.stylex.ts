@@ -1,7 +1,9 @@
 import * as stylex from '@stylexjs/stylex';
 import { colors } from '../../tokens/colors.stylex';
 import { spacing } from '../../tokens/spacing.stylex';
+import { shape } from '../../tokens/shape.stylex';
 import { borders } from '../../tokens/borders.stylex';
+import { fonts, fontSizes, fontWeights } from '../../tokens/typography.stylex';
 
 export const styles = stylex.create({
   root: {
@@ -11,9 +13,9 @@ export const styles = stylex.create({
     boxSizing: 'border-box',
     borderStyle: 'solid',
     borderWidth: borders.hairline,
-    borderRadius: '9999px',
-    fontFamily: 'var(--font-sans)',
-    fontWeight: 500,
+    borderRadius: shape.radiusFull,
+    fontFamily: fonts.sans,
+    fontWeight: fontWeights.medium,
     lineHeight: 1,
     whiteSpace: 'nowrap',
     gap: spacing.space1,
@@ -24,14 +26,14 @@ export const styles = stylex.create({
     height: spacing.space5,
     paddingLeft: spacing.space2,
     paddingRight: spacing.space2,
-    fontSize: '12px',
-    gap: '6px',
+    fontSize: fontSizes.caption,
+    gap: spacing.space1,
   },
   sizeMedium: {
     height: spacing.space6,
-    paddingLeft: '10px',
-    paddingRight: '10px',
-    fontSize: '14px',
+    paddingLeft: spacing.space3,
+    paddingRight: spacing.space3,
+    fontSize: fontSizes.h6,
     gap: spacing.space2,
   },
 
@@ -46,12 +48,12 @@ export const styles = stylex.create({
     flexShrink: 0,
   },
   iconSmall: {
-    width: '12px',
-    height: '12px',
+    width: fontSizes.caption,
+    height: fontSizes.caption,
   },
   iconMedium: {
-    width: '14px',
-    height: '14px',
+    width: fontSizes.h6,
+    height: fontSizes.h6,
   },
 
   // Tones
@@ -86,7 +88,7 @@ export const styles = stylex.create({
     color: colors.textBrand,
   },
 
-  // Icon tones (overrides color inside icon wrapper if needed, but since it inherits currentColor, maybe we just set currentColor)
+  // Icon tones
   icon_error: { color: colors.iconError },
   icon_warning: { color: colors.iconWarning },
   icon_success: { color: colors.iconSuccess },

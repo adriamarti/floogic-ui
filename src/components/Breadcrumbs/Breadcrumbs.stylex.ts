@@ -41,7 +41,7 @@ export const styles = stylex.create({
       outlineWidth: borders.medium,
       outlineStyle: 'solid',
       outlineColor: colors.focus,
-      outlineOffset: '2px',
+      outlineOffset: spacing.space05,
     },
   },
   current: {
@@ -65,10 +65,13 @@ export const styles = stylex.create({
     fontSize: fontSizes.body,
     color: colors.textWeak,
     backgroundColor: 'transparent',
-    borderWidth: '0px',
+    borderWidth: 0,
     borderStyle: 'none',
     borderColor: 'transparent',
-    padding: `2px ${spacing.space1}`,
+    paddingTop: spacing.space05,
+    paddingBottom: spacing.space05,
+    paddingLeft: spacing.space1,
+    paddingRight: spacing.space1,
     cursor: 'pointer',
     borderRadius: shape.radiusSm,
     transitionProperty: 'color, background-color',
@@ -82,7 +85,7 @@ export const styles = stylex.create({
       outlineWidth: borders.medium,
       outlineStyle: 'solid',
       outlineColor: colors.focus,
-      outlineOffset: '2px',
+      outlineOffset: spacing.space05,
     },
   }
 });

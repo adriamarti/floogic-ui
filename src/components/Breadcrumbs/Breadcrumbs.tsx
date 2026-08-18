@@ -25,7 +25,7 @@ const BreadcrumbsItem = forwardRef<HTMLElement, BreadcrumbsItemProps>(
       <FinalComponent
         ref={ref}
         aria-current={isCurrent ? 'page' : undefined}
-        {...stylex.props(isCurrent ? styles.current : styles.link)}
+        {...stylex.props(isCurrent ? styles.current : styles.link, style)}
         {...resolvedProps}
       />
     );

@@ -13,8 +13,8 @@ export const styles = stylex.create({
     alignItems: 'center',
     backgroundColor: colors.fillWeak,
     borderRadius: shape.radiusLg,
-    padding: '4px',
-    gap: '2px',
+    padding: spacing.space1,
+    gap: spacing.space05,
   },
   
   item: {
@@ -44,10 +44,10 @@ export const styles = stylex.create({
       color: colors.textStrong,
     },
     ':focus-visible': {
-      outlineWidth: '2px',
+      outlineWidth: borders.medium,
       outlineStyle: 'solid',
       outlineColor: colors.focus,
-      outlineOffset: '2px',
+      outlineOffset: spacing.space05,
       zIndex: 2,
     },
     ':disabled': {
@@ -66,26 +66,26 @@ export const styles = stylex.create({
 
   // Sizes
   itemMedium: {
-    height: '32px', // 40px wrapper - 8px padding = 32px
+    height: spacing.space8,
     paddingLeft: spacing.space3,
     paddingRight: spacing.space3,
     fontSize: fontSizes.body,
   },
   itemSmall: {
-    height: '24px', // 32px wrapper - 8px padding = 24px
+    height: spacing.space6,
     paddingLeft: spacing.space2,
     paddingRight: spacing.space2,
     fontSize: fontSizes.caption,
   },
   
-  // Icon only modifiers (optional, if we want squares)
+  // Icon only modifiers
   itemMediumIconOnly: {
-    width: '32px',
+    width: spacing.space8,
     paddingLeft: 0,
     paddingRight: 0,
   },
   itemSmallIconOnly: {
-    width: '24px',
+    width: spacing.space6,
     paddingLeft: 0,
     paddingRight: 0,
   },

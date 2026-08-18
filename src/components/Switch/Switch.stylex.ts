@@ -1,7 +1,10 @@
 import * as stylex from '@stylexjs/stylex';
 import { colors } from '../../tokens/colors.stylex';
 import { spacing } from '../../tokens/spacing.stylex';
-import { fonts } from '../../tokens/typography.stylex';
+import { shape } from '../../tokens/shape.stylex';
+import { borders } from '../../tokens/borders.stylex';
+import { fonts, fontSizes, fontWeights } from '../../tokens/typography.stylex';
+import { durations, easings } from '../../tokens/motion.stylex';
 
 export const styles = stylex.create({
   root: {
@@ -17,11 +20,13 @@ export const styles = stylex.create({
     flexShrink: 0,
     cursor: 'pointer',
     borderStyle: 'solid',
-    borderWidth: '1px',
-    borderRadius: '9999px',
-    transition: 'all 0.2s ease',
+    borderWidth: borders.hairline,
+    borderRadius: shape.radiusFull,
+    transitionProperty: 'background-color, border-color',
+    transitionDuration: durations.fast,
+    transitionTimingFunction: easings.standard,
     boxSizing: 'border-box',
-    padding: '1px',
+    padding: spacing.space05,
     borderColor: {
       default: colors.strokeStrong,
       ':hover': colors.strokeStrong,
@@ -31,10 +36,10 @@ export const styles = stylex.create({
       ':hover': colors.fillWeak,
     },
     ':focus-visible': {
-      outlineWidth: '2px',
+      outlineWidth: borders.medium,
       outlineStyle: 'solid',
       outlineColor: colors.focus,
-      outlineOffset: '2px',
+      outlineOffset: spacing.space05,
     }
   },
   trackChecked: {
@@ -54,38 +59,40 @@ export const styles = stylex.create({
     borderColor: colors.strokeDisabled,
   },
   trackMedium: {
-    width: '36px',
-    height: '20px',
+    width: spacing.space9,
+    height: spacing.space5,
   },
   trackSmall: {
-    width: '28px',
-    height: '16px',
+    width: spacing.space7,
+    height: spacing.space4,
   },
   thumb: {
     display: 'block',
     boxSizing: 'border-box',
     backgroundColor: colors.backgroundBase,
     borderStyle: 'solid',
-    borderWidth: '1px',
+    borderWidth: borders.hairline,
     borderColor: colors.strokeStrong,
-    borderRadius: '9999px',
-    transition: 'transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease',
+    borderRadius: shape.radiusFull,
+    transitionProperty: 'transform, background-color, border-color',
+    transitionDuration: durations.fast,
+    transitionTimingFunction: easings.standard,
   },
   thumbChecked: {
     backgroundColor: colors.backgroundBase,
     borderColor: colors.backgroundBase,
   },
   thumbMedium: {
-    width: '16px',
-    height: '16px',
+    width: spacing.space4,
+    height: spacing.space4,
     transform: 'translateX(0)',
   },
   thumbMediumChecked: {
     transform: 'translateX(16px)',
   },
   thumbSmall: {
-    width: '12px',
-    height: '12px',
+    width: spacing.space3,
+    height: spacing.space3,
     transform: 'translateX(0)',
   },
   thumbSmallChecked: {
@@ -93,11 +100,14 @@ export const styles = stylex.create({
   },
   label: {
     fontFamily: fonts.sans,
-    fontSize: '14px',
-    fontWeight: 500,
+    fontSize: fontSizes.h6,
+    fontWeight: fontWeights.medium,
     color: colors.textStrong,
     userSelect: 'none',
     cursor: 'pointer',
+  },
+  requiredAsterisk: {
+    color: colors.textError,
   },
   labelDisabled: {
     opacity: 0.5,

@@ -2,6 +2,7 @@ import * as stylex from '@stylexjs/stylex';
 import { colors } from '../../tokens/colors.stylex';
 import { shape } from '../../tokens/shape.stylex';
 import { borders } from '../../tokens/borders.stylex';
+import { spacing } from '../../tokens/spacing.stylex';
 
 export const styles = stylex.create({
   root: {
@@ -15,21 +16,21 @@ export const styles = stylex.create({
   
   // -- Sizes --
   size_sm: {
-    width: '32px',
-    height: '32px',
+    width: spacing.space8,
+    height: spacing.space8,
   },
   size_md: {
-    width: '40px',
-    height: '40px',
+    width: spacing.space10,
+    height: spacing.space10,
   },
   size_lg: {
-    width: '48px',
-    height: '48px',
+    width: spacing.space12,
+    height: spacing.space12,
   },
 
   // -- Shapes --
   shape_circle: {
-    borderRadius: '50%',
+    borderRadius: shape.radiusFull,
   },
   shape_square: {
     borderRadius: shape.radiusMd,

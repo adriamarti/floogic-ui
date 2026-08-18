@@ -9,7 +9,7 @@ export const alertTokens = stylex.defineVars({
   padding: spacing.space4,
   gap: spacing.space3,
   radius: shape.radiusMd,
-  iconSize: '20px',
+  iconSize: spacing.space5,
   borderWidth: borders.hairline,
   accentBorderWidth: borders.accent,
 });

@@ -1,7 +1,7 @@
 import * as stylex from '@stylexjs/stylex';
 
-// Radios contenidos para un carácter editorial y preciso. 
-// La misma escala de 4px que el espaciado.
+// Contained radii for precise, structured geometry.
+// Built on the same 4px scale as spacing.
 export const shape = stylex.defineVars({
   radius0: '0px',
   radiusSm: '2px',
@@ -10,3 +10,4 @@ export const shape = stylex.defineVars({
   radiusXl: '16px',
   radiusFull: '9999px',
 });
+

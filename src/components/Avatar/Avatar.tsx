@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
 import * as stylex from '@stylexjs/stylex';
-import { styles } from './Avatar.stylex';
+import { styles, dynamicStyles } from './Avatar.stylex';
 
 // ---------------------------------------------------------------------------
 // Types & Context
@@ -35,8 +35,7 @@ export interface AvatarProps extends Omit<React.ComponentPropsWithoutRef<typeof 
  * A visual representation of a user or entity. Supports images, initials, or icons as fallback.
  */
 const AvatarRoot = forwardRef<HTMLDivElement, AvatarProps>(
-  ({ size = 'medium', style, children, ...props  }, ref) => {
-    
+  ({ size = 'medium', style, children, ...props }, ref) => {
     const sizeStyle = styles[`size${size.charAt(0).toUpperCase() + size.slice(1)}` as keyof typeof styles];
     const resolvedRoot = stylex.props(styles.root, sizeStyle, style);
     const resolvedContainer = stylex.props(styles.container);
@@ -59,10 +58,11 @@ AvatarRoot.displayName = 'Avatar';
 // ---------------------------------------------------------------------------
 
 export interface AvatarImageProps extends Omit<React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;}
+  style?: stylex.StyleXStyles;
+}
 
 const AvatarImage = forwardRef<React.ElementRef<typeof AvatarPrimitive.Image>, AvatarImageProps>(
-  ({ style, ...props  }, ref) => {
+  ({ style, ...props }, ref) => {
     const resolved = stylex.props(styles.image, style);
     return (
       <AvatarPrimitive.Image 
@@ -76,14 +76,13 @@ const AvatarImage = forwardRef<React.ElementRef<typeof AvatarPrimitive.Image>, A
 );
 AvatarImage.displayName = 'Avatar.Image';
 
-
 export interface AvatarFallbackProps extends Omit<React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Fallback>, 'className' | 'style'> {
   style?: stylex.StyleXStyles;
   tone?: AvatarTone;
 }
 
 const AvatarFallback = forwardRef<React.ElementRef<typeof AvatarPrimitive.Fallback>, AvatarFallbackProps>(
-  ({ tone = 'neutral', style, ...props  }, ref) => {
+  ({ tone = 'neutral', style, ...props }, ref) => {
     const toneStyle = styles[`tone${tone.charAt(0).toUpperCase() + tone.slice(1)}` as keyof typeof styles];
     const resolved = stylex.props(styles.fallbackBase, toneStyle, style);
 
@@ -99,7 +98,6 @@ const AvatarFallback = forwardRef<React.ElementRef<typeof AvatarPrimitive.Fallba
 );
 AvatarFallback.displayName = 'Avatar.Fallback';
 
-
 export interface AvatarBadgeProps extends Omit<React.ComponentPropsWithoutRef<'span'>, 'className' | 'style'> {
   style?: stylex.StyleXStyles;
   position?: 'bottom-right' | 'top-right';
@@ -107,14 +105,14 @@ export interface AvatarBadgeProps extends Omit<React.ComponentPropsWithoutRef<'s
 }
 
 const AvatarBadge = forwardRef<HTMLSpanElement, AvatarBadgeProps>(
-  ({ position = 'bottom-right', withRing = true, style, children, ...props  }, ref) => {
-    
+  ({ position = 'bottom-right', withRing = true, style, children, ...props }, ref) => {
     const positionStyle = position === 'bottom-right' ? styles.badgeBottomRight : styles.badgeTopRight;
     const resolved = stylex.props(
       styles.badgeContainer, 
       positionStyle,
-      withRing && styles.badgeRing
-    , style);
+      withRing && styles.badgeRing,
+      style
+    );
 
     return (
       <span 
@@ -140,7 +138,7 @@ export interface AvatarGroupProps extends Omit<React.ComponentPropsWithoutRef<'d
 }
 
 const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(
-  ({ limit, style, children, ...props  }, ref) => {
+  ({ limit, style, children, ...props }, ref) => {
     const resolved = stylex.props(styles.group, style);
     
     const childrenArray = React.Children.toArray(children);
@@ -160,11 +158,12 @@ const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(
           const zIndex = childrenArray.length - index;
           const itemResolved = stylex.props(
             styles.groupItem, 
-            !isFirst && styles.groupItemOverlap
+            !isFirst && styles.groupItemOverlap,
+            dynamicStyles.zIndex(zIndex)
           );
           
           return (
-            <div key={index} className={itemResolved.className} style={{ ...itemResolved.style, zIndex }}>
+            <div key={index} className={itemResolved.className} style={itemResolved.style}>
               {child}
             </div>
           );
@@ -172,10 +171,8 @@ const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(
         
         {showMore && (
           <div 
-            className={stylex.props(styles.groupItem, styles.groupItemOverlap).className} 
-            style={{ ...stylex.props(styles.groupItem, styles.groupItemOverlap).style, zIndex: 0 }}
+            {...stylex.props(styles.groupItem, styles.groupItemOverlap, dynamicStyles.zIndex(0))}
           >
-            {/* We render a generic Avatar to display the remaining count */}
             <AvatarRoot>
               <AvatarFallback tone="neutral">
                 +{hiddenCount}
@@ -187,7 +184,7 @@ const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(
     );
   }
 );
-AvatarGroup.displayName = 'AvatarGroup';
+AvatarGroup.displayName = 'Avatar.Group';
 
 // ---------------------------------------------------------------------------
 // Labelled layout component
@@ -197,18 +194,16 @@ export interface AvatarLabelProps extends Omit<React.ComponentPropsWithoutRef<'d
   style?: stylex.StyleXStyles;
   title: string;
   description?: string;
-  avatarSize?: AvatarSize; // Needed to scale text appropriately if needed
+  avatarSize?: AvatarSize;
 }
 
 const AvatarLabel = forwardRef<HTMLDivElement, AvatarLabelProps>(
-  ({ title, description, avatarSize = 'medium', style, children, ...props  }, ref) => {
+  ({ title, description, avatarSize = 'medium', style, children, ...props }, ref) => {
     const resolvedLayout = stylex.props(styles.labelled, style);
     const resolvedContainer = stylex.props(styles.labelContainer);
     
-    // Dynamic text sizes based on avatar size
-    const titleSize = avatarSize === 'small' ? '14px' : avatarSize === 'large' ? '15px' : '14px';
-    const descSize = avatarSize === 'small' ? '12px' : avatarSize === 'large' ? '13px' : '12.5px';
-    const lineHeight = avatarSize === 'large' ? 1.35 : 1.3;
+    const titleStyle = avatarSize === 'small' ? styles.labelTitleSmall : avatarSize === 'large' ? styles.labelTitleLarge : styles.labelTitleMedium;
+    const descStyle = avatarSize === 'small' ? styles.labelDescriptionSmall : avatarSize === 'large' ? styles.labelDescriptionLarge : styles.labelDescriptionMedium;
 
     return (
       <div 
@@ -219,11 +214,11 @@ const AvatarLabel = forwardRef<HTMLDivElement, AvatarLabelProps>(
       >
         {children}
         <div className={resolvedContainer.className} style={resolvedContainer.style}>
-          <p {...stylex.props(styles.labelTitle)} style={{ fontSize: titleSize, lineHeight } as React.CSSProperties}>
+          <p {...stylex.props(styles.labelTitle, titleStyle)}>
             {title}
           </p>
           {description && (
-            <p {...stylex.props(styles.labelDescription)} style={{ fontSize: descSize, lineHeight } as React.CSSProperties}>
+            <p {...stylex.props(styles.labelDescription, descStyle)}>
               {description}
             </p>
           )}
@@ -234,7 +229,6 @@ const AvatarLabel = forwardRef<HTMLDivElement, AvatarLabelProps>(
 );
 AvatarLabel.displayName = 'Avatar.Label';
 
-
 // ---------------------------------------------------------------------------
 // Exports
 // ---------------------------------------------------------------------------
@@ -244,6 +238,5 @@ export const Avatar = Object.assign(AvatarRoot, {
   Fallback: AvatarFallback,
   Badge: AvatarBadge,
   Label: AvatarLabel,
+  Group: AvatarGroup,
 });
-
-export { AvatarGroup };
