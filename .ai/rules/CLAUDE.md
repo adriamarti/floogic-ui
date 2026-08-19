@@ -16,4 +16,5 @@ This project uses **floogic-ui**, a token-driven React Design System built with 
    - Zero hardcoded pixel or color values.
 
 ### Context Index
-- See `.ai/llms.txt` and `.ai/llms-full.txt` for full component and API specifications.
+- See `.ai/floogic-ui/llms.txt` and `.ai/floogic-ui/llms-full.txt` for component specs.
+- See `.ai/floogic-ui/skills/floogic-ui/component-usage/SKILL.md` for the complete usage skill.

@@ -15,5 +15,6 @@ System guidance for OpenAI Codex and ChatGPT when generating React interfaces fo
 3. **Design Tokens**:
    - Always use design tokens (`colors`, `spacing`, `shape`, `borders`, `fonts`) instead of raw pixel values or hex codes.
 
-4. **Detailed Reference**:
-   - Read `.ai/llms.txt` and `.ai/llms-full.txt` for exact component props and code recipes.
+4. **Detailed Reference & Skills**:
+   - Read `.ai/floogic-ui/llms.txt` and `.ai/floogic-ui/llms-full.txt` for exact component props and code recipes.
+   - Read `.ai/floogic-ui/skills/floogic-ui/component-usage/SKILL.md` for full usage skill.

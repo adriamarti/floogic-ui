@@ -24,6 +24,7 @@ Commands:
   init-ai             Safely initialize AI rules & skills in your project (non-destructive)
   check-compliance    Audit your project codebase against Floogic UI compliance rules
   mcp                 Launch the Floogic UI Model Context Protocol (MCP) server
+  create-component    Scaffold a new component following COMPONENT_GUIDELINES.md
   help                Show this help message
 `);
 }
@@ -90,23 +91,24 @@ function initAi() {
   // 3. Safe append to existing CLAUDE.md, GEMINI.md, CODEX.md, copilot-instructions.md
   safeAppend(
     path.join(userCwd, 'CLAUDE.md'),
-    '## Floogic UI Design System\nRefer to `.ai/floogic-ui/rules/CLAUDE.md` and `.ai/floogic-ui/llms.txt` for components and StyleX guidelines.'
+    '## Floogic UI Design System\nRefer to `.ai/floogic-ui/rules/CLAUDE.md`, `.ai/floogic-ui/llms.txt`, and `.ai/floogic-ui/skills/floogic-ui/component-usage/SKILL.md` for components and StyleX guidelines.'
   );
 
   safeAppend(
     path.join(userCwd, 'GEMINI.md'),
-    '## Floogic UI Design System\nRefer to `.ai/floogic-ui/rules/GEMINI.md` and `.ai/floogic-ui/skills/floogic-ui/SKILL.md` for components and StyleX guidelines.'
+    '## Floogic UI Design System\nRefer to `.ai/floogic-ui/rules/GEMINI.md`, `.ai/floogic-ui/llms.txt`, and `.ai/floogic-ui/skills/floogic-ui/component-usage/SKILL.md` for components and StyleX guidelines.'
   );
 
   safeAppend(
     path.join(userCwd, 'CODEX.md'),
-    '## Floogic UI Design System\nRefer to `.ai/floogic-ui/rules/CODEX.md` and `.ai/floogic-ui/llms.txt` for components and StyleX guidelines.'
+    '## Floogic UI Design System\nRefer to `.ai/floogic-ui/rules/CODEX.md`, `.ai/floogic-ui/llms.txt`, and `.ai/floogic-ui/skills/floogic-ui/component-usage/SKILL.md` for components and StyleX guidelines.'
   );
 
   safeAppend(
     path.join(userCwd, '.github/copilot-instructions.md'),
-    '## Floogic UI Design System\nRefer to `.ai/floogic-ui/rules/GEMINI.md` and `.ai/floogic-ui/llms.txt` for components and StyleX guidelines.'
+    '## Floogic UI Design System\nRefer to `.ai/floogic-ui/rules/GEMINI.md`, `.ai/floogic-ui/llms.txt`, and `.ai/floogic-ui/skills/floogic-ui/component-usage/SKILL.md` for components and StyleX guidelines.'
   );
+
 
   console.log('\n🎉 Floogic UI AI setup complete! Zero existing files were overwritten.');
 }
@@ -119,6 +121,89 @@ function checkCompliance(targetDirArg) {
   proc.on('exit', (code) => {
     process.exit(code || 0);
   });
+}
+
+function createComponent(name) {
+  if (!name) {
+    console.error('❌ Please specify a component name e.g. yarn floogic-ui create-component MyComponent');
+    process.exit(1);
+  }
+
+  const compName = name.charAt(0).toUpperCase() + name.slice(1);
+  const targetDir = path.join(userCwd, 'src/components', compName);
+
+  if (fs.existsSync(targetDir)) {
+    console.error(`❌ Component directory already exists: ${targetDir}`);
+    process.exit(1);
+  }
+
+  fs.mkdirSync(targetDir, { recursive: true });
+
+  // 1. StyleX definitions
+  const stylexContent = `import * as stylex from '@stylexjs/stylex';
+import { colors } from '../../tokens/colors.stylex';
+import { spacing } from '../../tokens/spacing.stylex';
+import { shape } from '../../tokens/shape.stylex';
+import { borders } from '../../tokens/borders.stylex';
+
+export const styles = stylex.create({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: spacing.space2,
+    backgroundColor: colors.backgroundBase,
+    borderRadius: shape.radiusMd,
+    borderWidth: borders.hairline,
+    borderStyle: 'solid',
+    borderColor: colors.strokeWeak,
+    padding: spacing.space4,
+  },
+});
+`;
+  fs.writeFileSync(path.join(targetDir, `${compName}.stylex.ts`), stylexContent, 'utf-8');
+
+  // 2. Component JSX
+  const tsxContent = `import React, { forwardRef } from 'react';
+import * as stylex from '@stylexjs/stylex';
+import { styles } from './${compName}.stylex';
+
+export interface ${compName}Props extends Omit<React.HTMLAttributes<HTMLDivElement>, 'className' | 'style'> {
+  style?: stylex.StyleXStyles;
+}
+
+const ${compName}Root = forwardRef<HTMLDivElement, ${compName}Props>(
+  ({ style, children, ...props }, ref) => {
+    const resolved = stylex.props(styles.root, style);
+    return (
+      <div ref={ref} className={resolved.className} style={resolved.style} {...props}>
+        {children}
+      </div>
+    );
+  }
+);
+${compName}Root.displayName = '${compName}';
+
+export const ${compName} = Object.assign(${compName}Root, {});
+`;
+  fs.writeFileSync(path.join(targetDir, `${compName}.tsx`), tsxContent, 'utf-8');
+
+  // 3. Component index.ts
+  const indexContent = `export { ${compName} } from './${compName}';
+export type { ${compName}Props } from './${compName}';
+`;
+  fs.writeFileSync(path.join(targetDir, 'index.ts'), indexContent, 'utf-8');
+
+  // 4. Update root src/index.ts
+  const rootIndex = path.join(userCwd, 'src/index.ts');
+  if (fs.existsSync(rootIndex)) {
+    const rootIndexContent = fs.readFileSync(rootIndex, 'utf-8');
+    const exportLine = `export * from './components/${compName}';`;
+    if (!rootIndexContent.includes(exportLine)) {
+      fs.writeFileSync(rootIndex, `${exportLine}\n${rootIndexContent}`, 'utf-8');
+    }
+  }
+
+  console.log(`\n🎉 Successfully created component '${compName}' at src/components/${compName}/ in full compliance with COMPONENT_GUIDELINES.md!`);
 }
 
 function runMcp() {
@@ -136,6 +221,10 @@ switch (command) {
   case 'check-compliance':
   case 'check':
     checkCompliance(arg);
+    break;
+  case 'create-component':
+  case 'create':
+    createComponent(arg);
     break;
   case 'mcp':
     runMcp();

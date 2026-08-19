@@ -1,38 +1,20 @@
 ---
-name: floogic-ui
-description: Complete guide, architectural constraints, token references, and component recipes for Floogic UI (React + StyleX + Radix UI). Use whenever creating or modifying React UI interfaces in projects using floogic-ui.
+name: floogic-ui-usage
+description: Guide, architectural constraints, token references, and component recipes for consuming Floogic UI (React + StyleX + Radix UI). Use whenever creating or modifying React UI interfaces in applications using floogic-ui.
 ---
 
-# Floogic UI Skill (`floogic-ui`)
+# Floogic UI — Component Usage Skill (`floogic-ui-usage`)
 
-This skill equips AI agents with full knowledge of **Floogic UI**, a token-driven React Design System built with StyleX (`@stylexjs/stylex`) and Radix UI primitives.
+This skill equips AI agents with full knowledge of **Floogic UI** for building React user interfaces.
 
-## 1. Non-Negotiable Architectural Rules
-
-### Rule 1: Compound Components API Only
-All multi-part components export child elements strictly as static properties on the main compound parent component.
-- **ALWAYS write**: `<Card.Content>`, `<Modal.Title>`, `<Accordion.Item>`, `<Alert.Heading>`, `<Select.Item>`, `<Tabs.List>`, `<Switch.Field>`, `<TextInput.Field>`.
-- **NEVER import standalone subcomponents**: `import { CardContent, ModalTitle }` IS STRICTLY FORBIDDEN and will cause build failures.
-
-### Rule 2: StyleX Styling Engine Only
-Custom component styling is accepted exclusively via `style?: stylex.StyleXStyles`.
-- **ALWAYS use StyleX**: Pass custom styles created with `stylex.create(...)`.
-- **NEVER use native CSS classes or inline styles**: `className="..."` and `style={{ ... }}` on Floogic components are forbidden.
-
-### Rule 3: Direct Token References
-Never hardcode hex colors (`#ffffff`), raw pixel values (`16px`), or font families.
-- Import design tokens directly from token files for StyleX rules:
-  ```tsx
-  import { colors } from 'floogic-ui/tokens/colors.stylex';
-  import { spacing } from 'floogic-ui/tokens/spacing.stylex';
-  import { shape } from 'floogic-ui/tokens/shape.stylex';
-  import { borders } from 'floogic-ui/tokens/borders.stylex';
-  ```
+## 1. Architectural Rules for Consumers
+- **Compound Components Only**: Use `<Card.Heading>`, `<Modal.Title>`, `<Accordion.Item>`, `<Select.Item>`, `<Tabs.List>`, `<Switch.Field>`, `<TextInput.Field>`. Never import standalone child components (`import { CardHeading }` is forbidden).
+- **StyleX Engine Only**: Custom component overrides are passed strictly via `style?: stylex.StyleXStyles`. Native `className="..."` and `style={{ ... }}` are forbidden.
+- **Design Tokens Only**: All color, spacing, radius, and font values must reference `floogic-ui` tokens (`colors`, `spacing`, `shape`, `borders`).
 
 ---
 
-## 2. Component Catalog & Exact Compound APIs
-
+## 2. Component Catalog Summary
 - **Accordion**: `<Accordion type="single"|"multiple"><Accordion.Item value="1"><Accordion.Trigger>Title</Accordion.Trigger><Accordion.Content>Body</Accordion.Content></Accordion.Item></Accordion>`
 - **Alert**: `<Alert tone="error"|"warning"|"success"|"neutral"><Alert.Icon /><Alert.Heading>Title</Alert.Heading><Alert.Description>Msg</Alert.Description></Alert>`
 - **Avatar**: `<Avatar size="large"><Avatar.Fallback>AD</Avatar.Fallback><Avatar.Badge><BadgeDot status="online" /></Avatar.Badge></Avatar>`
@@ -43,10 +25,8 @@ Never hardcode hex colors (`#ffffff`), raw pixel values (`16px`), or font famili
 - **Switch**: `<Switch><Switch.Label>Toggle</Switch.Label><Switch.Field checked={val} onCheckedChange={setVal} /></Switch>`
 - **Tabs**: `<Tabs defaultValue="tab1"><Tabs.List><Tabs.Item value="tab1">Tab 1</Tabs.Item></Tabs.List><Tabs.Panel value="tab1">Panel 1</Tabs.Panel></Tabs>`
 - **TextInput**: `<TextInput><TextInput.Label>Label</TextInput.Label><TextInput.Field placeholder="..." value={val} onChange={...} /></TextInput>`
-- **TextArea**: `<TextArea><TextArea.Label>Label</TextArea.Label><TextArea.Field placeholder="..." value={val} onChange={...} /></TextArea>`
 
 ---
 
 ## 3. UI Assembly Recipes Reference
-
 For complete page compositions (Auth Forms, Settings Panels, Data Tables, Modal Workflows), refer to pre-built recipes in `src/recipes/` or `.ai/llms-full.txt`.

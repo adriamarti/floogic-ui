@@ -162,7 +162,10 @@ import {
 
 ## 🤖 AI-First & LLM Integration Guide
 
+> 📖 **Complete AI Guide**: For detailed instructions on setting up AI rules, skills, RAG manifests, and MCP servers, read the **[.ai/ Architecture & Integration Guide](./.ai/README.md)**.
+
 `floogic-ui` is built natively to work with AI coding assistants (Antigravity, Cursor, Claude Code, Copilot, ChatGPT).
+
 
 ### 1. Unified CLI (`npx floogic-ui`)
 Run CLI commands directly in any consumer project:
@@ -177,7 +180,12 @@ npx floogic-ui check-compliance
 npx floogic-ui mcp
 ```
 
-### 2. Connect Model Context Protocol (MCP) Server
+### 2. AI Manifests (`llms.txt` & `llms-full.txt`)
+`floogic-ui` exports standard machine-readable documentation:
+- **`llms.txt`**: Concise standard manifest (token-efficient index) for prompt context.
+- **`llms-full.txt`**: Exhaustive technical documentation (complete TypeScript signatures & recipes) for **Claude Projects**, **Custom GPTs**, and **RAG search** in IDEs.
+
+### 3. Connect Model Context Protocol (MCP) Server
 Enable your AI assistant to search components, fetch specs, and validate code via MCP:
 ```json
 {

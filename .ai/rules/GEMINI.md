@@ -20,5 +20,6 @@ This repository uses **floogic-ui**, a token-driven React Design System built wi
      import { shape } from 'floogic-ui/tokens/shape.stylex';
      ```
 
-4. **Reference Files**:
-   - Consult `.ai/llms.txt` and `.ai/llms-full.txt` for full component API signatures.
+4. **Reference Files & Skills**:
+   - Consult `.ai/floogic-ui/llms.txt` and `.ai/floogic-ui/llms-full.txt` for component specs.
+   - Consult `.ai/floogic-ui/skills/floogic-ui/component-usage/SKILL.md` for the complete usage skill.

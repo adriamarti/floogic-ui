@@ -9,7 +9,7 @@
 Any developer installing or downloading `floogic-ui` via npm can execute the built-in CLI commands directly:
 
 ```bash
-# 1. Initialize AI agent rules (.cursorrules, CLAUDE.md, GEMINI.md, etc.) in your project
+# 1. Initialize AI agent rules & skills safely (non-destructive) in your project
 npx floogic-ui init-ai
 
 # 2. Audit your project's codebase against Floogic UI rules (StyleX, tokens, compound syntax)
@@ -21,7 +21,16 @@ npx floogic-ui mcp
 
 ---
 
-## 2. Key Principles Every LLM Must Obey
+## 2. AI Context Manifests (`llms.txt` & `llms-full.txt`)
+
+`floogic-ui` ships with standard machine-readable documentation manifests:
+
+* **`llms.txt`**: Lightweight standard manifest providing a token-efficient summary of architectural rules, token tables, and component APIs. Perfect for fast context loading in prompts.
+* **`llms-full.txt`**: Exhaustive technical reference containing full TypeScript interfaces, props contracts, and code recipes for all 34 components. Ideal for **Claude Projects**, **Custom GPTs**, and **RAG vector search** in IDEs.
+
+---
+
+## 3. Key Principles Every LLM Must Obey
 
 1. **Compound Component Syntax**: Always write `<Card.Heading>`, `<Modal.Title>`, `<Accordion.Item>`, `<Select.Item>`. Never import standalone child components (`import { CardHeading }` is forbidden).
 2. **StyleX Engine Only**: Component overrides are passed strictly via `style?: stylex.StyleXStyles`. Native `className="..."` and `style={{ ... }}` are forbidden.
@@ -29,7 +38,7 @@ npx floogic-ui mcp
 
 ---
 
-## 3. Setting Up AI Rules in Your Project Manually
+## 4. Setting Up AI Rules in Your Project Manually
 
 If you prefer installing rules manually instead of `npx floogic-ui init-ai`, copy the rules for your preferred tool:
 
@@ -40,14 +49,14 @@ Copy `.cursor/rules/floogic-ui.mdc` from `node_modules/floogic-ui/` to `.cursor/
 Copy `.ai/rules/CLAUDE.md` from `node_modules/floogic-ui/` to your root as `CLAUDE.md`.
 
 ### Google Gemini & Antigravity IDE/CLI
-Copy `.ai/rules/GEMINI.md` to your root as `GEMINI.md`, OR register `.ai/skills/floogic-ui/SKILL.md`.
+Copy `.ai/rules/GEMINI.md` to your root as `GEMINI.md`, OR register `.ai/skills/floogic-ui/component-usage/SKILL.md`.
 
 ### GitHub Copilot
 Copy `.github/copilot-instructions.md` into your `.github/` folder.
 
 ---
 
-## 4. Connecting the Model Context Protocol (MCP) Server
+## 5. Connecting the Model Context Protocol (MCP) Server
 
 Add the following to your MCP settings (`claude_desktop_config.json` or Cursor MCP settings):
 
