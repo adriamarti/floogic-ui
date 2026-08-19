@@ -79,7 +79,7 @@ function initAi() {
   console.log('  ✅ Installed AI manifests, rules & skills package into .ai/floogic-ui/');
 
   // 2. Add Cursor MDC rule (scoped file name, avoids overwriting other rules)
-  const cursorSrc = path.join(packageRootDir, '.cursor/rules/floogic-ui.mdc');
+  const cursorSrc = path.join(packageRootDir, '.ai/rules/cursor/floogic-ui.mdc');
   const cursorDest = path.join(userCwd, '.cursor/rules/floogic-ui.mdc');
   if (fs.existsSync(cursorSrc)) {
     const cursorDir = path.dirname(cursorDest);

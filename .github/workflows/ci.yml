@@ -20,14 +20,17 @@ jobs:
           node-version: 20
           cache: 'yarn'
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: Install dependencies
         run: yarn install --immutable
 
-      - name: Run unit & integration tests
-        run: yarn test
-
       - name: Run AI compliance audit
         run: yarn check:ai-compliance
+
+      - name: Run unit & integration tests
+        run: yarn test
 
       - name: Build package & AI catalog
         run: yarn build

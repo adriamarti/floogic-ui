@@ -27,5 +27,6 @@ You are an expert React developer specializing in Floogic UI, StyleX, and Radix 
 4. **Required Stylesheet**:
    - Ensure `import 'floogic-ui/style.css';` is included at the app root entry point.
 
-5. **Component Reference**:
-   - Refer to `.ai/llms.txt` and `.ai/llms-full.txt` for exact component prop interfaces.
+5. **Component Reference & Skills**:
+   - Refer to `.ai/floogic-ui/llms.txt` and `.ai/floogic-ui/llms-full.txt` for exact component prop interfaces.
+   - Refer to `.ai/floogic-ui/skills/floogic-ui/component-usage/SKILL.md` for complete usage recipes.
