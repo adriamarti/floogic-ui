@@ -19,13 +19,13 @@ A modern, highly accessible, token-driven Design System built with **React**, **
 Install `floogic-ui` and its peer dependencies using **Yarn**:
 
 ```bash
-yarn add floogic-ui @stylexjs/stylex
+yarn add @floogic/ui @stylexjs/stylex
 ```
 
 Be sure to include the generated StyleX CSS file in your application's entry point:
 
 ```tsx
-import 'floogic-ui/style.css';
+import '@floogic/ui/style.css';
 ```
 
 ---
@@ -41,7 +41,7 @@ import {
   Toast, 
   colors, 
   spacing 
-} from 'floogic-ui';
+} from '@floogic/ui';
 import * as stylex from '@stylexjs/stylex';
 
 const customStyles = stylex.create({
@@ -167,17 +167,17 @@ import {
 `floogic-ui` is built natively to work with AI coding assistants (Antigravity, Cursor, Claude Code, Copilot, ChatGPT).
 
 
-### 1. Unified CLI (`npx floogic-ui`)
+### 1. Unified CLI (`npx @floogic/ui`)
 Run CLI commands directly in any consumer project:
 ```bash
 # Initialize AI rules (.cursorrules, CLAUDE.md, GEMINI.md, etc.) in your project
-npx floogic-ui init-ai
+npx @floogic/ui init-ai
 
 # Audit AI-generated code against Floogic UI rules
-npx floogic-ui check-compliance
+npx @floogic/ui check-compliance
 
 # Launch the Model Context Protocol (MCP) server
-npx floogic-ui mcp
+npx @floogic/ui mcp
 ```
 
 ### 2. AI Manifests (`llms.txt` & `llms-full.txt`)
@@ -202,8 +202,26 @@ For complete AI integration documentation, read [.ai/README.md](./.ai/README.md)
 
 ---
 
-## Documentation & Contribution
+## 🚀 Versioning & Release Process
 
+`@floogic/ui` uses **Changesets** and **GitHub Actions** for automated Semantic Versioning (SemVer) and releases.
+
+### 1. Document Changes (`yarn changeset`)
+Whenever you add a component, fix a bug, or make changes, run:
+```bash
+yarn changeset
+```
+Follow the interactive prompt to select the version bump type (`patch`, `minor`, or `major`) and enter a summary description. Commit the generated `.changeset/*.md` file with your PR.
+
+### 2. Automated Release Workflow
+1. When your PR is merged to `main`, GitHub Actions automatically creates or updates a **`chore(release): version package`** Pull Request with the updated `package.json` version and `CHANGELOG.md`.
+2. Merging the release PR automatically:
+   - Builds and publishes the package to NPM as **`@floogic/ui`**.
+   - Creates and pushes the traditional Git tag **`vX.Y.Z`** (e.g. `v0.1.0`) to GitHub.
+
+---
+
+## Documentation & Contribution
 
 For guidelines on creating new components and maintaining design system compliance, please read [COMPONENT_GUIDELINES.md](./COMPONENT_GUIDELINES.md).
 
