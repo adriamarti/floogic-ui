@@ -160,7 +160,42 @@ import {
 
 ---
 
+## 🤖 AI-First & LLM Integration Guide
+
+`floogic-ui` is built natively to work with AI coding assistants (Antigravity, Cursor, Claude Code, Copilot, ChatGPT).
+
+### 1. Unified CLI (`npx floogic-ui`)
+Run CLI commands directly in any consumer project:
+```bash
+# Initialize AI rules (.cursorrules, CLAUDE.md, GEMINI.md, etc.) in your project
+npx floogic-ui init-ai
+
+# Audit AI-generated code against Floogic UI rules
+npx floogic-ui check-compliance
+
+# Launch the Model Context Protocol (MCP) server
+npx floogic-ui mcp
+```
+
+### 2. Connect Model Context Protocol (MCP) Server
+Enable your AI assistant to search components, fetch specs, and validate code via MCP:
+```json
+{
+  "mcpServers": {
+    "floogic-ui": {
+      "command": "npx",
+      "args": ["floogic-mcp"]
+    }
+  }
+}
+```
+
+For complete AI integration documentation, read [.ai/README.md](./.ai/README.md).
+
+---
+
 ## Documentation & Contribution
+
 
 For guidelines on creating new components and maintaining design system compliance, please read [COMPONENT_GUIDELINES.md](./COMPONENT_GUIDELINES.md).
 

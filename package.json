@@ -18,10 +18,24 @@
     "./ai-catalog.json": "./.ai/ai-catalog.json"
 
   },
+  "bin": {
+    "floogic-ui": "./scripts/cli.mjs",
+    "floogic-mcp": "./scripts/mcp-server.mjs"
+  },
+  "files": [
+    "dist",
+    "scripts",
+    ".ai",
+    ".cursor",
+    ".github",
+    "COMPONENT_GUIDELINES.md",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsc && vite build && node scripts/generate-ai-metadata.mjs",
     "build:ai-metadata": "node scripts/generate-ai-metadata.mjs",
     "check:ai-compliance": "node scripts/validate-ai-code.mjs",
+    "mcp": "node scripts/mcp-server.mjs",
     "changeset": "changeset",
     "version": "changeset version",
     "release": "yarn build && changeset publish"
