@@ -46,7 +46,7 @@ jobs:
         uses: changesets/action@v1
         with:
           publish: yarn release
-          version: yarn version
+          version: yarn changeset version
           commit: 'chore(release): version package'
           title: 'chore(release): version package'
         env:
