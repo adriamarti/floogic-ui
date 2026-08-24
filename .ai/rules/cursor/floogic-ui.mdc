@@ -21,11 +21,11 @@ You are an expert React developer specializing in Floogic UI, StyleX, and Radix 
 
 3. **Strict Design Tokens**:
    - NEVER hardcode hex colors, pixel values, or raw font families.
-   - ALWAYS import design tokens from `floogic-ui`:
-     `import { colors, spacing, shape, borders, fonts, fontSizes, fontWeights, elevation } from 'floogic-ui'`
+   - ALWAYS import design tokens from `@floogic/ui` (or subpaths `@floogic/ui/tokens/...`):
+     `import { colors, spacing, shape, borders, fonts, fontSizes, fontWeights, elevation } from '@floogic/ui'`
 
 4. **Required Stylesheet**:
-   - Ensure `import 'floogic-ui/style.css';` is included at the app root entry point.
+   - Ensure `import '@floogic/ui/style.css';` is included at the app root entry point.
 
 5. **Component Reference & Skills**:
    - Refer to `.ai/floogic-ui/llms.txt` and `.ai/floogic-ui/llms-full.txt` for exact component prop interfaces.

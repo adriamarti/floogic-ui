@@ -13,11 +13,12 @@ This repository uses **floogic-ui**, a token-driven React Design System built wi
    - Native inline styles (`style={{ ... }}`) and CSS class names (`className="..."`) are STRICTLY FORBIDDEN on Floogic UI components.
 
 3. **Strict Design Tokens**:
-   - Import design tokens directly from token files for StyleX rules:
+   - Import design tokens directly from `@floogic/ui` or token subpaths:
      ```tsx
-     import { colors } from 'floogic-ui/tokens/colors.stylex';
-     import { spacing } from 'floogic-ui/tokens/spacing.stylex';
-     import { shape } from 'floogic-ui/tokens/shape.stylex';
+     import { colors, spacing, shape } from '@floogic/ui';
+     // Or subpaths:
+     import { colors } from '@floogic/ui/tokens/colors.stylex';
+     import { spacing } from '@floogic/ui/tokens/spacing.stylex';
      ```
 
 4. **Reference Files & Skills**:

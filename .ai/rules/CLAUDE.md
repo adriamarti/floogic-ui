@@ -12,7 +12,7 @@ This project uses **floogic-ui**, a token-driven React Design System built with 
    - Do NOT use native `className="..."` or inline `style={{ ... }}`.
 
 3. **Design Tokens**:
-   - Import tokens from `floogic-ui/tokens/...`: `colors`, `spacing`, `shape`, `borders`, `fonts`, `fontSizes`, `fontWeights`, `elevation`.
+   - Import tokens from `@floogic/ui` (or subpaths `@floogic/ui/tokens/...`): `colors`, `spacing`, `shape`, `borders`, `fonts`, `fontSizes`, `fontWeights`, `elevation`.
    - Zero hardcoded pixel or color values.
 
 ### Context Index
