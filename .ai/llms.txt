@@ -17,15 +17,15 @@ Every component accepts custom styling exclusively via the `style?: stylex.Style
 - **FORBIDDEN**: Inline style objects (`style={{ marginTop: '16px' }}`) and native CSS class names (`className="card-item"`).
 
 ### 3. Token-Driven Styling (Zero Hardcoded CSS Values)
-Never use hardcoded pixel values, hex colors, or raw fonts. Always import and use design tokens exported by `floogic-ui`.
-- **Imports**: `import { colors, spacing, shape, borders, fonts, fontSizes, fontWeights, elevation, durations } from 'floogic-ui'`
+Never use hardcoded pixel values, hex colors, or raw fonts. Always import and use design tokens exported by `@floogic/ui`.
+- **Imports**: `import { colors, spacing, shape, borders, fonts, fontSizes, fontWeights, elevation, durations } from '@floogic/ui'` (or subpaths `@floogic/ui/tokens/...`)
 - **Examples**: `colors.fillBrandStrong`, `spacing.space4`, `shape.radiusMd`, `borders.hairline`, `fontSizes.body`.
 
 ### 4. Mandatory Imports & Setup
 Be sure to include the generated StyleX CSS file at application entry point:
 ```tsx
-import 'floogic-ui/style.css';
-import { Button, Card, Modal, colors, spacing } from 'floogic-ui';
+import '@floogic/ui/style.css';
+import { Button, Card, Modal, colors, spacing } from '@floogic/ui';
 ```
 
 ---

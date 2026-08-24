@@ -10,7 +10,7 @@ This skill equips AI agents with full knowledge of **Floogic UI** for building R
 ## 1. Architectural Rules for Consumers
 - **Compound Components Only**: Use `<Card.Heading>`, `<Modal.Title>`, `<Accordion.Item>`, `<Select.Item>`, `<Tabs.List>`, `<Switch.Field>`, `<TextInput.Field>`. Never import standalone child components (`import { CardHeading }` is forbidden).
 - **StyleX Engine Only**: Custom component overrides are passed strictly via `style?: stylex.StyleXStyles`. Native `className="..."` and `style={{ ... }}` are forbidden.
-- **Design Tokens Only**: All color, spacing, radius, and font values must reference `floogic-ui` tokens (`colors`, `spacing`, `shape`, `borders`).
+- **Design Tokens Only**: All color, spacing, radius, and font values must reference `@floogic/ui` tokens (`colors`, `spacing`, `shape`, `borders`) via `@floogic/ui` or `@floogic/ui/tokens/*`.
 
 ---
 

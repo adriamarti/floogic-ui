@@ -19,8 +19,8 @@ Components do NOT support native CSS classes (`className="..."`) or native inlin
 
 ### Rule 3: Strict Token Hierarchy
 No hardcoded raw numbers, hex colors, or font names.
-- All values must reference design tokens exported by `floogic-ui`:
-  `import { colors, spacing, shape, borders, fonts, fontSizes, fontWeights, elevation, durations, easings } from 'floogic-ui'`
+- All values must reference design tokens exported by `@floogic/ui`:
+  `import { colors, spacing, shape, borders, fonts, fontSizes, fontWeights, elevation, durations, easings } from '@floogic/ui'` (or token subpaths `@floogic/ui/tokens/...`)
 
 ### Rule 4: Accessibility & Radix Primitives
 Underneath, interactive components (Modal, Select, Popover, Accordion, CheckboxGroup, RadioGroup, Tabs, Tooltip, HoverCard) wrap Radix UI primitives.

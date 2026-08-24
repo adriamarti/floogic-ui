@@ -16,6 +16,7 @@
       "require": "./dist/floogic-ui.umd.cjs",
       "types": "./dist/index.d.ts"
     },
+    "./tokens/*": "./dist/tokens/*",
     "./style.css": "./dist/assets/stylex.css",
     "./llms.txt": "./.ai/llms.txt",
     "./llms-full.txt": "./.ai/llms-full.txt",
