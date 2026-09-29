@@ -158,9 +158,9 @@ export const styles = stylex.create({
   // Description
   description: {
     fontFamily: fonts.sans,
-    fontSize: fontSizes.body,
+    fontSize: fontSizes.bodyMd,
     fontWeight: fontWeights.regular,
-    lineHeight: lineHeights.body,
+    lineHeight: lineHeights.bodyMd,
     margin: 0,
   },
 

@@ -4,11 +4,8 @@ import * as LabelPrimitive from '@radix-ui/react-label';
 import * as stylex from '@stylexjs/stylex';
 import { styles } from './Switch.stylex';
 
-export type SwitchSize = 'small' | 'medium';
-
 type SwitchContextValue = {
   id: string;
-  size: SwitchSize;
   required: boolean;
   disabled: boolean;
 };
@@ -23,19 +20,18 @@ const useSwitchContext = () => {
 
 export type SwitchProps = Omit<React.ComponentPropsWithoutRef<'div'>, 'style'> & {
   id?: string;
-  size?: SwitchSize;
   required?: boolean;
   disabled?: boolean;
   style?: stylex.StyleXStyles;
 };
 
 const SwitchRoot = forwardRef<HTMLDivElement, SwitchProps>(
-  ({ id: idProp, size = 'medium', required = false, disabled = false, style, children, ...props }, ref) => {
+  ({ id: idProp, required = false, disabled = false, style, children, ...props }, ref) => {
     const generatedId = useId();
     const id = idProp || generatedId;
 
     return (
-      <SwitchContext.Provider value={{ id, size, required, disabled }}>
+      <SwitchContext.Provider value={{ id, required, disabled }}>
         <div ref={ref} {...stylex.props(styles.root, style)} {...props}>
           {children}
         </div>
@@ -105,7 +101,6 @@ const Field = forwardRef<HTMLButtonElement, SwitchFieldProps>(
         required={context.required}
         {...stylex.props(
           styles.track,
-          context.size === 'medium' ? styles.trackMedium : styles.trackSmall,
           isChecked && styles.trackChecked,
           isDisabled && styles.trackDisabled,
           style
@@ -115,10 +110,7 @@ const Field = forwardRef<HTMLButtonElement, SwitchFieldProps>(
         <SwitchPrimitive.Thumb
           {...stylex.props(
             styles.thumb,
-            context.size === 'medium' ? styles.thumbMedium : styles.thumbSmall,
-            isChecked && styles.thumbChecked,
-            isChecked && context.size === 'medium' && styles.thumbMediumChecked,
-            isChecked && context.size === 'small' && styles.thumbSmallChecked
+            isChecked && styles.thumbChecked
           )}
         />
       </SwitchPrimitive.Root>

@@ -3,7 +3,7 @@ import { colors } from '../../tokens/colors.stylex';
 import { spacing } from '../../tokens/spacing.stylex';
 import { shape } from '../../tokens/shape.stylex';
 import { borders } from '../../tokens/borders.stylex';
-import { fonts, fontSizes, fontWeights } from '../../tokens/typography.stylex';
+import { fonts, fontSizes, fontWeights, lineHeights } from '../../tokens/typography.stylex';
 import { durations, easings } from '../../tokens/motion.stylex';
 
 export const styles = stylex.create({
@@ -27,6 +27,8 @@ export const styles = stylex.create({
     transitionTimingFunction: easings.standard,
     boxSizing: 'border-box',
     padding: spacing.space05,
+    width: spacing.space9,
+    height: spacing.space5,
     borderColor: {
       default: colors.strokeStrong,
       ':hover': colors.strokeStrong,
@@ -58,22 +60,17 @@ export const styles = stylex.create({
     backgroundColor: colors.fillDisabled,
     borderColor: colors.strokeDisabled,
   },
-  trackMedium: {
-    width: spacing.space9,
-    height: spacing.space5,
-  },
-  trackSmall: {
-    width: spacing.space7,
-    height: spacing.space4,
-  },
   thumb: {
     display: 'block',
     boxSizing: 'border-box',
+    width: spacing.space4,
+    height: spacing.space4,
     backgroundColor: colors.backgroundBase,
     borderStyle: 'solid',
     borderWidth: borders.hairline,
     borderColor: colors.strokeStrong,
     borderRadius: shape.radiusFull,
+    transform: 'translateX(0)',
     transitionProperty: 'transform, background-color, border-color',
     transitionDuration: durations.fast,
     transitionTimingFunction: easings.standard,
@@ -81,26 +78,12 @@ export const styles = stylex.create({
   thumbChecked: {
     backgroundColor: colors.backgroundBase,
     borderColor: colors.backgroundBase,
-  },
-  thumbMedium: {
-    width: spacing.space4,
-    height: spacing.space4,
-    transform: 'translateX(0)',
-  },
-  thumbMediumChecked: {
     transform: 'translateX(16px)',
-  },
-  thumbSmall: {
-    width: spacing.space3,
-    height: spacing.space3,
-    transform: 'translateX(0)',
-  },
-  thumbSmallChecked: {
-    transform: 'translateX(12px)',
   },
   label: {
     fontFamily: fonts.sans,
-    fontSize: fontSizes.h6,
+    fontSize: fontSizes.bodyMd,
+    lineHeight: lineHeights.bodyMd,
     fontWeight: fontWeights.medium,
     color: colors.textStrong,
     userSelect: 'none',

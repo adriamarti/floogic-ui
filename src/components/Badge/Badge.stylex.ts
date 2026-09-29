@@ -23,17 +23,30 @@ export const styles = stylex.create({
   
   // Sizes
   sizeSmall: {
-    height: spacing.space5,
-    paddingLeft: spacing.space2,
-    paddingRight: spacing.space2,
-    fontSize: fontSizes.caption,
+    height: spacing.space6,
+    paddingTop: spacing.space1,
+    paddingBottom: spacing.space1,
+    paddingLeft: spacing.space15,
+    paddingRight: spacing.space15,
+    fontSize: fontSizes.bodySm,
     gap: spacing.space1,
   },
   sizeMedium: {
-    height: spacing.space6,
+    height: spacing.space7,
+    paddingTop: spacing.space15,
+    paddingBottom: spacing.space15,
+    paddingLeft: spacing.space2,
+    paddingRight: spacing.space2,
+    fontSize: fontSizes.bodyMd,
+    gap: spacing.space15,
+  },
+  sizeLarge: {
+    height: spacing.space8,
+    paddingTop: spacing.space2,
+    paddingBottom: spacing.space2,
     paddingLeft: spacing.space3,
     paddingRight: spacing.space3,
-    fontSize: fontSizes.h6,
+    fontSize: fontSizes.bodyLg,
     gap: spacing.space2,
   },
 
@@ -48,12 +61,16 @@ export const styles = stylex.create({
     flexShrink: 0,
   },
   iconSmall: {
-    width: fontSizes.caption,
-    height: fontSizes.caption,
+    width: fontSizes.bodySm,
+    height: fontSizes.bodySm,
   },
   iconMedium: {
-    width: fontSizes.h6,
-    height: fontSizes.h6,
+    width: fontSizes.bodyMd,
+    height: fontSizes.bodyMd,
+  },
+  iconLarge: {
+    width: fontSizes.bodyLg,
+    height: fontSizes.bodyLg,
   },
 
   // Tones

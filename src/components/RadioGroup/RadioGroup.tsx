@@ -8,8 +8,6 @@ import { styles } from './RadioGroup.stylex';
 // Context
 // ---------------------------------------------------------------------------
 
-export type RadioGroupSize = 'small' | 'large';
-
 type RadioGroupContextValue = {
   id: string;
   value: string;
@@ -17,7 +15,6 @@ type RadioGroupContextValue = {
   invalid: boolean;
   required: boolean;
   disabled: boolean;
-  size: RadioGroupSize;
 };
 
 const RadioGroupContext = createContext<RadioGroupContextValue | undefined>(undefined);
@@ -43,7 +40,6 @@ export type RadioGroupProps = {
   invalid?: boolean;
   required?: boolean;
   disabled?: boolean;
-  size?: RadioGroupSize;
   layout?: RadioGroupLayout;
   style?: stylex.StyleXStyles;
   children: React.ReactNode;
@@ -57,7 +53,6 @@ const RadioGroupRoot = forwardRef<HTMLDivElement, RadioGroupProps>(
     invalid = false, 
     required = false, 
     disabled = false, 
-    size = 'small', 
     layout = 'vertical',
     style, 
     children 
@@ -114,7 +109,6 @@ const RadioGroupRoot = forwardRef<HTMLDivElement, RadioGroupProps>(
         invalid,
         required,
         disabled,
-        size
       }}>
         <RadioGroupPrimitive.Root 
           ref={ref} 
@@ -166,26 +160,25 @@ Label.displayName = 'RadioGroup.Label';
 
 // ---------------------------------------------------------------------------
 
-export type RadioGroupHintProps = Omit<React.ComponentPropsWithoutRef<'p'>, 'style'> & {
+export type RadioGroupHintProps = Omit<React.ComponentPropsWithoutRef<'div'>, 'style'> & {
   style?: stylex.StyleXStyles;
 };
 
-const Hint = forwardRef<HTMLParagraphElement, RadioGroupHintProps>(
+const Hint = forwardRef<HTMLDivElement, RadioGroupHintProps>(
   ({ children, style, ...props }, ref) => {
     const context = useRadioGroupContext();
     if (context.invalid) return null;
     return (
-      <p 
+      <div 
         ref={ref} 
         {...stylex.props(
           styles.hint, 
-          context.size === 'small' ? styles.hintSmall : styles.hintLarge,
           style
         )} 
         {...props}
       >
         {children}
-      </p>
+      </div>
     );
   }
 );
@@ -203,15 +196,7 @@ const ErrorMessage = forwardRef<HTMLDivElement, RadioGroupErrorProps>(
     if (!context.invalid) return null;
     return (
       <div ref={ref} {...stylex.props(styles.errorContainer, style)} {...props}>
-        <svg xmlns="http://www.w3.org/2000/svg" width={context.size === 'small' ? "12" : "14"} height={context.size === 'small' ? "12" : "14"} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...stylex.props(styles.errorIcon)}>
-          <circle cx="12" cy="12" r="10" />
-          <path d="m15 9-6 6" />
-          <path d="m9 9 6 6" />
-        </svg>
-        <span {...stylex.props(
-          styles.errorText,
-          context.size === 'small' ? styles.errorTextSmall : styles.errorTextLarge
-        )}>
+        <span {...stylex.props(styles.errorText)}>
           {children}
         </span>
       </div>
@@ -244,7 +229,7 @@ const Item = forwardRef<HTMLButtonElement, RadioGroupItemProps>(
           disabled={isDisabled}
           {...stylex.props(
             styles.radioRoot,
-            context.size === 'small' ? styles.radioSmall : styles.radioLarge,
+            styles.radioControl,
             isChecked && styles.radioRootChecked,
             context.invalid && !isChecked && styles.radioRootInvalid,
             context.invalid && isChecked && styles.radioRootInvalidChecked,
@@ -260,7 +245,6 @@ const Item = forwardRef<HTMLButtonElement, RadioGroupItemProps>(
             htmlFor={id}
             {...stylex.props(
               styles.itemLabel,
-              context.size === 'small' ? styles.itemLabelSmall : styles.itemLabelLarge,
               isDisabled && styles.itemLabelDisabled
             )}
           >

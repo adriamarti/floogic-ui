@@ -38,16 +38,6 @@ export const styles = stylex.create({
     alignItems: 'flex-start',
   },
 
-  // Sizes
-  sizeSmall: {
-    padding: spacing.space3,
-    gap: spacing.space2,
-  },
-  sizeLarge: {
-    padding: spacing.space5,
-    gap: spacing.space4,
-  },
-
   // Border (accent)
   borderLeft: {
     borderLeftWidth: alertTokens.accentBorderWidth,
@@ -119,18 +109,18 @@ export const styles = stylex.create({
   // Heading
   heading: {
     fontFamily: fonts.sans,
-    fontSize: fontSizes.body,
+    fontSize: fontSizes.bodyLg,
     fontWeight: fontWeights.semiBold,
-    lineHeight: lineHeights.body,
+    lineHeight: lineHeights.bodyLg,
     margin: 0,
   },
 
   // Description
   description: {
     fontFamily: fonts.sans,
-    fontSize: fontSizes.body,
+    fontSize: fontSizes.bodyMd,
     fontWeight: fontWeights.regular,
-    lineHeight: lineHeights.body,
+    lineHeight: lineHeights.bodyMd,
     margin: 0,
   },
 

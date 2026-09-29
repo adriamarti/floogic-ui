@@ -107,7 +107,7 @@ export const DrawerDescription = React.forwardRef<HTMLParagraphElement, DrawerDe
   ({ children, style, ...props }, ref) => {
     return (
       <Dialog.Description asChild ref={ref} {...props}>
-        <Typography variant="body" color="weak" style={style}>
+        <Typography variant="bodyMd" color="weak" style={style}>
           {children}
         </Typography>
       </Dialog.Description>

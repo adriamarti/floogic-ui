@@ -10,6 +10,7 @@ import { elevation } from '../../tokens/elevation.stylex';
 export const styles = stylex.create({
   root: {
     appearance: 'none',
+    backgroundColor: 'transparent',
     position: 'relative',
     display: 'inline-flex',
     alignItems: 'center',
@@ -67,19 +68,19 @@ export const styles = stylex.create({
     height: spacing.space8,
     paddingLeft: spacing.space3,
     paddingRight: spacing.space3,
-    fontSize: fontSizes.body,
+    fontSize: fontSizes.bodySm,
   },
   medium: {
     height: spacing.space10,
     paddingLeft: spacing.space4,
     paddingRight: spacing.space4,
-    fontSize: fontSizes.body,
+    fontSize: fontSizes.bodyMd,
   },
   large: {
     height: spacing.space12,
     paddingLeft: spacing.space5,
     paddingRight: spacing.space5,
-    fontSize: fontSizes.body,
+    fontSize: fontSizes.bodyLg,
   },
 
   // -- Icon Only --
@@ -123,11 +124,8 @@ export const styles = stylex.create({
     borderColor: 'transparent',
     boxShadow: elevation.elev1,
   },
-  secondary: {
-    backgroundColor: 'transparent',
-  },
+  secondary: {},
   tertiary: {
-    backgroundColor: 'transparent',
     borderColor: 'transparent',
   },
 

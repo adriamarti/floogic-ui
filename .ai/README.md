@@ -51,8 +51,16 @@ Copy `.ai/rules/CLAUDE.md` from `node_modules/floogic-ui/` to your root as `CLAU
 ### Google Gemini & Antigravity IDE/CLI
 Copy `.ai/rules/GEMINI.md` to your root as `GEMINI.md`, OR register `.ai/skills/floogic-ui/component-usage/SKILL.md`.
 
+### Universal Agent Instruction (`AGENTS.md`)
+Copy `.ai/rules/GEMINI.md` to your root as `AGENTS.md` for universal autonomous AI agent instructions.
+
 ### GitHub Copilot
 Copy `.github/copilot-instructions.md` into your `.github/` folder.
+
+> 💡 **Why are rule files (`CLAUDE.md`, `GEMINI.md`, `CODEX.md`, `floogic-ui.mdc`) formatted differently?**
+> While all rule files enforce the exact same core architectural principles (StyleX, Compound Components, Tokens), each file is tailored specifically for its target AI tool:
+> - **Tool Discovery**: Different IDEs and CLI tools scan for specific filenames in project root (`CLAUDE.md` for Claude Code, `GEMINI.md` for Gemini/Antigravity, `.cursor/rules/*.mdc` for Cursor).
+> - **Model Prompt Optimization**: Each LLM architecture responds best to specific prompt structures — Claude prefers concise token-efficient lists, Gemini excels with explicit code snippets, and OpenAI/Codex requires strict imperative negative constraints to prevent hallucinations.
 
 ---
 

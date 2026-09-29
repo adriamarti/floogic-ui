@@ -105,6 +105,11 @@ function initAi() {
   );
 
   safeAppend(
+    path.join(userCwd, 'AGENTS.md'),
+    '## Floogic UI Design System\nRefer to `.ai/floogic-ui/rules/GEMINI.md`, `.ai/floogic-ui/llms.txt`, and `.ai/floogic-ui/skills/floogic-ui/component-usage/SKILL.md` for components and StyleX guidelines.'
+  );
+
+  safeAppend(
     path.join(userCwd, '.github/copilot-instructions.md'),
     '## Floogic UI Design System\nRefer to `.ai/floogic-ui/rules/GEMINI.md`, `.ai/floogic-ui/llms.txt`, and `.ai/floogic-ui/skills/floogic-ui/component-usage/SKILL.md` for components and StyleX guidelines.'
   );

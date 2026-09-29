@@ -68,7 +68,7 @@ All components in `floogic-ui` must strictly adhere to the following **7 core ru
   - `spacing`: `spacing.space1`, `spacing.space2`, `spacing.space4`, `spacing.space6`, etc.
   - `shape`: `shape.radiusSm`, `shape.radiusMd`, `shape.radiusLg`, `shape.radiusFull`, etc.
   - `borders`: `borders.hairline`, `borders.medium`, `borders.accent`.
-  - `typography`: `fonts.sans`, `fontSizes.h6`, `fontSizes.caption`, `fontWeights.medium`, `lineHeights.body`.
+  - `typography`: `fonts.sans`, `fontSizes.h6`, `fontSizes.bodySm`, `fontWeights.medium`, `lineHeights.bodyMd`.
   - `elevation`: `elevation.elev1`, `elevation.elev2`, `elevation.elev3`.
   - `motion`: `durations.fast`, `easings.standard`.
 

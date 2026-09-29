@@ -114,10 +114,10 @@ export function DataTableRecipe() {
             {mockUsers.map((user) => (
               <tr key={user.id}>
                 <td {...stylex.props(styles.td)}>
-                  <Typography variant="body">{user.name}</Typography>
+                  <Typography variant="bodyMd">{user.name}</Typography>
                 </td>
                 <td {...stylex.props(styles.td)}>
-                  <Typography variant="caption" color="weak">{user.role}</Typography>
+                  <Typography variant="captionMd" color="weak">{user.role}</Typography>
                 </td>
                 <td {...stylex.props(styles.td)}>
                   <Badge tone={user.status === 'active' ? 'success' : user.status === 'pending' ? 'warning' : 'neutral'}>

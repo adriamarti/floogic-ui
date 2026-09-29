@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import type { ToastProps, ToastActionElement } from './Toast';
+import type { ToastProps, ToastActionElement, ToastPosition } from './Toast';
 
 const TOAST_LIMIT = 5;
 
@@ -8,6 +8,7 @@ type ToasterToast = ToastProps & {
   title?: React.ReactNode;
   description?: React.ReactNode;
   action?: ToastActionElement;
+  position?: ToastPosition;
 };
 
 let count = 0;

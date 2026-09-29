@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import * as ToastPrimitive from '@radix-ui/react-toast';
 import * as stylex from '@stylexjs/stylex';
 import { styles } from './Toast.stylex';
@@ -6,14 +7,43 @@ import { Alert, AlertProps } from '../Alert';
 
 export type ToastActionElement = React.ReactElement<typeof ToastPrimitive.Action>;
 
+export type ToastPosition =
+  | 'top-left'
+  | 'top-center'
+  | 'top-right'
+  | 'bottom-left'
+  | 'bottom-center'
+  | 'bottom-right';
+
 export const ToastProvider = ToastPrimitive.Provider;
+
+export interface ToastViewportProps
+  extends Omit<React.ComponentPropsWithoutRef<typeof ToastPrimitive.Viewport>, 'className' | 'style'> {
+  position?: ToastPosition;
+  style?: stylex.StyleXStyles;
+}
 
 export const ToastViewport = React.forwardRef<
   React.ElementRef<typeof ToastPrimitive.Viewport>,
-  Omit<React.ComponentPropsWithoutRef<typeof ToastPrimitive.Viewport>, 'className' | 'style'> & { style?: stylex.StyleXStyles }
->(({ style, ...props }, ref) => {
-  const resolved = stylex.props(styles.viewport, style);
-  return (
+  ToastViewportProps
+>(({ position = 'bottom-right', style, ...props }, ref) => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const positionStyle =
+    position === 'top-left' ? styles.positionTopLeft :
+    position === 'top-center' ? styles.positionTopCenter :
+    position === 'top-right' ? styles.positionTopRight :
+    position === 'bottom-left' ? styles.positionBottomLeft :
+    position === 'bottom-center' ? styles.positionBottomCenter :
+    styles.positionBottomRight;
+
+  const resolved = stylex.props(styles.viewport, positionStyle, style);
+
+  const content = (
     <ToastPrimitive.Viewport
       ref={ref}
       className={resolved.className}
@@ -21,6 +51,10 @@ export const ToastViewport = React.forwardRef<
       {...props}
     />
   );
+
+  if (!mounted) return null;
+
+  return createPortal(content, document.body);
 });
 ToastViewport.displayName = ToastPrimitive.Viewport.displayName;
 
@@ -43,7 +77,7 @@ const ToastRoot = React.forwardRef<
       asChild
     >
       <li className={stylex.props(styles.listItem).className} style={stylex.props(styles.listItem).style}>
-        <Alert tone={tone} layout="horizontal" size="small">
+        <Alert tone={tone} layout="horizontal">
           {children}
         </Alert>
       </li>

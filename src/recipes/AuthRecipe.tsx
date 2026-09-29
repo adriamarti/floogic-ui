@@ -111,7 +111,7 @@ export function AuthRecipe({ onLogin }: AuthRecipeProps) {
           </form>
 
           <div {...stylex.props(styles.footerText)}>
-            <Typography variant="caption" color="weak">
+            <Typography variant="captionMd" color="weak">
               Don't have an account? Contact your administrator.
             </Typography>
           </div>

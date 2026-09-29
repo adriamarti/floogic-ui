@@ -7,7 +7,7 @@ import { styles } from './Badge.stylex';
 // ---------------------------------------------------------------------------
 
 export type BadgeTone = 'error' | 'warning' | 'success' | 'information' | 'neutral' | 'brand';
-export type BadgeSize = 'small' | 'medium';
+export type BadgeSize = 'small' | 'medium' | 'large';
 
 interface BadgeContextValue {
   tone: BadgeTone;

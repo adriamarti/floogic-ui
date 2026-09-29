@@ -1,3 +1,5 @@
+import './styles/reset.css';
+
 export * from './components/Badge';
 export * from './components/BadgeCount';
 export * from './components/BadgeDot';
@@ -35,7 +37,7 @@ export * from './components/Switch';
 export * from './recipes';
 
 
-export { colors, darkTheme } from './tokens/colors.stylex';
+export { colors, darkTheme, lightTheme } from './tokens/colors.stylex';
 export { spacing } from './tokens/spacing.stylex';
 export { shape } from './tokens/shape.stylex';
 export { fonts, fontSizes, fontWeights, lineHeights, letterSpacings } from './tokens/typography.stylex';

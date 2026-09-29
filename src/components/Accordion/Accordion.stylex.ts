@@ -24,7 +24,7 @@ export const styles = stylex.create({
   },
   trigger: {
     fontFamily: fonts.sans,
-    fontSize: fontSizes.body,
+    fontSize: fontSizes.bodyMd,
     fontWeight: fontWeights.medium,
     color: colors.textStrong,
     backgroundColor: {
@@ -75,7 +75,7 @@ export const styles = stylex.create({
   content: {
     overflow: 'hidden',
     fontFamily: fonts.sans,
-    fontSize: fontSizes.body,
+    fontSize: fontSizes.bodyMd,
     color: colors.textWeak,
     backgroundColor: 'transparent',
     lineHeight: 1.5,

@@ -20,25 +20,25 @@ export const styles = stylex.create({
   
   // Sizes
   sizeSmall: {
-    height: spacing.space4,
-    minWidth: spacing.space4,
-    paddingLeft: spacing.space1,
-    paddingRight: spacing.space1,
-    fontSize: fontSizes.caption,
-  },
-  sizeMedium: {
     height: spacing.space5,
     minWidth: spacing.space5,
-    paddingLeft: spacing.space2,
-    paddingRight: spacing.space2,
-    fontSize: fontSizes.caption,
+    paddingLeft: spacing.space15,
+    paddingRight: spacing.space15,
+    fontSize: fontSizes.bodySm,
   },
-  sizeLarge: {
+  sizeMedium: {
     height: spacing.space6,
     minWidth: spacing.space6,
     paddingLeft: spacing.space2,
     paddingRight: spacing.space2,
-    fontSize: fontSizes.h6,
+    fontSize: fontSizes.bodyMd,
+  },
+  sizeLarge: {
+    height: spacing.space7,
+    minWidth: spacing.space7,
+    paddingLeft: spacing.space3,
+    paddingRight: spacing.space3,
+    fontSize: fontSizes.bodyLg,
   },
 
   // Tones - Strong

@@ -3,7 +3,7 @@ import { colors } from '../../tokens/colors.stylex';
 import { spacing } from '../../tokens/spacing.stylex';
 import { borders } from '../../tokens/borders.stylex';
 import { shape } from '../../tokens/shape.stylex';
-import { fonts, fontSizes, fontWeights } from '../../tokens/typography.stylex';
+import { fonts, fontSizes, fontWeights, lineHeights } from '../../tokens/typography.stylex';
 import { durations, easings } from '../../tokens/motion.stylex';
 
 export const styles = stylex.create({
@@ -20,7 +20,8 @@ export const styles = stylex.create({
   },
   label: {
     fontFamily: fonts.sans,
-    fontSize: fontSizes.h6,
+    fontSize: fontSizes.bodyMd,
+    lineHeight: lineHeights.bodyMd,
     fontWeight: fontWeights.medium,
     color: colors.textStrong,
   },
@@ -29,16 +30,16 @@ export const styles = stylex.create({
   },
   hint: {
     fontFamily: fonts.sans,
-    fontSize: fontSizes.caption,
+    fontSize: fontSizes.bodyMd,
+    lineHeight: lineHeights.bodyMd,
+    fontWeight: fontWeights.regular,
     color: colors.textWeak,
-    marginBottom: spacing.space05,
   },
   errorContainer: {
     display: 'flex',
     alignItems: 'flex-start',
     gap: spacing.space1,
     color: colors.textError,
-    marginBottom: spacing.space05,
   },
   errorIcon: {
     flexShrink: 0,
@@ -46,7 +47,9 @@ export const styles = stylex.create({
   },
   errorText: {
     fontFamily: fonts.sans,
-    fontSize: fontSizes.caption,
+    fontSize: fontSizes.bodyMd,
+    lineHeight: lineHeights.bodyMd,
+    fontWeight: fontWeights.regular,
     color: colors.textError,
   },
   fieldWrapper: {
@@ -58,7 +61,8 @@ export const styles = stylex.create({
   field: {
     width: '100%',
     fontFamily: fonts.sans,
-    fontSize: fontSizes.h6,
+    fontSize: fontSizes.bodyMd,
+    lineHeight: lineHeights.bodyMd,
     color: colors.textStrong,
     backgroundColor: {
       default: colors.backgroundBase,

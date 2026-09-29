@@ -2,7 +2,7 @@ import * as stylex from '@stylexjs/stylex';
 import { colors } from '../../tokens/colors.stylex';
 import { borders } from '../../tokens/borders.stylex';
 import { shape } from '../../tokens/shape.stylex';
-import { fonts, fontSizes, fontWeights } from '../../tokens/typography.stylex';
+import { fonts, fontSizes, fontWeights, lineHeights } from '../../tokens/typography.stylex';
 import { spacing } from '../../tokens/spacing.stylex';
 
 export const styles = stylex.create({
@@ -19,36 +19,26 @@ export const styles = stylex.create({
   },
   label: {
     fontFamily: fonts.sans,
-    fontSize: fontSizes.h6,
+    fontSize: fontSizes.bodyMd,
+    lineHeight: lineHeights.bodyMd,
     fontWeight: fontWeights.medium,
     color: colors.textStrong,
-  },
-  labelSmall: {
-    fontSize: fontSizes.caption,
-  },
-  labelLarge: {
-    fontSize: fontSizes.h6,
   },
   requiredAsterisk: {
     color: colors.textError,
   },
   hint: {
     fontFamily: fonts.sans,
+    fontSize: fontSizes.bodyMd,
+    lineHeight: lineHeights.bodyMd,
+    fontWeight: fontWeights.regular,
     color: colors.textWeak,
-    marginTop: spacing.space1,
-  },
-  hintSmall: {
-    fontSize: fontSizes.caption,
-  },
-  hintLarge: {
-    fontSize: fontSizes.caption,
   },
   errorContainer: {
     display: 'flex',
     alignItems: 'flex-start',
     gap: spacing.space1,
     color: colors.textError,
-    marginTop: spacing.space1,
   },
   errorIcon: {
     flexShrink: 0,
@@ -56,13 +46,10 @@ export const styles = stylex.create({
   },
   errorText: {
     fontFamily: fonts.sans,
+    fontSize: fontSizes.bodyMd,
+    lineHeight: lineHeights.bodyMd,
+    fontWeight: fontWeights.regular,
     color: colors.textError,
-  },
-  errorTextSmall: {
-    fontSize: fontSizes.caption,
-  },
-  errorTextLarge: {
-    fontSize: fontSizes.caption,
   },
   group: {
     display: 'flex',
@@ -111,6 +98,10 @@ export const styles = stylex.create({
       outlineOffset: spacing.space05,
     },
   },
+  checkboxControl: {
+    width: spacing.space4,
+    height: spacing.space4,
+  },
   checkboxRootChecked: {
     backgroundColor: {
       default: colors.fillBrandStrong,
@@ -131,14 +122,6 @@ export const styles = stylex.create({
     backgroundColor: colors.fillDisabled,
     borderColor: colors.strokeDisabled,
   },
-  checkboxSmall: {
-    width: spacing.space4,
-    height: spacing.space4,
-  },
-  checkboxLarge: {
-    width: spacing.space5,
-    height: spacing.space5,
-  },
   indicator: {
     color: colors.textInverseStrong,
     display: 'flex',
@@ -147,18 +130,14 @@ export const styles = stylex.create({
   },
   itemLabel: {
     fontFamily: fonts.sans,
+    fontSize: fontSizes.bodyMd,
+    lineHeight: lineHeights.bodyMd,
     color: colors.textStrong,
     cursor: 'pointer',
     userSelect: 'none',
   },
-  itemLabelSmall: {
-    fontSize: fontSizes.caption,
-  },
-  itemLabelLarge: {
-    fontSize: fontSizes.h6,
-  },
   itemLabelDisabled: {
     opacity: 0.5,
     pointerEvents: 'none',
-  }
+  },
 });

@@ -1,11 +1,14 @@
 import * as stylex from '@stylexjs/stylex';
+import { colors } from '../../tokens/colors.stylex';
+import { elevation } from '../../tokens/elevation.stylex';
+import { shape } from '../../tokens/shape.stylex';
 import { spacing } from '../../tokens/spacing.stylex';
 import { durations, easings } from '../../tokens/motion.stylex';
 
-const VIEWPORT_PADDING = spacing.space4;
+const VIEWPORT_OFFSET = spacing.space6;
 
 const slideIn = stylex.keyframes({
-  from: { transform: `translateX(calc(100% + ${VIEWPORT_PADDING}))` },
+  from: { transform: `translateX(calc(100% + ${VIEWPORT_OFFSET}))` },
   to: { transform: 'translateX(0)' },
 });
 
@@ -16,25 +19,61 @@ const hide = stylex.keyframes({
 
 const swipeOut = stylex.keyframes({
   from: { transform: 'translateX(var(--radix-toast-swipe-end-x))' },
-  to: { transform: `translateX(calc(100% + ${VIEWPORT_PADDING}))` },
+  to: { transform: `translateX(calc(100% + ${VIEWPORT_OFFSET}))` },
 });
 
 export const styles = stylex.create({
   viewport: {
     position: 'fixed',
-    bottom: 0,
-    right: 0,
     display: 'flex',
     flexDirection: 'column',
-    padding: VIEWPORT_PADDING,
+    padding: 0,
     gap: spacing.space3,
     width: '24.375rem',
-    maxWidth: '100vw',
+    maxWidth: 'calc(100vw - 48px)',
     margin: 0,
     listStyle: 'none',
     zIndex: 2147483647,
     outline: 'none',
     pointerEvents: 'none',
+  },
+  positionTopLeft: {
+    top: VIEWPORT_OFFSET,
+    left: VIEWPORT_OFFSET,
+    bottom: 'auto',
+    right: 'auto',
+  },
+  positionTopCenter: {
+    top: VIEWPORT_OFFSET,
+    left: '50%',
+    transform: 'translateX(-50%)',
+    bottom: 'auto',
+    right: 'auto',
+  },
+  positionTopRight: {
+    top: VIEWPORT_OFFSET,
+    right: VIEWPORT_OFFSET,
+    bottom: 'auto',
+    left: 'auto',
+  },
+  positionBottomLeft: {
+    bottom: VIEWPORT_OFFSET,
+    left: VIEWPORT_OFFSET,
+    top: 'auto',
+    right: 'auto',
+  },
+  positionBottomCenter: {
+    bottom: VIEWPORT_OFFSET,
+    left: '50%',
+    transform: 'translateX(-50%)',
+    top: 'auto',
+    right: 'auto',
+  },
+  positionBottomRight: {
+    bottom: VIEWPORT_OFFSET,
+    right: VIEWPORT_OFFSET,
+    top: 'auto',
+    left: 'auto',
   },
   listItem: {
     width: '100%',
@@ -43,6 +82,9 @@ export const styles = stylex.create({
     all: 'unset',
     pointerEvents: 'auto',
     width: '100%',
+    backgroundColor: colors.backgroundRaised,
+    borderRadius: shape.radiusMd,
+    boxShadow: elevation.elev3,
     
     '@media (prefers-reduced-motion: no-preference)': {
       ':not([data-state="closed"])': {

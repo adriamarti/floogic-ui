@@ -69,13 +69,13 @@ export const styles = stylex.create({
     height: spacing.space8,
     paddingLeft: spacing.space3,
     paddingRight: spacing.space3,
-    fontSize: fontSizes.body,
+    fontSize: fontSizes.bodyMd,
   },
   itemSmall: {
     height: spacing.space6,
     paddingLeft: spacing.space2,
     paddingRight: spacing.space2,
-    fontSize: fontSizes.caption,
+    fontSize: fontSizes.bodySm,
   },
   
   // Icon only modifiers

@@ -2,6 +2,7 @@ import React, { createContext, useContext, useId, useState, useRef, useCallback 
 import * as PopoverPrimitive from '@radix-ui/react-popover';
 import * as LabelPrimitive from '@radix-ui/react-label';
 import { Command } from 'cmdk';
+import { Check, ChevronDown, Search, X } from 'lucide-react';
 import * as stylex from '@stylexjs/stylex';
 import { styles } from './Select.stylex';
 
@@ -24,6 +25,7 @@ type SelectContextValue = {
   registerItem: (value: string, label: React.ReactNode) => void;
   inputValue: string;
   setInputValue: (value: string) => void;
+  emptyMessage?: React.ReactNode;
 };
 
 const SelectContext = createContext<SelectContextValue | undefined>(undefined);
@@ -45,6 +47,7 @@ type BaseSelectProps = {
   required?: boolean;
   disabled?: boolean;
   searchable?: boolean;
+  emptyMessage?: React.ReactNode;
   defaultOpen?: boolean;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -78,6 +81,7 @@ const SelectRoot = (props: SelectProps) => {
     required = false,
     disabled = false,
     searchable = multiselect, // default true for multiselect, false for single
+    emptyMessage,
     defaultOpen = false,
     open: controlledOpen,
     onOpenChange,
@@ -148,7 +152,8 @@ const SelectRoot = (props: SelectProps) => {
       itemLabels,
       registerItem,
       inputValue,
-      setInputValue
+      setInputValue,
+      emptyMessage,
     }}>
       <div {...stylex.props(styles.root, style)}>
         <PopoverPrimitive.Root open={open} onOpenChange={handleOpenChange}>
@@ -192,18 +197,18 @@ SelectLabel.displayName = 'Select.Label';
 
 // ---------------------------------------------------------------------------
 
-export type SelectHintProps = Omit<React.ComponentPropsWithoutRef<'p'>, 'style'> & {
+export type SelectHintProps = Omit<React.ComponentPropsWithoutRef<'div'>, 'style'> & {
   style?: stylex.StyleXStyles;
 };
 
-export const SelectHint = React.forwardRef<HTMLParagraphElement, SelectHintProps>(
+export const SelectHint = React.forwardRef<HTMLDivElement, SelectHintProps>(
   ({ children, style, ...props }, ref) => {
     const context = useSelectContext();
     if (context.invalid) return null;
     return (
-      <p ref={ref} {...stylex.props(styles.hint, style)} {...props}>
+      <div ref={ref} {...stylex.props(styles.hint, style)} {...props}>
         {children}
-      </p>
+      </div>
     );
   }
 );
@@ -221,11 +226,6 @@ export const SelectError = React.forwardRef<HTMLDivElement, SelectErrorProps>(
     if (!context.invalid) return null;
     return (
       <div ref={ref} {...stylex.props(styles.errorContainer, style)} {...props}>
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...stylex.props(styles.errorIcon)}>
-          <circle cx="12" cy="12" r="10" />
-          <path d="m15 9-6 6" />
-          <path d="m9 9 6 6" />
-        </svg>
         <span {...stylex.props(styles.errorText)}>{children}</span>
       </div>
     );
@@ -264,15 +264,12 @@ export const SelectTrigger = React.forwardRef<HTMLButtonElement, SelectTriggerPr
       if (hasValue) {
         contentNode = currentValues.map(val => (
           <span key={val} {...stylex.props(styles.tag)}>
-            {context.itemLabels.current.get(val)}
+            {context.itemLabels.current.get(val) || val}
             <span 
               {...stylex.props(styles.tagClose)} 
               onClick={(e) => handleRemoveTag(e, val)}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M18 6 6 18" />
-                <path d="m6 6 12 12" />
-              </svg>
+              <X size={12} />
             </span>
           </span>
         ));
@@ -280,7 +277,7 @@ export const SelectTrigger = React.forwardRef<HTMLButtonElement, SelectTriggerPr
     } else {
       hasValue = context.value !== undefined && context.value !== '';
       if (hasValue) {
-        contentNode = <span {...stylex.props(styles.triggerValue)}>{context.itemLabels.current.get(context.value as string)}</span>;
+        contentNode = <span {...stylex.props(styles.triggerValue)}>{context.itemLabels.current.get(context.value as string) || (context.value as string)}</span>;
       }
     }
 
@@ -305,17 +302,12 @@ export const SelectTrigger = React.forwardRef<HTMLButtonElement, SelectTriggerPr
           
           {context.multiselect && hasValue && (
             <div {...stylex.props(styles.clearWrapper)} onClick={handleClearAll}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M18 6 6 18" />
-                <path d="m6 6 12 12" />
-              </svg>
+              <X size={14} />
             </div>
           )}
 
           <div {...stylex.props(styles.triggerIcon, context.open && styles.triggerIconOpen, (context.multiselect && hasValue) ? styles.marginLeftZero : styles.marginLeftAuto)}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="m6 9 6 6 6-6" />
-            </svg>
+            <ChevronDown size={16} />
           </div>
         </button>
       </PopoverPrimitive.Trigger>
@@ -327,12 +319,14 @@ SelectTrigger.displayName = 'Select.Trigger';
 // ---------------------------------------------------------------------------
 
 export type SelectContentProps = Omit<React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>, 'style'> & {
+  emptyMessage?: React.ReactNode;
   style?: stylex.StyleXStyles;
 };
 
 export const SelectContent = React.forwardRef<HTMLDivElement, SelectContentProps>(
-  ({ children, align = 'start', sideOffset = 4, style, ...props }, ref) => {
+  ({ children, align = 'start', sideOffset = 4, emptyMessage: emptyMessageProp, style, ...props }, ref) => {
     const context = useSelectContext();
+    const emptyMsg = emptyMessageProp ?? context.emptyMessage ?? 'No results found.';
     return (
       <PopoverPrimitive.Portal>
         <PopoverPrimitive.Content
@@ -347,10 +341,7 @@ export const SelectContent = React.forwardRef<HTMLDivElement, SelectContentProps
         >
           {context.searchable && (
             <div {...stylex.props(styles.searchWrapper)}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...stylex.props(styles.searchIcon)}>
-                <circle cx="11" cy="11" r="8" />
-                <path d="m21 21-4.3-4.3" />
-              </svg>
+              <Search size={14} {...stylex.props(styles.searchIcon)} />
               <Command.Input 
                 placeholder="Search..." 
                 value={context.inputValue}
@@ -360,7 +351,7 @@ export const SelectContent = React.forwardRef<HTMLDivElement, SelectContentProps
             </div>
           )}
           <Command.List {...stylex.props(styles.list)}>
-            <Command.Empty {...stylex.props(styles.empty)}>No results found.</Command.Empty>
+            <Command.Empty {...stylex.props(styles.empty)}>{emptyMsg}</Command.Empty>
             {children}
           </Command.List>
         </PopoverPrimitive.Content>
@@ -416,7 +407,7 @@ export const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
         onSelect={handleSelect}
         {...stylex.props(
           styles.item,
-          isSelected && !context.multiselect && styles.itemSelected,
+          isSelected && styles.itemSelected,
           style
         )}
         {...props}
@@ -427,9 +418,7 @@ export const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
             isSelected && styles.checkboxWrapperSelected
           )}>
             {isSelected && (
-              <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
+              <Check size={10} strokeWidth={3} />
             )}
           </div>
         )}
@@ -438,9 +427,7 @@ export const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
 
         {!context.multiselect && isSelected && (
           <span {...stylex.props(styles.itemIndicator)}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="20 6 9 17 4 12" />
-            </svg>
+            <Check size={14} />
           </span>
         )}
       </Command.Item>

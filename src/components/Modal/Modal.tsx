@@ -127,7 +127,7 @@ export const ModalDescription = React.forwardRef<HTMLParagraphElement, ModalDesc
 
     return (
       <Dialog.Description asChild ref={ref} {...props}>
-        <Typography variant="body" color="weak" style={style}>
+        <Typography variant="bodyMd" color="weak" style={style}>
           {children}
         </Typography>
       </Dialog.Description>

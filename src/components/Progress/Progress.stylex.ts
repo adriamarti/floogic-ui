@@ -33,7 +33,7 @@ export const styles = stylex.create({
   }),
   label: {
     fontFamily: fonts.sans,
-    fontSize: fontSizes.body,
+    fontSize: fontSizes.bodyMd,
     color: colors.textWeak,
     minWidth: spacing.space10,
     textAlign: 'right',

@@ -89,29 +89,19 @@ const ButtonRoot = forwardRef<HTMLButtonElement, ButtonProps>(
     
     const inGroup = React.useContext(ButtonGroupContext);
 
-    // Resolve dynamic styles based on variant and tone
-    const typeStyle = styles[variant];
-    const toneStyle = styles[`${variant}_${tone}` as keyof typeof styles];
-    const sizeStyle = styles[size];
-    const iconOnlyStyle = iconOnly ? styles[`iconOnly_${size}` as keyof typeof styles] : null;
-    const groupStyle = inGroup ? styles.inGroup : null;
-
-    const resolved = stylex.props(
-      styles.root,
-      typeStyle,
-      toneStyle,
-      sizeStyle,
-      iconOnlyStyle,
-      groupStyle,
-      style
-    );
-
     return (
       <ButtonContext.Provider value={{ size, tone }}>
         <button
           ref={ref}
-          className={resolved.className}
-          style={resolved.style}
+          {...stylex.props([
+            styles.root,
+            styles[variant],
+            styles[`${variant}_${tone}` as keyof typeof styles],
+            styles[size],
+            iconOnly && styles[`iconOnly_${size}` as keyof typeof styles],
+            inGroup && styles.inGroup,
+            style,
+          ])}
           {...props}
         >
           {children}

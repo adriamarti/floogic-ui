@@ -3,11 +3,41 @@ import * as TooltipPrimitive from '@radix-ui/react-tooltip';
 import * as stylex from '@stylexjs/stylex';
 import { styles } from './Tooltip.stylex';
 
-const Provider = TooltipPrimitive.Provider;
+export type TooltipProviderProps = TooltipPrimitive.TooltipProviderProps;
+
+const Provider = ({
+  delayDuration = 200,
+  skipDelayDuration = 300,
+  disableHoverableContent = true,
+  children,
+  ...props
+}: TooltipProviderProps) => (
+  <TooltipPrimitive.Provider
+    delayDuration={delayDuration}
+    skipDelayDuration={skipDelayDuration}
+    disableHoverableContent={disableHoverableContent}
+    {...props}
+  >
+    {children}
+  </TooltipPrimitive.Provider>
+);
 
 export type TooltipProps = TooltipPrimitive.TooltipProps;
 
-const Root = TooltipPrimitive.Root;
+const Root = ({
+  delayDuration = 200,
+  disableHoverableContent = true,
+  children,
+  ...props
+}: TooltipProps) => (
+  <TooltipPrimitive.Root
+    delayDuration={delayDuration}
+    disableHoverableContent={disableHoverableContent}
+    {...props}
+  >
+    {children}
+  </TooltipPrimitive.Root>
+);
 
 export type TooltipTriggerProps = Omit<TooltipPrimitive.TooltipTriggerProps, 'style'> & {
   style?: stylex.StyleXStyles;
@@ -15,12 +45,11 @@ export type TooltipTriggerProps = Omit<TooltipPrimitive.TooltipTriggerProps, 'st
 
 const Trigger = forwardRef<HTMLButtonElement, TooltipTriggerProps>(
   ({ style, ...props }, ref) => {
-    const resolved = stylex.props(style);
+    const resolved = style ? stylex.props(style) : undefined;
     return (
       <TooltipPrimitive.Trigger
         ref={ref}
-        className={resolved.className}
-        style={resolved.style}
+        {...resolved}
         {...props}
       />
     );

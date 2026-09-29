@@ -40,12 +40,33 @@ const AvatarRoot = forwardRef<HTMLDivElement, AvatarProps>(
     const resolvedRoot = stylex.props(styles.root, sizeStyle, style);
     const resolvedContainer = stylex.props(styles.container);
 
+    const avatarChildren: React.ReactNode[] = [];
+    const badgeChildren: React.ReactNode[] = [];
+
+    const processChild = (child: React.ReactNode) => {
+      if (!child) return;
+      if (React.isValidElement(child)) {
+        if (child.type === React.Fragment) {
+          React.Children.forEach((child.props as any).children, processChild);
+        } else if (child.type === AvatarBadge || (child.type as any)?.displayName === 'Avatar.Badge') {
+          badgeChildren.push(child);
+        } else {
+          avatarChildren.push(child);
+        }
+      } else {
+        avatarChildren.push(child);
+      }
+    };
+
+    React.Children.forEach(children, processChild);
+
     return (
       <AvatarContext.Provider value={{ size }}>
         <div ref={ref} className={resolvedRoot.className} style={resolvedRoot.style}>
           <AvatarPrimitive.Root className={resolvedContainer.className} style={resolvedContainer.style} {...props}>
-            {children}
+            {avatarChildren}
           </AvatarPrimitive.Root>
+          {badgeChildren}
         </div>
       </AvatarContext.Provider>
     );

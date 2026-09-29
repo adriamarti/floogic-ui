@@ -1,7 +1,7 @@
 import * as stylex from '@stylexjs/stylex';
 import { colors } from '../../tokens/colors.stylex';
 import { spacing } from '../../tokens/spacing.stylex';
-import { fonts, fontSizes, fontWeights } from '../../tokens/typography.stylex';
+import { fonts, fontSizes, fontWeights, lineHeights } from '../../tokens/typography.stylex';
 import { borders } from '../../tokens/borders.stylex';
 import { shape } from '../../tokens/shape.stylex';
 import { elevation } from '../../tokens/elevation.stylex';
@@ -24,14 +24,16 @@ export const styles = stylex.create({
 
   label: {
     fontFamily: fonts.sans,
-    fontSize: fontSizes.h6,
+    fontSize: fontSizes.bodyMd,
+    lineHeight: lineHeights.bodyMd,
     fontWeight: fontWeights.medium,
     color: colors.textStrong,
   },
 
   value: {
     fontFamily: fonts.sans,
-    fontSize: fontSizes.h6,
+    fontSize: fontSizes.bodyMd,
+    lineHeight: lineHeights.bodyMd,
     fontWeight: fontWeights.regular,
     color: colors.textWeak,
   },

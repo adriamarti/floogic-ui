@@ -65,7 +65,7 @@ export function SettingsRecipe() {
         </Avatar>
         <div>
           <Typography variant="h2">Account Settings</Typography>
-          <Typography variant="body" color="weak">
+          <Typography variant="bodyMd" color="weak">
             Manage your personal details and notifications preferences.
           </Typography>
         </div>
@@ -110,7 +110,7 @@ export function SettingsRecipe() {
               <div {...stylex.props(styles.row)}>
                 <div>
                   <Typography variant="h4">Email Notifications</Typography>
-                  <Typography variant="caption" color="weak">
+                  <Typography variant="captionMd" color="weak">
                     Receive weekly update digests and alerts.
                   </Typography>
                 </div>
@@ -122,7 +122,7 @@ export function SettingsRecipe() {
               <div {...stylex.props(styles.row)}>
                 <div>
                   <Typography variant="h4">Marketing Communications</Typography>
-                  <Typography variant="caption" color="weak">
+                  <Typography variant="captionMd" color="weak">
                     Receive news about product releases and events.
                   </Typography>
                 </div>

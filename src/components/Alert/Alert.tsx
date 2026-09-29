@@ -4,13 +4,11 @@ import { styles, iconColorStyles, borderLeftColorStyles } from './Alert.stylex';
 import { IconButton, IconButtonProps } from '../IconButton';
 
 export type AlertTone = 'error' | 'warning' | 'success' | 'information' | 'neutral' | 'brand' | 'inverse-neutral' | 'inverse-brand';
-export type AlertSize = 'small' | 'large';
 export type AlertLayout = 'vertical' | 'horizontal';
 
 export interface AlertProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'className' | 'style'> {
   style?: stylex.StyleXStyles;
   tone?: AlertTone;
-  size?: AlertSize;
   layout?: AlertLayout;
   borderLeft?: boolean;
 }
@@ -32,11 +30,10 @@ const useAlertContext = () => {
 
 // Root Component
 const AlertRoot = forwardRef<HTMLDivElement, AlertProps>(
-  ({ children, tone = 'neutral', size = 'large', layout = 'vertical', borderLeft = false, style, ...props  }, ref) => {
+  ({ children, tone = 'neutral', layout = 'vertical', borderLeft = false, style, ...props  }, ref) => {
     const resolved = stylex.props(
       styles.root,
       layout === 'horizontal' ? styles.layoutHorizontal : styles.layoutVertical,
-      size === 'small' ? styles.sizeSmall : styles.sizeLarge,
       tone === 'error' && styles.toneError,
       tone === 'warning' && styles.toneWarning,
       tone === 'success' && styles.toneSuccess,

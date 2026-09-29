@@ -12,8 +12,8 @@ describe('Typography Component', () => {
     expect(heading).toHaveTextContent('Heading Level 1');
   });
 
-  it('renders paragraph for body variant', () => {
-    render(<Typography variant="body">Body paragraph text</Typography>);
+  it('renders paragraph for bodyMd variant', () => {
+    render(<Typography variant="bodyMd">Body paragraph text</Typography>);
     expect(screen.getByText('Body paragraph text')).toBeInTheDocument();
   });
 });

@@ -108,10 +108,12 @@ export const styles = stylex.create({
     display: 'block',
     objectFit: 'cover',
     width: '100%',
+    aspectRatio: '16 / 9',
     flexShrink: 0,
   },
   mediaVertical: {
-    height: spacing.space20,
+    width: '100%',
+    height: 'auto',
   },
   mediaHorizontal: {
     width: spacing.space20,
@@ -142,11 +144,11 @@ export const styles = stylex.create({
   },
   description: {
     fontFamily: fonts.sans,
-    fontSize: fontSizes.caption,
+    fontSize: fontSizes.bodySm,
     fontWeight: fontWeights.regular,
     color: colors.textWeak,
     margin: 0,
-    lineHeight: lineHeights.body,
+    lineHeight: lineHeights.bodySm,
   },
 
   // Footer

@@ -8,16 +8,22 @@ import {
   ToastDescription,
   ToastClose,
   ToastAction,
+  ToastPosition,
 } from './Toast';
 
 import { Alert } from '../Alert';
 
-export function Toaster() {
+export interface ToasterProps {
+  position?: ToastPosition;
+}
+
+export function Toaster({ position: positionProp }: ToasterProps = {}) {
   const { toasts } = useToast();
+  const position = positionProp || toasts[0]?.position || 'bottom-right';
 
   return (
     <ToastProvider>
-      {toasts.map(function ({ id, title, description, action, tone, ...props }) {
+      {toasts.map(function ({ id, title, description, action, tone, position: _pos, ...props }) {
         return (
           <Toast key={id} {...props} tone={tone}>
             <Alert.Content>
@@ -35,7 +41,7 @@ export function Toaster() {
           </Toast>
         );
       })}
-      <ToastViewport />
+      <ToastViewport position={position} />
     </ToastProvider>
   );
 }

@@ -51,7 +51,7 @@ export const styles = stylex.create({
   sizeSmall: {
     width: spacing.space7,
     height: spacing.space7,
-    fontSize: fontSizes.caption,
+    fontSize: fontSizes.bodySm,
   },
   sizeMedium: {
     width: spacing.space10,
@@ -135,16 +135,16 @@ export const styles = stylex.create({
     margin: 0,
   },
   labelDescriptionSmall: {
-    fontSize: fontSizes.caption,
-    lineHeight: lineHeights.body,
+    fontSize: fontSizes.bodySm,
+    lineHeight: lineHeights.bodySm,
   },
   labelDescriptionMedium: {
-    fontSize: fontSizes.caption,
-    lineHeight: lineHeights.body,
+    fontSize: fontSizes.bodySm,
+    lineHeight: lineHeights.bodySm,
   },
   labelDescriptionLarge: {
     fontSize: fontSizes.h6,
-    lineHeight: lineHeights.body,
+    lineHeight: lineHeights.bodyMd,
   },
   
   // Tones for fallback backgrounds

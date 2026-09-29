@@ -25,17 +25,20 @@ export const styles = stylex.create({
   },
   link: {
     fontFamily: fonts.sans,
-    fontSize: fontSizes.body,
+    fontSize: fontSizes.bodyMd,
     fontWeight: fontWeights.regular,
     color: colors.textWeak,
-    textDecoration: 'none',
-    transitionProperty: 'color',
+    textDecorationLine: 'none',
+    textDecorationColor: 'transparent',
+    transitionProperty: 'color, text-decoration-color, text-decoration-line',
     transitionDuration: durations.fast,
     transitionTimingFunction: easings.standard,
     cursor: 'pointer',
     borderRadius: shape.radiusSm,
     ':hover': {
-      color: colors.textStrong,
+      color: colors.textBrand,
+      textDecorationLine: 'underline',
+      textDecorationColor: colors.textBrand,
     },
     ':focus-visible': {
       outlineWidth: borders.medium,
@@ -46,7 +49,7 @@ export const styles = stylex.create({
   },
   current: {
     fontFamily: fonts.sans,
-    fontSize: fontSizes.body,
+    fontSize: fontSizes.bodyMd,
     fontWeight: fontWeights.medium,
     color: colors.textStrong,
     cursor: 'default',
@@ -54,7 +57,7 @@ export const styles = stylex.create({
   separator: {
     color: colors.textWeak,
     fontFamily: fonts.sans,
-    fontSize: fontSizes.body,
+    fontSize: fontSizes.bodyMd,
     userSelect: 'none',
   },
   ellipsis: {
@@ -62,7 +65,7 @@ export const styles = stylex.create({
     alignItems: 'center',
     justifyContent: 'center',
     fontFamily: fonts.sans,
-    fontSize: fontSizes.body,
+    fontSize: fontSizes.bodyMd,
     color: colors.textWeak,
     backgroundColor: 'transparent',
     borderWidth: 0,

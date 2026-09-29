@@ -29,7 +29,7 @@ export const styles = stylex.create({
     justifyContent: 'center',
     gap: spacing.space2,
     fontFamily: fonts.sans,
-    fontSize: fontSizes.body,
+    fontSize: fontSizes.bodyMd,
     fontWeight: fontWeights.medium,
     cursor: 'pointer',
     userSelect: 'none',
@@ -75,12 +75,12 @@ export const styles = stylex.create({
   itemMedium: {
     paddingBottom: spacing.space3,
     paddingTop: spacing.space3,
-    fontSize: fontSizes.body,
+    fontSize: fontSizes.bodyMd,
   },
   itemSmall: {
     paddingBottom: spacing.space2,
     paddingTop: spacing.space2,
-    fontSize: fontSizes.caption,
+    fontSize: fontSizes.bodySm,
   },
 
   panel: {
