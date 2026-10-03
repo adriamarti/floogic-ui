@@ -1,7 +1,7 @@
 import * as stylex from '@stylexjs/stylex';
 import React, { forwardRef } from 'react';
-
 import { styles } from './ButtonGroup.stylex';
+import { mergeStyles } from '../../utils/mergeStyles';
 
 // ---------------------------------------------------------------------------
 // Context
@@ -13,8 +13,9 @@ export const ButtonGroupContext = React.createContext<boolean>(false);
 // Component
 // ---------------------------------------------------------------------------
 
-export interface ButtonGroupProps extends Omit<React.ComponentPropsWithoutRef<'div'>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;}
+export interface ButtonGroupProps extends React.ComponentPropsWithoutRef<'div'> {
+  stylex?: stylex.StyleXStyles;
+}
 
 /**
  * ButtonGroup
@@ -28,15 +29,14 @@ export interface ButtonGroupProps extends Omit<React.ComponentPropsWithoutRef<'d
  * </ButtonGroup>
  */
 export const ButtonGroup = forwardRef<HTMLDivElement, ButtonGroupProps>(
-  ({ style, children, ...props  }, ref) => {
-    const resolved = stylex.props(styles.root, style);
+  ({ stylex: stylexProp, className, style, children, role = 'group', ...props }, ref) => {
     return (
       <ButtonGroupContext.Provider value={true}>
         <div 
           ref={ref} 
-          className={resolved.className}
-          style={resolved.style}
+          role={role}
           {...props}
+          {...mergeStyles(stylex.props(styles.root, stylexProp), className, style)}
         >
           {children}
         </div>

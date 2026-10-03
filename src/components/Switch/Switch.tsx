@@ -3,6 +3,7 @@ import * as SwitchPrimitive from '@radix-ui/react-switch';
 import * as LabelPrimitive from '@radix-ui/react-label';
 import * as stylex from '@stylexjs/stylex';
 import { styles } from './Switch.stylex';
+import { mergeStyles } from '../../utils/mergeStyles';
 
 type SwitchContextValue = {
   id: string;
@@ -18,21 +19,25 @@ const useSwitchContext = () => {
   return context;
 };
 
-export type SwitchProps = Omit<React.ComponentPropsWithoutRef<'div'>, 'style'> & {
+export interface SwitchProps extends React.ComponentPropsWithoutRef<'div'> {
   id?: string;
   required?: boolean;
   disabled?: boolean;
-  style?: stylex.StyleXStyles;
-};
+  stylex?: stylex.StyleXStyles;
+}
 
 const SwitchRoot = forwardRef<HTMLDivElement, SwitchProps>(
-  ({ id: idProp, required = false, disabled = false, style, children, ...props }, ref) => {
+  ({ id: idProp, required = false, disabled = false, stylex: stylexProp, className, style, children, ...props }, ref) => {
     const generatedId = useId();
     const id = idProp || generatedId;
 
     return (
       <SwitchContext.Provider value={{ id, required, disabled }}>
-        <div ref={ref} {...stylex.props(styles.root, style)} {...props}>
+        <div 
+          ref={ref} 
+          {...props}
+          {...mergeStyles(stylex.props(styles.root, stylexProp), className, style)}
+        >
           {children}
         </div>
       </SwitchContext.Provider>
@@ -41,23 +46,27 @@ const SwitchRoot = forwardRef<HTMLDivElement, SwitchProps>(
 );
 SwitchRoot.displayName = 'Switch';
 
-export type SwitchLabelProps = Omit<React.ComponentPropsWithoutRef<'label'>, 'style'> & {
-  style?: stylex.StyleXStyles;
-};
+export interface SwitchLabelProps extends React.ComponentPropsWithoutRef<'label'> {
+  stylex?: stylex.StyleXStyles;
+}
 
 const Label = forwardRef<HTMLLabelElement, SwitchLabelProps>(
-  ({ children, style, ...props }, ref) => {
+  ({ children, stylex: stylexProp, className, style, ...props }, ref) => {
     const context = useSwitchContext();
     return (
       <LabelPrimitive.Root
         ref={ref}
         htmlFor={`${context.id}-field`}
-        {...stylex.props(
-          styles.label,
-          context.disabled && styles.labelDisabled,
+        {...props}
+        {...mergeStyles(
+          stylex.props(
+            styles.label,
+            context.disabled && styles.labelDisabled,
+            stylexProp
+          ),
+          className,
           style
         )}
-        {...props}
       >
         {children}
         {context.required && (
@@ -69,12 +78,12 @@ const Label = forwardRef<HTMLLabelElement, SwitchLabelProps>(
 );
 Label.displayName = 'Switch.Label';
 
-export type SwitchFieldProps = Omit<React.ComponentPropsWithoutRef<typeof SwitchPrimitive.Root>, 'style'> & {
-  style?: stylex.StyleXStyles;
-};
+export interface SwitchFieldProps extends React.ComponentPropsWithoutRef<typeof SwitchPrimitive.Root> {
+  stylex?: stylex.StyleXStyles;
+}
 
 const Field = forwardRef<HTMLButtonElement, SwitchFieldProps>(
-  ({ style, disabled, checked, defaultChecked, onCheckedChange, ...props }, ref) => {
+  ({ stylex: stylexProp, className, style, disabled, checked, defaultChecked, onCheckedChange, ...props }, ref) => {
     const context = useSwitchContext();
     
     const isControlled = checked !== undefined;
@@ -99,13 +108,17 @@ const Field = forwardRef<HTMLButtonElement, SwitchFieldProps>(
         onCheckedChange={handleCheckedChange}
         disabled={isDisabled}
         required={context.required}
-        {...stylex.props(
-          styles.track,
-          isChecked && styles.trackChecked,
-          isDisabled && styles.trackDisabled,
+        {...props}
+        {...mergeStyles(
+          stylex.props(
+            styles.track,
+            isChecked && styles.trackChecked,
+            isDisabled && styles.trackDisabled,
+            stylexProp
+          ),
+          className,
           style
         )}
-        {...props}
       >
         <SwitchPrimitive.Thumb
           {...stylex.props(

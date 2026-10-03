@@ -4,6 +4,7 @@ import * as ToastPrimitive from '@radix-ui/react-toast';
 import * as stylex from '@stylexjs/stylex';
 import { styles } from './Toast.stylex';
 import { Alert, AlertProps } from '../Alert';
+import { mergeStyles } from '../../utils/mergeStyles';
 
 export type ToastActionElement = React.ReactElement<typeof ToastPrimitive.Action>;
 
@@ -18,15 +19,15 @@ export type ToastPosition =
 export const ToastProvider = ToastPrimitive.Provider;
 
 export interface ToastViewportProps
-  extends Omit<React.ComponentPropsWithoutRef<typeof ToastPrimitive.Viewport>, 'className' | 'style'> {
+  extends React.ComponentPropsWithoutRef<typeof ToastPrimitive.Viewport> {
   position?: ToastPosition;
-  style?: stylex.StyleXStyles;
+  stylex?: stylex.StyleXStyles;
 }
 
 export const ToastViewport = React.forwardRef<
   React.ElementRef<typeof ToastPrimitive.Viewport>,
   ToastViewportProps
->(({ position = 'bottom-right', style, ...props }, ref) => {
+>(({ position = 'bottom-right', stylex: stylexProp, className, style, ...props }, ref) => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -41,14 +42,11 @@ export const ToastViewport = React.forwardRef<
     position === 'bottom-center' ? styles.positionBottomCenter :
     styles.positionBottomRight;
 
-  const resolved = stylex.props(styles.viewport, positionStyle, style);
-
   const content = (
     <ToastPrimitive.Viewport
       ref={ref}
-      className={resolved.className}
-      style={resolved.style}
       {...props}
+      {...mergeStyles(stylex.props(styles.viewport, positionStyle, stylexProp), className, style)}
     />
   );
 
@@ -58,23 +56,21 @@ export const ToastViewport = React.forwardRef<
 });
 ToastViewport.displayName = ToastPrimitive.Viewport.displayName;
 
-export interface ToastProps extends Omit<React.ComponentPropsWithoutRef<typeof ToastPrimitive.Root>, 'className' | 'style'> {
+export interface ToastProps extends React.ComponentPropsWithoutRef<typeof ToastPrimitive.Root> {
   tone?: AlertProps['tone'];
-  style?: stylex.StyleXStyles;
+  stylex?: stylex.StyleXStyles;
 }
 
 const ToastRoot = React.forwardRef<
   React.ElementRef<typeof ToastPrimitive.Root>,
   ToastProps
->(({ style, tone = 'neutral', children, ...props }, ref) => {
-  const resolved = stylex.props(styles.root, style);
+>(({ stylex: stylexProp, className, style, tone = 'neutral', children, ...props }, ref) => {
   return (
     <ToastPrimitive.Root
       ref={ref}
-      className={resolved.className}
-      style={resolved.style}
-      {...props}
       asChild
+      {...props}
+      {...mergeStyles(stylex.props(styles.root, stylexProp), className, style)}
     >
       <li className={stylex.props(styles.listItem).className} style={stylex.props(styles.listItem).style}>
         <Alert tone={tone} layout="horizontal">
@@ -86,46 +82,46 @@ const ToastRoot = React.forwardRef<
 });
 ToastRoot.displayName = ToastPrimitive.Root.displayName;
 
-export interface ToastTitleProps extends Omit<React.ComponentPropsWithoutRef<typeof ToastPrimitive.Title>, 'style'> {
-  style?: stylex.StyleXStyles;
+export interface ToastTitleProps extends React.ComponentPropsWithoutRef<typeof ToastPrimitive.Title> {
+  stylex?: stylex.StyleXStyles;
 }
 
 export const ToastTitle = React.forwardRef<
   React.ElementRef<typeof ToastPrimitive.Title>,
   ToastTitleProps
->(({ children, style, ...props }, ref) => (
+>(({ children, stylex: stylexProp, className, style, ...props }, ref) => (
   <ToastPrimitive.Title ref={ref} asChild {...props}>
-    <Alert.Heading style={style}>{children}</Alert.Heading>
+    <Alert.Heading stylex={stylexProp} className={className} style={style}>{children}</Alert.Heading>
   </ToastPrimitive.Title>
 ));
 ToastTitle.displayName = ToastPrimitive.Title.displayName;
 
-export interface ToastDescriptionProps extends Omit<React.ComponentPropsWithoutRef<typeof ToastPrimitive.Description>, 'style'> {
-  style?: stylex.StyleXStyles;
+export interface ToastDescriptionProps extends React.ComponentPropsWithoutRef<typeof ToastPrimitive.Description> {
+  stylex?: stylex.StyleXStyles;
 }
 
 export const ToastDescription = React.forwardRef<
   React.ElementRef<typeof ToastPrimitive.Description>,
   ToastDescriptionProps
->(({ children, style, ...props }, ref) => (
+>(({ children, stylex: stylexProp, className, style, ...props }, ref) => (
   <ToastPrimitive.Description ref={ref} asChild {...props}>
-    <Alert.Description style={style}>{children}</Alert.Description>
+    <Alert.Description stylex={stylexProp} className={className} style={style}>{children}</Alert.Description>
   </ToastPrimitive.Description>
 ));
 ToastDescription.displayName = ToastPrimitive.Description.displayName;
 
 export const ToastAction = ToastPrimitive.Action;
 
-export interface ToastCloseProps extends Omit<React.ComponentPropsWithoutRef<typeof ToastPrimitive.Close>, 'style'> {
-  style?: stylex.StyleXStyles;
+export interface ToastCloseProps extends React.ComponentPropsWithoutRef<typeof ToastPrimitive.Close> {
+  stylex?: stylex.StyleXStyles;
 }
 
 export const ToastClose = React.forwardRef<
   React.ElementRef<typeof ToastPrimitive.Close>,
   ToastCloseProps
->(({ style, ...props }, ref) => (
+>(({ stylex: stylexProp, className, style, ...props }, ref) => (
   <ToastPrimitive.Close ref={ref} asChild {...props}>
-    <Alert.CloseButton aria-label="Dismiss toast" style={style} />
+    <Alert.CloseButton aria-label="Dismiss toast" stylex={stylexProp} className={className} style={style} />
   </ToastPrimitive.Close>
 ));
 ToastClose.displayName = ToastPrimitive.Close.displayName;

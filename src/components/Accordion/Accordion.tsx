@@ -2,27 +2,26 @@ import React, { forwardRef } from 'react';
 import * as AccordionPrimitive from '@radix-ui/react-accordion';
 import * as stylex from '@stylexjs/stylex';
 import { styles } from './Accordion.stylex';
+import { mergeStyles } from '../../utils/mergeStyles';
 
 // ---------------------------------------------------------------------------
 // Root Component
 // ---------------------------------------------------------------------------
 
 export type AccordionProps = (
-  | Omit<AccordionPrimitive.AccordionSingleProps, 'className' | 'style'>
-  | Omit<AccordionPrimitive.AccordionMultipleProps, 'className' | 'style'>
+  | AccordionPrimitive.AccordionSingleProps
+  | AccordionPrimitive.AccordionMultipleProps
 ) & {
-  style?: stylex.StyleXStyles;
+  stylex?: stylex.StyleXStyles;
 };
 
 const AccordionRoot = forwardRef<HTMLDivElement, AccordionProps>(
-  ({ style, ...props  }, ref) => {
-    const resolved = stylex.props(styles.root, style);
+  ({ stylex: stylexProp, className, style, ...props }, ref) => {
     return (
       <AccordionPrimitive.Root 
         ref={ref} 
-        className={resolved.className}
-        style={resolved.style}
-        {...props} 
+        {...(props as any)}
+        {...mergeStyles(stylex.props(styles.root, stylexProp), className, style)}
       />
     );
   }
@@ -33,58 +32,52 @@ AccordionRoot.displayName = 'Accordion';
 // Sub-components
 // ---------------------------------------------------------------------------
 
-export interface AccordionItemProps extends Omit<React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface AccordionItemProps extends React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item> {
+  stylex?: stylex.StyleXStyles;
 }
 
 const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
-  ({ style, ...props  }, ref) => {
-    const resolved = stylex.props(styles.item, style);
+  ({ stylex: stylexProp, className, style, ...props }, ref) => {
     return (
       <AccordionPrimitive.Item 
         ref={ref} 
-        className={resolved.className}
-        style={resolved.style}
-        {...props} 
+        {...props}
+        {...mergeStyles(stylex.props(styles.item, stylexProp), className, style)}
       />
     );
   }
 );
 AccordionItem.displayName = 'Accordion.Item';
 
-export interface AccordionHeaderProps extends Omit<React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Header>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface AccordionHeaderProps extends React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Header> {
+  stylex?: stylex.StyleXStyles;
 }
 
 const AccordionHeader = forwardRef<HTMLHeadingElement, AccordionHeaderProps>(
-  ({ style, ...props  }, ref) => {
-    const resolved = stylex.props(styles.header, style);
+  ({ stylex: stylexProp, className, style, ...props }, ref) => {
     return (
       <AccordionPrimitive.Header 
         ref={ref} 
-        className={resolved.className}
-        style={resolved.style}
-        {...props} 
+        {...props}
+        {...mergeStyles(stylex.props(styles.header, stylexProp), className, style)}
       />
     );
   }
 );
 AccordionHeader.displayName = 'Accordion.Header';
 
-export interface AccordionTriggerProps extends Omit<React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface AccordionTriggerProps extends React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger> {
+  stylex?: stylex.StyleXStyles;
 }
 
 const AccordionTrigger = forwardRef<HTMLButtonElement, AccordionTriggerProps>(
-  ({ style, children, ...props  }, ref) => {
-    const resolved = stylex.props(styles.trigger, style);
+  ({ stylex: stylexProp, className, style, children, ...props }, ref) => {
     const chevronResolved = stylex.props(styles.chevron);
     return (
       <AccordionPrimitive.Trigger 
         ref={ref} 
-        className={resolved.className}
-        style={resolved.style}
-        {...props} 
+        {...props}
+        {...mergeStyles(stylex.props(styles.trigger, stylexProp), className, style)}
       >
         {children}
         <svg 
@@ -107,20 +100,18 @@ const AccordionTrigger = forwardRef<HTMLButtonElement, AccordionTriggerProps>(
 );
 AccordionTrigger.displayName = 'Accordion.Trigger';
 
-export interface AccordionContentProps extends Omit<React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface AccordionContentProps extends React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content> {
+  stylex?: stylex.StyleXStyles;
 }
 
 const AccordionContent = forwardRef<HTMLDivElement, AccordionContentProps>(
-  ({ style, children, ...props  }, ref) => {
-    const resolved = stylex.props(styles.content, style);
+  ({ stylex: stylexProp, className, style, children, ...props }, ref) => {
     const innerResolved = stylex.props(styles.contentInner);
     return (
       <AccordionPrimitive.Content 
         ref={ref} 
-        className={resolved.className}
-        style={resolved.style}
-        {...props} 
+        {...props}
+        {...mergeStyles(stylex.props(styles.content, stylexProp), className, style)}
       >
         <div className={innerResolved.className} style={innerResolved.style}>
           {children}

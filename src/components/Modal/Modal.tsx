@@ -6,6 +6,7 @@ import { Typography } from '../Typography';
 import { IconButton } from '../IconButton';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { Drawer } from '../Drawer';
+import { mergeStyles } from '../../utils/mergeStyles';
 
 export interface ModalProps extends Dialog.DialogProps {
   /** If true, the modal is rendered open. */
@@ -25,20 +26,32 @@ ModalRoot.displayName = 'Modal';
 
 export const ModalTrigger = Dialog.Trigger;
 
-export interface ModalContentProps extends Omit<Dialog.DialogContentProps, 'style'> {
+export interface ModalContentProps extends Dialog.DialogContentProps {
   /** The size (width) of the modal on desktop. Defaults to 'medium'. */
   size?: 'small' | 'medium' | 'large';
-  style?: stylex.StyleXStyles;
+  stylex?: stylex.StyleXStyles;
+  overlayStylex?: stylex.StyleXStyles;
+  /** @deprecated use overlayStylex */
   overlayStyle?: stylex.StyleXStyles;
 }
 
 export const ModalContent = React.forwardRef<HTMLDivElement, ModalContentProps>(
-  ({ children, size = 'medium', style, overlayStyle, ...props }, ref) => {
+  ({ children, size = 'medium', stylex: stylexProp, overlayStylex, overlayStyle, className, style, ...props }, ref) => {
     const isMobile = useMediaQuery('(max-width: 767px)');
+    const finalOverlayStylex = overlayStylex ?? overlayStyle;
 
     if (isMobile) {
       return (
-        <Drawer.Content position="bottom" size="small" style={style} overlayStyle={overlayStyle} {...props} ref={ref}>
+        <Drawer.Content 
+          position="bottom" 
+          size="small" 
+          stylex={stylexProp} 
+          overlayStylex={finalOverlayStylex} 
+          className={className}
+          style={style}
+          {...props} 
+          ref={ref}
+        >
           {children}
         </Drawer.Content>
       );
@@ -51,13 +64,17 @@ export const ModalContent = React.forwardRef<HTMLDivElement, ModalContentProps>(
 
     return (
       <Dialog.Portal>
-        <Dialog.Overlay {...stylex.props(styles.overlay, overlayStyle)} />
+        <Dialog.Overlay {...stylex.props(styles.overlay, finalOverlayStylex)} />
         <Dialog.Content
           ref={ref}
           {...props}
-          {...stylex.props(
-            styles.content,
-            sizeStyle,
+          {...mergeStyles(
+            stylex.props(
+              styles.content,
+              sizeStyle,
+              stylexProp
+            ),
+            className,
             style
           )}
         >
@@ -69,20 +86,28 @@ export const ModalContent = React.forwardRef<HTMLDivElement, ModalContentProps>(
 );
 ModalContent.displayName = 'Modal.Content';
 
-export interface ModalHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'style'> {
-  style?: stylex.StyleXStyles;
+export interface ModalHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
+  stylex?: stylex.StyleXStyles;
 }
 
 export const ModalHeader = React.forwardRef<HTMLDivElement, ModalHeaderProps>(
-  ({ children, style, ...props }, ref) => {
+  ({ children, stylex: stylexProp, className, style, ...props }, ref) => {
     const isMobile = useMediaQuery('(max-width: 767px)');
     
     if (isMobile) {
-      return <Drawer.Header style={style} {...props} ref={ref}>{children}</Drawer.Header>;
+      return (
+        <Drawer.Header stylex={stylexProp} className={className} style={style} {...props} ref={ref}>
+          {children}
+        </Drawer.Header>
+      );
     }
 
     return (
-      <div ref={ref} {...props} {...stylex.props(styles.header, style)}>
+      <div 
+        ref={ref} 
+        {...props}
+        {...mergeStyles(stylex.props(styles.header, stylexProp), className, style)}
+      >
         {children}
       </div>
     );
@@ -90,21 +115,25 @@ export const ModalHeader = React.forwardRef<HTMLDivElement, ModalHeaderProps>(
 );
 ModalHeader.displayName = 'Modal.Header';
 
-export interface ModalTitleProps extends Omit<Dialog.DialogTitleProps, 'style'> {
-  style?: stylex.StyleXStyles;
+export interface ModalTitleProps extends Dialog.DialogTitleProps {
+  stylex?: stylex.StyleXStyles;
 }
 
 export const ModalTitle = React.forwardRef<HTMLHeadingElement, ModalTitleProps>(
-  ({ children, style, ...props }, ref) => {
+  ({ children, stylex: stylexProp, className, style, ...props }, ref) => {
     const isMobile = useMediaQuery('(max-width: 767px)');
     
     if (isMobile) {
-      return <Drawer.Title style={style} {...props} ref={ref}>{children}</Drawer.Title>;
+      return (
+        <Drawer.Title stylex={stylexProp} className={className} style={style} {...props} ref={ref}>
+          {children}
+        </Drawer.Title>
+      );
     }
 
     return (
       <Dialog.Title asChild ref={ref} {...props}>
-        <Typography variant="h3" style={style}>
+        <Typography variant="h3" stylex={stylexProp} className={className} style={style}>
           {children}
         </Typography>
       </Dialog.Title>
@@ -113,21 +142,25 @@ export const ModalTitle = React.forwardRef<HTMLHeadingElement, ModalTitleProps>(
 );
 ModalTitle.displayName = 'Modal.Title';
 
-export interface ModalDescriptionProps extends Omit<Dialog.DialogDescriptionProps, 'style'> {
-  style?: stylex.StyleXStyles;
+export interface ModalDescriptionProps extends Dialog.DialogDescriptionProps {
+  stylex?: stylex.StyleXStyles;
 }
 
 export const ModalDescription = React.forwardRef<HTMLParagraphElement, ModalDescriptionProps>(
-  ({ children, style, ...props }, ref) => {
+  ({ children, stylex: stylexProp, className, style, ...props }, ref) => {
     const isMobile = useMediaQuery('(max-width: 767px)');
 
     if (isMobile) {
-      return <Drawer.Description style={style} {...props} ref={ref}>{children}</Drawer.Description>;
+      return (
+        <Drawer.Description stylex={stylexProp} className={className} style={style} {...props} ref={ref}>
+          {children}
+        </Drawer.Description>
+      );
     }
 
     return (
       <Dialog.Description asChild ref={ref} {...props}>
-        <Typography variant="bodyMd" color="weak" style={style}>
+        <Typography variant="bodyMd" color="weak" stylex={stylexProp} className={className} style={style}>
           {children}
         </Typography>
       </Dialog.Description>
@@ -136,23 +169,42 @@ export const ModalDescription = React.forwardRef<HTMLParagraphElement, ModalDesc
 );
 ModalDescription.displayName = 'Modal.Description';
 
-export interface ModalCloseButtonProps extends Omit<React.ComponentPropsWithoutRef<typeof IconButton>, 'style' | 'children'> {
+export interface ModalCloseButtonProps extends Omit<React.ComponentPropsWithoutRef<typeof IconButton>, 'children'> {
   children?: React.ReactNode;
-  style?: stylex.StyleXStyles;
+  stylex?: stylex.StyleXStyles;
 }
 
-
 export const ModalCloseButton = React.forwardRef<HTMLButtonElement, ModalCloseButtonProps>(
-  ({ 'aria-label': ariaLabel = "Close modal", style, ...props }, ref) => {
+  ({ 'aria-label': ariaLabel = "Close modal", stylex: stylexProp, className, style, ...props }, ref) => {
     const isMobile = useMediaQuery('(max-width: 767px)');
 
     if (isMobile) {
-      return <Drawer.CloseButton aria-label={ariaLabel} style={style} {...props} ref={ref} />;
+      return (
+        <Drawer.CloseButton 
+          aria-label={ariaLabel} 
+          stylex={stylexProp} 
+          className={className}
+          style={style}
+          {...props} 
+          ref={ref} 
+        />
+      );
     }
 
     return (
       <Dialog.Close asChild>
-        <IconButton ref={ref} aria-label={ariaLabel} variant="tertiary" tone="neutral" size="small" style={style} {...props}>
+        <IconButton 
+          ref={ref} 
+          type="button"
+          aria-label={ariaLabel} 
+          variant="tertiary" 
+          tone="neutral" 
+          size="small" 
+          stylex={stylexProp} 
+          className={className}
+          style={style}
+          {...props}
+        >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
         </IconButton>
       </Dialog.Close>
@@ -161,20 +213,28 @@ export const ModalCloseButton = React.forwardRef<HTMLButtonElement, ModalCloseBu
 );
 ModalCloseButton.displayName = 'Modal.CloseButton';
 
-export interface ModalBodyProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'style'> {
-  style?: stylex.StyleXStyles;
+export interface ModalBodyProps extends React.HTMLAttributes<HTMLDivElement> {
+  stylex?: stylex.StyleXStyles;
 }
 
 export const ModalBody = React.forwardRef<HTMLDivElement, ModalBodyProps>(
-  ({ children, style, ...props }, ref) => {
+  ({ children, stylex: stylexProp, className, style, ...props }, ref) => {
     const isMobile = useMediaQuery('(max-width: 767px)');
 
     if (isMobile) {
-      return <Drawer.Body style={style} {...props} ref={ref}>{children}</Drawer.Body>;
+      return (
+        <Drawer.Body stylex={stylexProp} className={className} style={style} {...props} ref={ref}>
+          {children}
+        </Drawer.Body>
+      );
     }
 
     return (
-      <div ref={ref} {...props} {...stylex.props(styles.body, style)}>
+      <div 
+        ref={ref} 
+        {...props}
+        {...mergeStyles(stylex.props(styles.body, stylexProp), className, style)}
+      >
         {children}
       </div>
     );
@@ -182,20 +242,28 @@ export const ModalBody = React.forwardRef<HTMLDivElement, ModalBodyProps>(
 );
 ModalBody.displayName = 'Modal.Body';
 
-export interface ModalFooterProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'style'> {
-  style?: stylex.StyleXStyles;
+export interface ModalFooterProps extends React.HTMLAttributes<HTMLDivElement> {
+  stylex?: stylex.StyleXStyles;
 }
 
 export const ModalFooter = React.forwardRef<HTMLDivElement, ModalFooterProps>(
-  ({ children, style, ...props }, ref) => {
+  ({ children, stylex: stylexProp, className, style, ...props }, ref) => {
     const isMobile = useMediaQuery('(max-width: 767px)');
 
     if (isMobile) {
-      return <Drawer.Footer style={style} {...props} ref={ref}>{children}</Drawer.Footer>;
+      return (
+        <Drawer.Footer stylex={stylexProp} className={className} style={style} {...props} ref={ref}>
+          {children}
+        </Drawer.Footer>
+      );
     }
 
     return (
-      <div ref={ref} {...props} {...stylex.props(styles.footer, style)}>
+      <div 
+        ref={ref} 
+        {...props}
+        {...mergeStyles(stylex.props(styles.footer, stylexProp), className, style)}
+      >
         {children}
       </div>
     );

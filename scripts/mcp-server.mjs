@@ -4,13 +4,12 @@
  * Floogic UI — Model Context Protocol (MCP) Server
  *
  * Implements the standard MCP Stdio transport protocol (JSON-RPC 2.0).
- * Exposes tools for component discovery, documentation lookup, recipe fetching, and code validation.
+ * Exposes tools, resources, and prompts for component discovery, documentation lookup, and code validation.
  */
 
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { readline } from 'node:readline';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,38 +19,22 @@ const rootDir = path.resolve(__dirname, '..');
 let catalog = null;
 const catalogPath = path.join(rootDir, '.ai/ai-catalog.json');
 if (fs.existsSync(catalogPath)) {
-  catalog = JSON.parse(fs.readFileSync(catalogPath, 'utf-8'));
-}
-
-// Helper: Read recipes
-function getRecipeCode(recipeName) {
-  const nameMap = {
-    auth: 'AuthRecipe.tsx',
-    settings: 'SettingsRecipe.tsx',
-    'data-table': 'DataTableRecipe.tsx',
-    datatable: 'DataTableRecipe.tsx',
-    'modal-workflow': 'ModalWorkflowRecipe.tsx',
-    modal: 'ModalWorkflowRecipe.tsx',
-  };
-
-  const fileName = nameMap[recipeName.toLowerCase()] || `${recipeName}.tsx`;
-  const filePath = path.join(rootDir, 'src/recipes', fileName);
-
-  if (fs.existsSync(filePath)) {
-    return fs.readFileSync(filePath, 'utf-8');
+  try {
+    catalog = JSON.parse(fs.readFileSync(catalogPath, 'utf-8'));
+  } catch (e) {
+    catalog = null;
   }
-  return null;
 }
 
 // Tool definitions
 const TOOLS = [
   {
     name: 'search_components',
-    description: 'Search Floogic UI components by keyword, intent, or usage description.',
+    description: 'Search Floogic UI components by keyword, intent, synonym (e.g. dialog, dropdown, input), or use case.',
     inputSchema: {
       type: 'object',
       properties: {
-        query: { type: 'string', description: 'Search term e.g. "modal dialog", "form inputs", "tabs navigation"' },
+        query: { type: 'string', description: 'Search term e.g. "modal dialog", "form inputs", "tabs navigation", "dropdown picker"' },
       },
       required: ['query'],
     },
@@ -62,25 +45,14 @@ const TOOLS = [
     inputSchema: {
       type: 'object',
       properties: {
-        componentName: { type: 'string', description: 'Name of the component e.g. "Card", "Modal", "Select", "TextInput"' },
+        componentName: { type: 'string', description: 'Name of the component e.g. "Card", "Modal", "Select", "TextInput", "Button"' },
       },
       required: ['componentName'],
     },
   },
   {
-    name: 'get_recipe',
-    description: 'Get production-ready pre-assembled UI recipe code (auth, settings, data-table, modal-workflow).',
-    inputSchema: {
-      type: 'object',
-      properties: {
-        recipeName: { type: 'string', description: 'Recipe key: "auth", "settings", "data-table", "modal-workflow"' },
-      },
-      required: ['recipeName'],
-    },
-  },
-  {
     name: 'validate_code',
-    description: 'Validate React code against Floogic UI compliance rules (Compound syntax, StyleX, Design Tokens).',
+    description: 'Validate React code against Floogic UI compliance rules (Compound syntax, StyleX stylex prop, Design Tokens).',
     inputSchema: {
       type: 'object',
       properties: {
@@ -91,26 +63,68 @@ const TOOLS = [
   },
 ];
 
+// MCP Resources
+const RESOURCES = [
+  {
+    uri: 'floogic://guidelines',
+    name: 'Floogic UI Architectural Guidelines',
+    description: 'Core rules for using Floogic UI: Compound components, StyleX stylex prop, and Design Tokens',
+    mimeType: 'text/markdown',
+  },
+  {
+    uri: 'floogic://tokens',
+    name: 'Floogic UI Design Tokens Reference',
+    description: 'Available design tokens (colors, spacing, shape, borders, typography, elevation)',
+    mimeType: 'application/json',
+  },
+];
+
+// MCP Prompts
+const PROMPTS = [
+  {
+    name: 'scaffold_screen',
+    description: 'Generate a prompt for scaffolding a full screen using Floogic UI components and StyleX tokens',
+    arguments: [
+      { name: 'screenName', description: 'Name/purpose of the screen (e.g. User Profile, Dashboard Overview)', required: true },
+    ],
+  },
+  {
+    name: 'review_code',
+    description: 'Audit a React code snippet against Floogic UI compound exports, StyleX prop, and Design Tokens',
+    arguments: [
+      { name: 'code', description: 'React code snippet to review', required: true },
+    ],
+  },
+];
+
 // Execute MCP Tool
 function executeTool(name, args) {
   if (name === 'search_components') {
-    const q = (args.query || '').toLowerCase();
+    const q = (args.query || '').toLowerCase().trim();
     if (!catalog) return { error: 'Catalog metadata not available.' };
 
-    const matches = catalog.components.filter(c => 
-      c.name.toLowerCase().includes(q) || 
-      c.compoundExport.toLowerCase().includes(q)
-    );
+    const matches = catalog.components.filter(c => {
+      const matchName = c.name.toLowerCase().includes(q);
+      const matchExport = c.compoundExport.toLowerCase().includes(q);
+      const matchDesc = c.description && c.description.toLowerCase().includes(q);
+      const matchKeywords = c.keywords && c.keywords.some(k => k.toLowerCase().includes(q));
+      return matchName || matchExport || matchDesc || matchKeywords;
+    });
 
     return {
       query: args.query,
       resultsCount: matches.length,
-      components: matches,
+      components: matches.map(c => ({
+        name: c.name,
+        description: c.description,
+        compoundExport: c.compoundExport,
+        keywords: c.keywords,
+      })),
     };
   }
 
   if (name === 'get_component_doc') {
-    const target = (args.componentName || '').toLowerCase();
+    const target = (args.componentName || '').toLowerCase().trim();
     if (!catalog) return { error: 'Catalog metadata not available.' };
 
     const match = catalog.components.find(c => c.name.toLowerCase() === target);
@@ -123,28 +137,17 @@ function executeTool(name, args) {
 
     return {
       component: match.name,
+      description: match.description,
       compoundExport: match.compoundExport,
       subcomponents: match.subcomponents,
+      interfaces: match.interfaces,
       rules: [
         `Use compound exports: <${match.name}.${match.subcomponents[0] || 'Child'}>`,
-        'Use style?: stylex.StyleXStyles for custom styles',
-        'Import tokens from floogic-ui/tokens/*.stylex'
-      ]
-    };
-  }
-
-  if (name === 'get_recipe') {
-    const code = getRecipeCode(args.recipeName);
-    if (!code) {
-      return { 
-        error: `Recipe '${args.recipeName}' not found.`,
-        availableRecipes: ['auth', 'settings', 'data-table', 'modal-workflow']
-      };
-    }
-
-    return {
-      recipe: args.recipeName,
-      code: code
+        `Pass StyleX styles via 'stylex?: stylex.StyleXStyles' (e.g. <${match.name} stylex={styles.custom}>). Never pass StyleX objects to native 'style={...}'.`,
+        `Import tokens from '@floogic/ui' (colors, spacing, shape, borders, typography, elevation)`,
+        `Standard HTML attributes (className, style, aria-*, id) are forwarded via mergeStyles for native overrides.`
+      ],
+      exampleSnippet: `<${match.name} stylex={styles.root}>\n  ${match.subcomponents.length > 0 ? `<${match.name}.${match.subcomponents[0]}>...</${match.name}.${match.subcomponents[0]}>` : '...'}\n</${match.name}>`
     };
   }
 
@@ -153,24 +156,21 @@ function executeTool(name, args) {
     const issues = [];
 
     // Check standalone exports
-    const standaloneMatch = code.match(/\b(CardContent|CardHeading|ModalHeader|ModalTitle|AlertHeading)\b/g);
+    const standaloneMatch = code.match(
+      /\b(CardContent|CardHeading|CardDescription|CardMedia|CardFooter|ModalHeader|ModalTitle|ModalContent|ModalBody|ModalFooter|AlertHeading|AlertDescription|AlertIcon|AccordionItem|AccordionTrigger|AccordionContent|TabsList|TabsItem|TabsPanel|SelectItem|SelectTrigger|SelectContent)\b/g
+    );
     if (standaloneMatch) {
-      issues.push(`Forbidden standalone import/use of '${standaloneMatch.join(', ')}'. Use compound parent syntax like '<Card.Heading>'.`);
+      issues.push(`Forbidden standalone import/use of '${standaloneMatch.join(', ')}'. Use compound parent syntax like '<Card.Content>'.`);
     }
 
-    // Check className
-    if (code.includes('className=')) {
-      issues.push("Native 'className' detected. Use 'style?: stylex.StyleXStyles' and StyleX for styling.");
-    }
-
-    // Check inline style
-    if (/style\s*=\s*\{\{\s*[^}]+\}\}/.test(code)) {
-      issues.push("Native inline style={{ ... }} detected. Floogic UI strictly enforces StyleX styles.");
+    // Check passing StyleX styles to native style prop instead of stylex
+    if (/<[A-Z]\w+[^>]*\bstyle=\{styles\./.test(code)) {
+      issues.push("Passing StyleX styles to native 'style={styles...}' detected. In Floogic UI, use 'stylex={styles...}' for StyleX styles.");
     }
 
     // Check hardcoded colors
     if (/#([0-9a-fA-F]{3}){1,2}\b/.test(code)) {
-      issues.push("Hardcoded hex color found. Use 'colors.*' design tokens.");
+      issues.push("Hardcoded hex color found. Use 'colors.*' design tokens from '@floogic/ui'.");
     }
 
     return {
@@ -217,10 +217,14 @@ function handleJsonRpcMessage(msg) {
       id,
       result: {
         protocolVersion: '2024-11-05',
-        capabilities: { tools: {} },
+        capabilities: { 
+          tools: {},
+          resources: {},
+          prompts: {}
+        },
         serverInfo: {
           name: 'floogic-ui-mcp',
-          version: '0.1.0',
+          version: '0.1.1',
         },
       },
     });
@@ -231,6 +235,7 @@ function handleJsonRpcMessage(msg) {
     return;
   }
 
+  // Tools
   if (method === 'tools/list') {
     sendJsonRpc({
       jsonrpc: '2.0',
@@ -255,6 +260,113 @@ function handleJsonRpcMessage(msg) {
           },
         ],
       },
+    });
+    return;
+  }
+
+  // Resources
+  if (method === 'resources/list') {
+    sendJsonRpc({
+      jsonrpc: '2.0',
+      id,
+      result: { resources: RESOURCES },
+    });
+    return;
+  }
+
+  if (method === 'resources/read') {
+    const uri = params?.uri;
+    let contentText = '';
+
+    if (uri === 'floogic://guidelines') {
+      contentText = `# Floogic UI Guidelines\n1. Use compound syntax: <Card.Content>, <Modal.Title>, <Modal.CloseButton>.\n2. Pass StyleX styles via 'stylex={styles.custom}'. Never pass StyleX objects to native 'style={...}'.\n3. Use design tokens: import { colors, spacing, shape, borders, fonts } from '@floogic/ui'.`;
+    } else if (uri === 'floogic://tokens') {
+      contentText = JSON.stringify(catalog?.tokens || [], null, 2);
+    } else {
+      sendJsonRpc({
+        jsonrpc: '2.0',
+        id,
+        error: { code: -32602, message: `Resource not found: ${uri}` },
+      });
+      return;
+    }
+
+    sendJsonRpc({
+      jsonrpc: '2.0',
+      id,
+      result: {
+        contents: [
+          {
+            uri,
+            mimeType: 'text/plain',
+            text: contentText,
+          },
+        ],
+      },
+    });
+    return;
+  }
+
+  // Prompts
+  if (method === 'prompts/list') {
+    sendJsonRpc({
+      jsonrpc: '2.0',
+      id,
+      result: { prompts: PROMPTS },
+    });
+    return;
+  }
+
+  if (method === 'prompts/get') {
+    const promptName = params?.name;
+    const promptArgs = params?.arguments || {};
+
+    if (promptName === 'scaffold_screen') {
+      const screen = promptArgs.screenName || 'New Screen';
+      sendJsonRpc({
+        jsonrpc: '2.0',
+        id,
+        result: {
+          description: `Scaffold ${screen} with Floogic UI`,
+          messages: [
+            {
+              role: 'user',
+              content: {
+                type: 'text',
+                text: `Please design and implement the screen "${screen}" using @floogic/ui. Follow these constraints strictly:\n1. Use Compound Component syntax exclusively (<Card.Content>, <Modal.Header>, etc.).\n2. Use StyleX for custom styling via 'stylex={styles.custom}'. Do not pass StyleX to native 'style={...}'.\n3. Import all tokens from '@floogic/ui' (colors, spacing, shape, borders, fonts).\n4. Ensure full accessibility.`
+              }
+            }
+          ]
+        }
+      });
+      return;
+    }
+
+    if (promptName === 'review_code') {
+      const code = promptArgs.code || '';
+      sendJsonRpc({
+        jsonrpc: '2.0',
+        id,
+        result: {
+          description: `Review code for Floogic UI compliance`,
+          messages: [
+            {
+              role: 'user',
+              content: {
+                type: 'text',
+                text: `Please audit the following React code for compliance with @floogic/ui architectural guidelines:\n\n\`\`\`tsx\n${code}\n\`\`\`\n\nVerify:\n1. Are all Floogic UI components using compound syntax (e.g. <Card.Content> instead of standalone imports)?\n2. Are StyleX styles passed via the 'stylex' prop and not native 'style'?\n3. Are design tokens used instead of hardcoded hex colors or pixel values?`
+              }
+            }
+          ]
+        }
+      });
+      return;
+    }
+
+    sendJsonRpc({
+      jsonrpc: '2.0',
+      id,
+      error: { code: -32602, message: `Prompt not found: ${promptName}` },
     });
     return;
   }

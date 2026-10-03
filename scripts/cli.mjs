@@ -78,7 +78,7 @@ function initAi() {
   copyDirRecursive(packageAiDir, targetAiDir);
   console.log('  ✅ Installed AI manifests, rules & skills package into .ai/floogic-ui/');
 
-  // 2. Add Cursor MDC rule (scoped file name, avoids overwriting other rules)
+  // 2. Add Cursor MDC rule
   const cursorSrc = path.join(packageRootDir, '.ai/rules/cursor/floogic-ui.mdc');
   const cursorDest = path.join(userCwd, '.cursor/rules/floogic-ui.mdc');
   if (fs.existsSync(cursorSrc)) {
@@ -88,32 +88,55 @@ function initAi() {
     console.log('  ✅ Installed Cursor rule: .cursor/rules/floogic-ui.mdc');
   }
 
-  // 3. Safe append to existing CLAUDE.md, GEMINI.md, CODEX.md, copilot-instructions.md
+  // 3. Add Windsurf rule (.windsurfrules)
+  const windsurfSrc = path.join(packageRootDir, '.ai/rules/windsurf/.windsurfrules');
+  const windsurfDest = path.join(userCwd, '.windsurfrules');
+  if (fs.existsSync(windsurfSrc) && !fs.existsSync(windsurfDest)) {
+    fs.copyFileSync(windsurfSrc, windsurfDest);
+    console.log('  ✅ Installed Windsurf rule: .windsurfrules');
+  }
+
+  // 4. Add Cline / Roo Code rule (.clinerules)
+  const clineSrc = path.join(packageRootDir, '.ai/rules/cline/.clinerules');
+  const clineDest = path.join(userCwd, '.clinerules');
+  if (fs.existsSync(clineSrc) && !fs.existsSync(clineDest)) {
+    fs.copyFileSync(clineSrc, clineDest);
+    console.log('  ✅ Installed Cline rule: .clinerules');
+  }
+
+  // 5. Register skills natively for Antigravity & Gemini CLI in .gemini/skills/floogic-ui/
+  const geminiSkillsTarget = path.join(userCwd, '.gemini/skills/floogic-ui');
+  const skillsSource = path.join(packageRootDir, '.ai/skills/floogic-ui');
+  if (fs.existsSync(skillsSource)) {
+    copyDirRecursive(skillsSource, geminiSkillsTarget);
+    console.log('  ✅ Registered Antigravity / Gemini skills in .gemini/skills/floogic-ui/');
+  }
+
+  // 6. Safe append to existing CLAUDE.md, GEMINI.md, CODEX.md, AGENTS.md, .github/copilot-instructions.md
   safeAppend(
     path.join(userCwd, 'CLAUDE.md'),
-    '## Floogic UI Design System\nRefer to `.ai/floogic-ui/rules/CLAUDE.md`, `.ai/floogic-ui/llms.txt`, and `.ai/floogic-ui/skills/floogic-ui/component-usage/SKILL.md` for components and StyleX guidelines.'
+    `## Floogic UI Design System (@floogic/ui)\n- Use compound component syntax: <Card.Content>, <Modal.Title>, <Modal.CloseButton>, <Accordion.Item>, <Select.Item>.\n- Pass StyleX overrides via 'stylex={styles.custom}'. Never pass StyleX objects to native 'style={...}'.\n- Import design tokens: 'import { colors, spacing, shape, borders, fonts } from "@floogic/ui"'.\n- Refer to \`.ai/floogic-ui/llms.txt\` and \`.ai/floogic-ui/skills/floogic-ui/component-usage/SKILL.md\` for usage guidelines and examples.`
   );
 
   safeAppend(
     path.join(userCwd, 'GEMINI.md'),
-    '## Floogic UI Design System\nRefer to `.ai/floogic-ui/rules/GEMINI.md`, `.ai/floogic-ui/llms.txt`, and `.ai/floogic-ui/skills/floogic-ui/component-usage/SKILL.md` for components and StyleX guidelines.'
+    `## Floogic UI Design System (@floogic/ui)\n- Use compound component syntax: <Card.Content>, <Modal.Title>, <Modal.CloseButton>, <Accordion.Item>, <Select.Item>.\n- Pass StyleX overrides via 'stylex={styles.custom}'. Never pass StyleX objects to native 'style={...}'.\n- Import design tokens: 'import { colors, spacing, shape, borders, fonts } from "@floogic/ui"'.\n- Refer to \`.ai/floogic-ui/llms.txt\` and \`.ai/floogic-ui/skills/floogic-ui/component-usage/SKILL.md\` for usage guidelines and examples.`
   );
 
   safeAppend(
     path.join(userCwd, 'CODEX.md'),
-    '## Floogic UI Design System\nRefer to `.ai/floogic-ui/rules/CODEX.md`, `.ai/floogic-ui/llms.txt`, and `.ai/floogic-ui/skills/floogic-ui/component-usage/SKILL.md` for components and StyleX guidelines.'
+    `## Floogic UI Design System (@floogic/ui)\n- Use compound component syntax: <Card.Content>, <Modal.Title>, <Modal.CloseButton>, <Accordion.Item>, <Select.Item>.\n- Pass StyleX overrides via 'stylex={styles.custom}'. Never pass StyleX objects to native 'style={...}'.\n- Import design tokens: 'import { colors, spacing, shape, borders, fonts } from "@floogic/ui"'.\n- Refer to \`.ai/floogic-ui/llms.txt\` and \`.ai/floogic-ui/skills/floogic-ui/component-usage/SKILL.md\` for usage guidelines and examples.`
   );
 
   safeAppend(
     path.join(userCwd, 'AGENTS.md'),
-    '## Floogic UI Design System\nRefer to `.ai/floogic-ui/rules/GEMINI.md`, `.ai/floogic-ui/llms.txt`, and `.ai/floogic-ui/skills/floogic-ui/component-usage/SKILL.md` for components and StyleX guidelines.'
+    `## Floogic UI Design System (@floogic/ui)\n- Use compound component syntax: <Card.Content>, <Modal.Title>, <Modal.CloseButton>, <Accordion.Item>, <Select.Item>.\n- Pass StyleX overrides via 'stylex={styles.custom}'. Never pass StyleX objects to native 'style={...}'.\n- Import design tokens: 'import { colors, spacing, shape, borders, fonts } from "@floogic/ui"'.\n- Refer to \`.ai/floogic-ui/llms.txt\` and \`.ai/floogic-ui/skills/floogic-ui/component-usage/SKILL.md\` for usage guidelines and examples.`
   );
 
   safeAppend(
     path.join(userCwd, '.github/copilot-instructions.md'),
-    '## Floogic UI Design System\nRefer to `.ai/floogic-ui/rules/GEMINI.md`, `.ai/floogic-ui/llms.txt`, and `.ai/floogic-ui/skills/floogic-ui/component-usage/SKILL.md` for components and StyleX guidelines.'
+    `## Floogic UI Design System (@floogic/ui)\n- Always use compound exports: <Card.Content>, <Card.Heading>, <Modal.Title>, <Modal.CloseButton>, <Accordion.Item>, <Select.Item>.\n- Use StyleX overrides via 'stylex={styles.custom}'. Never pass StyleX objects to native 'style={...}'.\n- Import design tokens: 'import { colors, spacing, shape, borders, fonts } from "@floogic/ui"'.\n- Never hardcode raw hex colors or pixel values.`
   );
-
 
   console.log('\n🎉 Floogic UI AI setup complete! Zero existing files were overwritten.');
 }
@@ -171,16 +194,20 @@ export const styles = stylex.create({
   const tsxContent = `import React, { forwardRef } from 'react';
 import * as stylex from '@stylexjs/stylex';
 import { styles } from './${compName}.stylex';
+import { mergeStyles } from '../../utils/mergeStyles';
 
-export interface ${compName}Props extends Omit<React.HTMLAttributes<HTMLDivElement>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface ${compName}Props extends React.ComponentPropsWithoutRef<'div'> {
+  stylex?: stylex.StyleXStyles;
 }
 
 const ${compName}Root = forwardRef<HTMLDivElement, ${compName}Props>(
-  ({ style, children, ...props }, ref) => {
-    const resolved = stylex.props(styles.root, style);
+  ({ stylex: stylexProp, className, style, children, ...props }, ref) => {
     return (
-      <div ref={ref} className={resolved.className} style={resolved.style} {...props}>
+      <div 
+        ref={ref} 
+        {...props}
+        {...mergeStyles(stylex.props(styles.root, stylexProp), className, style)}
+      >
         {children}
       </div>
     );

@@ -1,9 +1,4 @@
----
-description: Floogic UI React Design System rules (StyleX, Compound Components, Tokens)
-globs: **/*.tsx, **/*.jsx, **/*.ts
----
-
-# Cursor Rules for Floogic UI (`@floogic/ui`)
+# Cline / Roo Code Rules for Floogic UI (`@floogic/ui`)
 
 You are an expert React developer specializing in Floogic UI, StyleX, and Radix UI primitives.
 

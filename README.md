@@ -8,9 +8,7 @@ A modern, highly accessible, token-driven Design System built with **React**, **
 
 - 🎨 **Token-Driven Architecture**: Fully powered by StyleX design tokens (`colors`, `spacing`, `shape`, `borders`, `typography`, `elevation`, `motion`). Zero hardcoded styles.
 - 📦 **Compound Components**: Clean API surface using compound parent exports (e.g. `<Modal.Header>`, `<Card.Content>`, `<Accordion.Item>`).
-- ♿ **Accessibility First**: Built on top of Radix UI primitives with full `aria-*`, `data-*`, keyboard navigation, and custom HTML attributes support.
-- 💅 **StyleX Override Support**: Every component accepts a `style?: stylex.StyleXStyles` prop for type-safe CSS overrides without specificity issues.
-- ⚡ **Lightweight & Performant**: Compile-time CSS extraction with zero runtime CSS-in-JS overhead.
+- 💅 **StyleX & CSS Override Support**: Every component accepts a `stylex?: stylex.StyleXStyles` prop for type-safe StyleX overrides, plus full support for standard HTML `className` and inline `style` attributes.
 
 ---
 
@@ -56,7 +54,7 @@ export function App() {
 
   return (
     <main>
-      <Card style={customStyles.cardOverride}>
+      <Card stylex={customStyles.cardOverride}>
         <Card.Media src="/hero.jpg" alt="Hero image" />
         <Card.Content>
           <Card.Heading>Welcome to Floogic UI</Card.Heading>
@@ -75,7 +73,7 @@ export function App() {
         <Modal.Content size="medium">
           <Modal.Header>
             <Modal.Title>Modal Dialog</Modal.Title>
-            <Modal.Close />
+            <Modal.CloseButton aria-label="Close" />
           </Modal.Header>
           <Modal.Body>
             This is a fully accessible modal dialog.
@@ -119,7 +117,7 @@ export function App() {
 | **HoverCard** | Popover card displayed on hover | `<HoverCard.Trigger>`, `<HoverCard.Content>` |
 | **IconButton** | Icon-only button with forced accessibility label | `<IconButton aria-label="Close">` |
 | **IconContainer**| Shaped wrapper for icons | `<IconContainer>` |
-| **Modal** | Focused dialog overlay | `<Modal.Content>`, `<Modal.Header>`, `<Modal.Title>`, `<Modal.Body>`, `<Modal.Footer>` |
+| **Modal** | Focused dialog overlay | `<Modal.Content>`, `<Modal.Header>`, `<Modal.Title>`, `<Modal.CloseButton>`, `<Modal.Body>`, `<Modal.Footer>` |
 | **Pagination** | Multi-page navigation control | `<Pagination>` |
 | **Popover** | Floating card anchored to a trigger element | `<Popover.Trigger>`, `<Popover.Content>`, `<Popover.Close>` |
 | **Progress** | Linear progress indicator | `<Progress>` |
@@ -155,7 +153,7 @@ import {
   elevation, 
   durations, 
   easings 
-} from 'floogic-ui';
+} from '@floogic/ui';
 ```
 
 ---
@@ -183,7 +181,7 @@ npx @floogic/ui mcp
 ### 2. AI Manifests (`llms.txt` & `llms-full.txt`)
 `floogic-ui` exports standard machine-readable documentation:
 - **`llms.txt`**: Concise standard manifest (token-efficient index) for prompt context.
-- **`llms-full.txt`**: Exhaustive technical documentation (complete TypeScript signatures & recipes) for **Claude Projects**, **Custom GPTs**, and **RAG search** in IDEs.
+- **`llms-full.txt`**: Exhaustive technical documentation (complete TypeScript signatures & component contracts) for **Claude Projects**, **Custom GPTs**, and **RAG search** in IDEs.
 
 ### 3. Connect Model Context Protocol (MCP) Server
 Enable your AI assistant to search components, fetch specs, and validate code via MCP:

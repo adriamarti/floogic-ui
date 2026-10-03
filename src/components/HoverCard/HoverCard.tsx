@@ -2,6 +2,7 @@ import React from 'react';
 import * as HoverCardPrimitive from '@radix-ui/react-hover-card';
 import * as stylex from '@stylexjs/stylex';
 import { styles } from './HoverCard.stylex';
+import { mergeStyles } from '../../utils/mergeStyles';
 
 export interface HoverCardProps extends HoverCardPrimitive.HoverCardProps {}
 
@@ -11,13 +12,12 @@ const HoverCardRoot = ({ ...props }: HoverCardProps) => {
 
 export const HoverCardTrigger = HoverCardPrimitive.Trigger;
 
-export interface HoverCardContentProps extends Omit<HoverCardPrimitive.HoverCardContentProps, 'style'> {
-  style?: stylex.StyleXStyles;
+export interface HoverCardContentProps extends HoverCardPrimitive.HoverCardContentProps {
+  stylex?: stylex.StyleXStyles;
 }
 
 export const HoverCardContent = React.forwardRef<HTMLDivElement, HoverCardContentProps>(
-  ({ children, side = 'bottom', sideOffset = 4, style, ...props }, ref) => {
-    
+  ({ children, side = 'bottom', sideOffset = 4, stylex: stylexProp, className, style, ...props }, ref) => {
     const sideStyle = 
       side === 'top' ? styles.sideTop :
       side === 'right' ? styles.sideRight :
@@ -31,7 +31,7 @@ export const HoverCardContent = React.forwardRef<HTMLDivElement, HoverCardConten
           side={side}
           sideOffset={sideOffset}
           {...props}
-          {...stylex.props(styles.content, sideStyle, style)}
+          {...mergeStyles(stylex.props(styles.content, sideStyle, stylexProp), className, style)}
         >
           {children}
         </HoverCardPrimitive.Content>

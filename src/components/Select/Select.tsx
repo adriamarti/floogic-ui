@@ -5,6 +5,7 @@ import { Command } from 'cmdk';
 import { Check, ChevronDown, Search, X } from 'lucide-react';
 import * as stylex from '@stylexjs/stylex';
 import { styles } from './Select.stylex';
+import { mergeStyles } from '../../utils/mergeStyles';
 
 // ---------------------------------------------------------------------------
 // Context
@@ -51,7 +52,9 @@ type BaseSelectProps = {
   defaultOpen?: boolean;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
-  style?: stylex.StyleXStyles;
+  stylex?: stylex.StyleXStyles;
+  className?: string;
+  style?: React.CSSProperties;
   children: React.ReactNode;
 };
 
@@ -85,6 +88,8 @@ const SelectRoot = (props: SelectProps) => {
     defaultOpen = false,
     open: controlledOpen,
     onOpenChange,
+    stylex: stylexProp,
+    className,
     style,
     children,
   } = props;
@@ -155,7 +160,7 @@ const SelectRoot = (props: SelectProps) => {
       setInputValue,
       emptyMessage,
     }}>
-      <div {...stylex.props(styles.root, style)}>
+      <div {...mergeStyles(stylex.props(styles.root, stylexProp), className, style)}>
         <PopoverPrimitive.Root open={open} onOpenChange={handleOpenChange}>
           <Command shouldFilter={searchable} {...stylex.props(styles.commandRoot)}>
             {children}
@@ -168,12 +173,12 @@ const SelectRoot = (props: SelectProps) => {
 
 // ---------------------------------------------------------------------------
 
-export type SelectLabelProps = Omit<React.ComponentPropsWithoutRef<'label'>, 'style'> & {
-  style?: stylex.StyleXStyles;
-};
+export interface SelectLabelProps extends React.ComponentPropsWithoutRef<'label'> {
+  stylex?: stylex.StyleXStyles;
+}
 
 export const SelectLabel = React.forwardRef<HTMLLabelElement, SelectLabelProps>(
-  ({ children, style, ...props }, ref) => {
+  ({ children, stylex: stylexProp, className, style, ...props }, ref) => {
     const context = useSelectContext();
     return (
       <div {...stylex.props(styles.labelContainer)}>
@@ -181,8 +186,8 @@ export const SelectLabel = React.forwardRef<HTMLLabelElement, SelectLabelProps>(
           ref={ref}
           id={`${context.id}-label`}
           htmlFor={`${context.id}-trigger`}
-          {...stylex.props(styles.label, style)}
           {...props}
+          {...mergeStyles(stylex.props(styles.label, stylexProp), className, style)}
         >
           {children}
           {context.required && (
@@ -197,16 +202,20 @@ SelectLabel.displayName = 'Select.Label';
 
 // ---------------------------------------------------------------------------
 
-export type SelectHintProps = Omit<React.ComponentPropsWithoutRef<'div'>, 'style'> & {
-  style?: stylex.StyleXStyles;
-};
+export interface SelectHintProps extends React.ComponentPropsWithoutRef<'div'> {
+  stylex?: stylex.StyleXStyles;
+}
 
 export const SelectHint = React.forwardRef<HTMLDivElement, SelectHintProps>(
-  ({ children, style, ...props }, ref) => {
+  ({ children, stylex: stylexProp, className, style, ...props }, ref) => {
     const context = useSelectContext();
     if (context.invalid) return null;
     return (
-      <div ref={ref} {...stylex.props(styles.hint, style)} {...props}>
+      <div 
+        ref={ref} 
+        {...props}
+        {...mergeStyles(stylex.props(styles.hint, stylexProp), className, style)}
+      >
         {children}
       </div>
     );
@@ -216,16 +225,20 @@ SelectHint.displayName = 'Select.Hint';
 
 // ---------------------------------------------------------------------------
 
-export type SelectErrorProps = Omit<React.ComponentPropsWithoutRef<'div'>, 'style'> & {
-  style?: stylex.StyleXStyles;
-};
+export interface SelectErrorProps extends React.ComponentPropsWithoutRef<'div'> {
+  stylex?: stylex.StyleXStyles;
+}
 
 export const SelectError = React.forwardRef<HTMLDivElement, SelectErrorProps>(
-  ({ children, style, ...props }, ref) => {
+  ({ children, stylex: stylexProp, className, style, ...props }, ref) => {
     const context = useSelectContext();
     if (!context.invalid) return null;
     return (
-      <div ref={ref} {...stylex.props(styles.errorContainer, style)} {...props}>
+      <div 
+        ref={ref} 
+        {...props}
+        {...mergeStyles(stylex.props(styles.errorContainer, stylexProp), className, style)}
+      >
         <span {...stylex.props(styles.errorText)}>{children}</span>
       </div>
     );
@@ -235,13 +248,13 @@ SelectError.displayName = 'Select.Error';
 
 // ---------------------------------------------------------------------------
 
-export type SelectTriggerProps = Omit<React.ComponentPropsWithoutRef<'button'>, 'style'> & {
+export interface SelectTriggerProps extends React.ComponentPropsWithoutRef<'button'> {
   placeholder?: string;
-  style?: stylex.StyleXStyles;
-};
+  stylex?: stylex.StyleXStyles;
+}
 
 export const SelectTrigger = React.forwardRef<HTMLButtonElement, SelectTriggerProps>(
-  ({ placeholder, style, ...props }, ref) => {
+  ({ placeholder, stylex: stylexProp, className, style, type = 'button', ...props }, ref) => {
     const context = useSelectContext();
 
     const handleRemoveTag = (e: React.MouseEvent, valToRemove: string) => {
@@ -287,14 +300,18 @@ export const SelectTrigger = React.forwardRef<HTMLButtonElement, SelectTriggerPr
           ref={ref}
           id={context.id}
           disabled={context.disabled}
-          type="button"
-          {...stylex.props(
-            styles.trigger,
-            context.disabled && styles.triggerDisabled,
-            context.invalid && styles.triggerInvalid,
+          type={type}
+          {...props}
+          {...mergeStyles(
+            stylex.props(
+              styles.trigger,
+              context.disabled && styles.triggerDisabled,
+              context.invalid && styles.triggerInvalid,
+              stylexProp
+            ),
+            className,
             style
           )}
-          {...props}
         >
           {hasValue ? contentNode : (
             <span {...stylex.props(styles.triggerPlaceholder)}>{placeholder}</span>
@@ -318,13 +335,13 @@ SelectTrigger.displayName = 'Select.Trigger';
 
 // ---------------------------------------------------------------------------
 
-export type SelectContentProps = Omit<React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>, 'style'> & {
+export interface SelectContentProps extends React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content> {
   emptyMessage?: React.ReactNode;
-  style?: stylex.StyleXStyles;
-};
+  stylex?: stylex.StyleXStyles;
+}
 
 export const SelectContent = React.forwardRef<HTMLDivElement, SelectContentProps>(
-  ({ children, align = 'start', sideOffset = 4, emptyMessage: emptyMessageProp, style, ...props }, ref) => {
+  ({ children, align = 'start', sideOffset = 4, emptyMessage: emptyMessageProp, stylex: stylexProp, className, style, ...props }, ref) => {
     const context = useSelectContext();
     const emptyMsg = emptyMessageProp ?? context.emptyMessage ?? 'No results found.';
     return (
@@ -336,8 +353,8 @@ export const SelectContent = React.forwardRef<HTMLDivElement, SelectContentProps
           onOpenAutoFocus={(e) => {
             if (context.searchable) e.preventDefault();
           }}
-          {...stylex.props(styles.content, style)}
           {...props}
+          {...mergeStyles(stylex.props(styles.content, stylexProp), className, style)}
         >
           {context.searchable && (
             <div {...stylex.props(styles.searchWrapper)}>
@@ -363,12 +380,12 @@ SelectContent.displayName = 'Select.Content';
 
 // ---------------------------------------------------------------------------
 
-export type SelectItemProps = Omit<React.ComponentPropsWithoutRef<typeof Command.Item>, 'style'> & {
-  style?: stylex.StyleXStyles;
-};
+export interface SelectItemProps extends React.ComponentPropsWithoutRef<typeof Command.Item> {
+  stylex?: stylex.StyleXStyles;
+}
 
 export const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
-  ({ children, value, onSelect, style, ...props }, ref) => {
+  ({ children, value, onSelect, stylex: stylexProp, className, style, ...props }, ref) => {
     const context = useSelectContext();
     
     let isSelected = false;
@@ -405,12 +422,16 @@ export const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
         ref={ref}
         value={value}
         onSelect={handleSelect}
-        {...stylex.props(
-          styles.item,
-          isSelected && styles.itemSelected,
+        {...props}
+        {...mergeStyles(
+          stylex.props(
+            styles.item,
+            isSelected && styles.itemSelected,
+            stylexProp
+          ),
+          className,
           style
         )}
-        {...props}
       >
         {context.multiselect && (
           <div {...stylex.props(

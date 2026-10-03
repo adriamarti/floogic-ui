@@ -2,6 +2,7 @@ import React, { forwardRef, useId } from 'react';
 import * as LabelPrimitive from '@radix-ui/react-label';
 import * as stylex from '@stylexjs/stylex';
 import { styles } from './TextArea.stylex';
+import { mergeStyles } from '../../utils/mergeStyles';
 
 // ---------------------------------------------------------------------------
 // Context
@@ -28,20 +29,20 @@ export function useTextAreaContext() {
 // Sub-components
 // ---------------------------------------------------------------------------
 
-export interface TextAreaLabelProps extends Omit<React.ComponentPropsWithoutRef<'label'>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface TextAreaLabelProps extends React.ComponentPropsWithoutRef<'label'> {
+  stylex?: stylex.StyleXStyles;
 }
 
 const Label = forwardRef<HTMLLabelElement, TextAreaLabelProps>(
-  ({ style, children, ...props }, ref) => {
+  ({ stylex: stylexProp, className, style, children, ...props }, ref) => {
     const context = useTextAreaContext();
     return (
       <div {...stylex.props(styles.labelContainer)}>
         <LabelPrimitive.Root
           ref={ref}
           htmlFor={context.id}
-          {...stylex.props(styles.label, style)}
           {...props}
+          {...mergeStyles(stylex.props(styles.label, stylexProp), className, style)}
         >
           {children}
           {context.required && (
@@ -54,20 +55,20 @@ const Label = forwardRef<HTMLLabelElement, TextAreaLabelProps>(
 );
 Label.displayName = 'TextArea.Label';
 
-export interface TextAreaHintProps extends Omit<React.ComponentPropsWithoutRef<'div'>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface TextAreaHintProps extends React.ComponentPropsWithoutRef<'div'> {
+  stylex?: stylex.StyleXStyles;
 }
 
 const Hint = forwardRef<HTMLDivElement, TextAreaHintProps>(
-  ({ style, children, ...props }, ref) => {
+  ({ stylex: stylexProp, className, style, children, ...props }, ref) => {
     const context = useTextAreaContext();
     if (context.invalid) return null;
 
     return (
       <div 
         ref={ref} 
-        {...stylex.props(styles.hint, style)} 
-        {...props} 
+        {...props}
+        {...mergeStyles(stylex.props(styles.hint, stylexProp), className, style)} 
       >
         {children}
       </div>
@@ -76,20 +77,20 @@ const Hint = forwardRef<HTMLDivElement, TextAreaHintProps>(
 );
 Hint.displayName = 'TextArea.Hint';
 
-export interface TextAreaErrorProps extends Omit<React.ComponentPropsWithoutRef<'div'>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface TextAreaErrorProps extends React.ComponentPropsWithoutRef<'div'> {
+  stylex?: stylex.StyleXStyles;
 }
 
 const ErrorMsg = forwardRef<HTMLDivElement, TextAreaErrorProps>(
-  ({ style, children, ...props }, ref) => {
+  ({ stylex: stylexProp, className, style, children, ...props }, ref) => {
     const context = useTextAreaContext();
     if (!context.invalid) return null;
 
     return (
       <div 
         ref={ref} 
-        {...stylex.props(styles.errorContainer, style)} 
-        {...props} 
+        {...props}
+        {...mergeStyles(stylex.props(styles.errorContainer, stylexProp), className, style)} 
       >
         <span {...stylex.props(styles.errorText)}>{children}</span>
       </div>
@@ -98,14 +99,14 @@ const ErrorMsg = forwardRef<HTMLDivElement, TextAreaErrorProps>(
 );
 ErrorMsg.displayName = 'TextArea.Error';
 
-export interface TextAreaFieldProps extends Omit<React.ComponentPropsWithoutRef<'textarea'>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface TextAreaFieldProps extends React.ComponentPropsWithoutRef<'textarea'> {
+  stylex?: stylex.StyleXStyles;
   /** Number of visible text lines. Defaults to 4. */
   rows?: number;
 }
 
 const Field = forwardRef<HTMLTextAreaElement, TextAreaFieldProps>(
-  ({ style, rows = 4, ...props }, ref) => {
+  ({ stylex: stylexProp, className, style, rows = 4, ...props }, ref) => {
     const context = useTextAreaContext();
     return (
       <div {...stylex.props(styles.fieldWrapper)}>
@@ -116,13 +117,17 @@ const Field = forwardRef<HTMLTextAreaElement, TextAreaFieldProps>(
           aria-invalid={context.invalid}
           disabled={context.disabled}
           required={context.required}
-          {...stylex.props(
-            styles.field,
-            context.invalid && styles.fieldInvalid,
-            context.disabled && styles.fieldDisabled,
+          {...props}
+          {...mergeStyles(
+            stylex.props(
+              styles.field,
+              context.invalid && styles.fieldInvalid,
+              context.disabled && styles.fieldDisabled,
+              stylexProp
+            ),
+            className,
             style
           )}
-          {...props}
         />
       </div>
     );
@@ -134,8 +139,8 @@ Field.displayName = 'TextArea.Field';
 // Root Component
 // ---------------------------------------------------------------------------
 
-export interface TextAreaProps extends Omit<React.ComponentPropsWithoutRef<'div'>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface TextAreaProps extends React.ComponentPropsWithoutRef<'div'> {
+  stylex?: stylex.StyleXStyles;
   id?: string;
   invalid?: boolean;
   required?: boolean;
@@ -143,7 +148,7 @@ export interface TextAreaProps extends Omit<React.ComponentPropsWithoutRef<'div'
 }
 
 const TextAreaRoot = forwardRef<HTMLDivElement, TextAreaProps>(
-  ({ style, id: idProp, invalid, required, disabled, ...props }, ref) => {
+  ({ stylex: stylexProp, className, style, id: idProp, invalid, required, disabled, ...props }, ref) => {
     const generatedId = useId();
     const id = idProp || generatedId;
 
@@ -151,8 +156,8 @@ const TextAreaRoot = forwardRef<HTMLDivElement, TextAreaProps>(
       <TextAreaContext.Provider value={{ id, invalid, required, disabled }}>
         <div 
           ref={ref} 
-          {...stylex.props(styles.root, style)} 
-          {...props} 
+          {...props}
+          {...mergeStyles(stylex.props(styles.root, stylexProp), className, style)} 
         />
       </TextAreaContext.Provider>
     );

@@ -100,7 +100,7 @@ export const styles = stylex.create({
     flex: '1 1 auto',
     minWidth: 0,
     padding: spacing.space6,
-    gap: spacing.space4,
+    gap: spacing.space2,
   },
 
   // Media (Image)
@@ -136,15 +136,15 @@ export const styles = stylex.create({
   // Typography
   heading: {
     fontFamily: fonts.sans,
-    fontSize: fontSizes.h5,
+    fontSize: fontSizes.bodyLg,
     fontWeight: fontWeights.semiBold,
     color: colors.textStrong,
     margin: 0,
-    lineHeight: lineHeights.h5,
+    lineHeight: lineHeights.bodyLg,
   },
   description: {
     fontFamily: fonts.sans,
-    fontSize: fontSizes.bodySm,
+    fontSize: fontSizes.bodyMd,
     fontWeight: fontWeights.regular,
     color: colors.textWeak,
     margin: 0,

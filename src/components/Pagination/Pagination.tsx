@@ -3,8 +3,9 @@ import * as stylex from '@stylexjs/stylex';
 import { styles } from './Pagination.stylex';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { IconButton } from '../IconButton';
+import { mergeStyles } from '../../utils/mergeStyles';
 
-export interface PaginationProps extends Omit<React.HTMLAttributes<HTMLElement>, 'style'> {
+export interface PaginationProps extends React.HTMLAttributes<HTMLElement> {
   /** The current active page (1-indexed) */
   currentPage: number;
   /** The total number of pages */
@@ -13,7 +14,7 @@ export interface PaginationProps extends Omit<React.HTMLAttributes<HTMLElement>,
   onPageChange: (page: number) => void;
   /** The number of siblings to show on each side of the active page */
   siblingCount?: number;
-  style?: stylex.StyleXStyles;
+  stylex?: stylex.StyleXStyles;
 }
 
 const ArrowLeftIcon = () => (
@@ -77,7 +78,7 @@ function usePagination({ currentPage, totalPages, siblingCount = 1 }: { currentP
 }
 
 export const Pagination = React.forwardRef<HTMLElement, PaginationProps>(
-  ({ currentPage, totalPages, onPageChange, siblingCount = 1, style, ...props }, ref) => {
+  ({ currentPage, totalPages, onPageChange, siblingCount = 1, stylex: stylexProp, className, style, 'aria-label': ariaLabel = "pagination", ...props }, ref) => {
     const isMobile = useMediaQuery('(max-width: 767px)');
     const paginationRange = usePagination({ currentPage, totalPages, siblingCount });
 
@@ -92,9 +93,15 @@ export const Pagination = React.forwardRef<HTMLElement, PaginationProps>(
     // Mobile View
     if (isMobile) {
       return (
-        <nav ref={ref} {...props} {...stylex.props(styles.container, style)} aria-label="pagination">
+        <nav 
+          ref={ref} 
+          aria-label={ariaLabel}
+          {...props}
+          {...mergeStyles(stylex.props(styles.container, stylexProp), className, style)}
+        >
           <div {...stylex.props(styles.mobileContainer)}>
             <IconButton 
+              type="button"
               variant="tertiary" 
               tone="neutral" 
               onClick={handlePrevious} 
@@ -109,6 +116,7 @@ export const Pagination = React.forwardRef<HTMLElement, PaginationProps>(
             </span>
             
             <IconButton 
+              type="button"
               variant="tertiary" 
               tone="neutral" 
               onClick={handleNext} 
@@ -124,7 +132,12 @@ export const Pagination = React.forwardRef<HTMLElement, PaginationProps>(
 
     // Desktop View
     return (
-      <nav ref={ref} {...props} {...stylex.props(styles.container, style)} aria-label="pagination">
+      <nav 
+        ref={ref} 
+        aria-label={ariaLabel}
+        {...props}
+        {...mergeStyles(stylex.props(styles.container, stylexProp), className, style)}
+      >
         <div {...stylex.props(styles.desktopContainer)}>
           <button 
             type="button"

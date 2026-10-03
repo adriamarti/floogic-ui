@@ -4,6 +4,7 @@ import * as stylex from '@stylexjs/stylex';
 import { styles } from './Drawer.stylex';
 import { Typography } from '../Typography';
 import { IconButton } from '../IconButton';
+import { mergeStyles } from '../../utils/mergeStyles';
 
 export interface DrawerProps extends Dialog.DialogProps {
   /** If true, the drawer is rendered open. */
@@ -23,18 +24,19 @@ DrawerRoot.displayName = 'Drawer';
 
 export const DrawerTrigger = Dialog.Trigger;
 
-export interface DrawerContentProps extends Omit<Dialog.DialogContentProps, 'style'> {
+export interface DrawerContentProps extends Dialog.DialogContentProps {
   /** The position the drawer slides in from. Defaults to 'right'. */
   position?: 'left' | 'right' | 'top' | 'bottom';
   /** The size (width for horizontal, height for vertical) of the drawer. Defaults to 'small'. */
   size?: 'small' | 'medium' | 'large';
-  style?: stylex.StyleXStyles;
+  stylex?: stylex.StyleXStyles;
+  overlayStylex?: stylex.StyleXStyles;
+  /** @deprecated use overlayStylex */
   overlayStyle?: stylex.StyleXStyles;
 }
 
 export const DrawerContent = React.forwardRef<HTMLDivElement, DrawerContentProps>(
-  ({ children, position = 'right', size = 'small', style, overlayStyle, ...props }, ref) => {
-    
+  ({ children, position = 'right', size = 'small', stylex: stylexProp, overlayStylex, overlayStyle, className, style, ...props }, ref) => {
     const isHorizontal = position === 'left' || position === 'right';
     const sizeStyle = isHorizontal
       ? (size === 'large' ? styles.sizeLargeHorizontal : size === 'medium' ? styles.sizeMediumHorizontal : styles.sizeSmallHorizontal)
@@ -46,16 +48,22 @@ export const DrawerContent = React.forwardRef<HTMLDivElement, DrawerContentProps
       position === 'top' ? styles.positionTop :
       styles.positionBottom;
 
+    const finalOverlayStylex = overlayStylex ?? overlayStyle;
+
     return (
       <Dialog.Portal>
-        <Dialog.Overlay {...stylex.props(styles.overlay, overlayStyle)} />
+        <Dialog.Overlay {...stylex.props(styles.overlay, finalOverlayStylex)} />
         <Dialog.Content
           ref={ref}
           {...props}
-          {...stylex.props(
-            styles.content,
-            positionStyle,
-            sizeStyle,
+          {...mergeStyles(
+            stylex.props(
+              styles.content,
+              positionStyle,
+              sizeStyle,
+              stylexProp
+            ),
+            className,
             style
           )}
         >
@@ -67,14 +75,18 @@ export const DrawerContent = React.forwardRef<HTMLDivElement, DrawerContentProps
 );
 DrawerContent.displayName = 'Drawer.Content';
 
-export interface DrawerHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'style'> {
-  style?: stylex.StyleXStyles;
+export interface DrawerHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
+  stylex?: stylex.StyleXStyles;
 }
 
 export const DrawerHeader = React.forwardRef<HTMLDivElement, DrawerHeaderProps>(
-  ({ children, style, ...props }, ref) => {
+  ({ children, stylex: stylexProp, className, style, ...props }, ref) => {
     return (
-      <div ref={ref} {...props} {...stylex.props(styles.header, style)}>
+      <div 
+        ref={ref} 
+        {...props}
+        {...mergeStyles(stylex.props(styles.header, stylexProp), className, style)}
+      >
         {children}
       </div>
     );
@@ -82,15 +94,15 @@ export const DrawerHeader = React.forwardRef<HTMLDivElement, DrawerHeaderProps>(
 );
 DrawerHeader.displayName = 'Drawer.Header';
 
-export interface DrawerTitleProps extends Omit<Dialog.DialogTitleProps, 'style'> {
-  style?: stylex.StyleXStyles;
+export interface DrawerTitleProps extends Dialog.DialogTitleProps {
+  stylex?: stylex.StyleXStyles;
 }
 
 export const DrawerTitle = React.forwardRef<HTMLHeadingElement, DrawerTitleProps>(
-  ({ children, style, ...props }, ref) => {
+  ({ children, stylex: stylexProp, className, style, ...props }, ref) => {
     return (
       <Dialog.Title asChild ref={ref} {...props}>
-        <Typography variant="h3" style={style}>
+        <Typography variant="h3" stylex={stylexProp} className={className} style={style}>
           {children}
         </Typography>
       </Dialog.Title>
@@ -99,15 +111,15 @@ export const DrawerTitle = React.forwardRef<HTMLHeadingElement, DrawerTitleProps
 );
 DrawerTitle.displayName = 'Drawer.Title';
 
-export interface DrawerDescriptionProps extends Omit<Dialog.DialogDescriptionProps, 'style'> {
-  style?: stylex.StyleXStyles;
+export interface DrawerDescriptionProps extends Dialog.DialogDescriptionProps {
+  stylex?: stylex.StyleXStyles;
 }
 
 export const DrawerDescription = React.forwardRef<HTMLParagraphElement, DrawerDescriptionProps>(
-  ({ children, style, ...props }, ref) => {
+  ({ children, stylex: stylexProp, className, style, ...props }, ref) => {
     return (
       <Dialog.Description asChild ref={ref} {...props}>
-        <Typography variant="bodyMd" color="weak" style={style}>
+        <Typography variant="bodyMd" color="weak" stylex={stylexProp} className={className} style={style}>
           {children}
         </Typography>
       </Dialog.Description>
@@ -116,17 +128,27 @@ export const DrawerDescription = React.forwardRef<HTMLParagraphElement, DrawerDe
 );
 DrawerDescription.displayName = 'Drawer.Description';
 
-export interface DrawerCloseButtonProps extends Omit<React.ComponentPropsWithoutRef<typeof IconButton>, 'style' | 'children'> {
+export interface DrawerCloseButtonProps extends Omit<React.ComponentPropsWithoutRef<typeof IconButton>, 'children'> {
   children?: React.ReactNode;
-  style?: stylex.StyleXStyles;
+  stylex?: stylex.StyleXStyles;
 }
 
-
 export const DrawerCloseButton = React.forwardRef<HTMLButtonElement, DrawerCloseButtonProps>(
-  ({ 'aria-label': ariaLabel = "Close drawer", style, ...props }, ref) => {
+  ({ 'aria-label': ariaLabel = "Close drawer", stylex: stylexProp, className, style, ...props }, ref) => {
     return (
       <Dialog.Close asChild>
-        <IconButton ref={ref} aria-label={ariaLabel} variant="tertiary" tone="neutral" size="small" style={style} {...props}>
+        <IconButton 
+          ref={ref} 
+          type="button"
+          aria-label={ariaLabel} 
+          variant="tertiary" 
+          tone="neutral" 
+          size="small" 
+          stylex={stylexProp} 
+          className={className}
+          style={style}
+          {...props}
+        >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
         </IconButton>
       </Dialog.Close>
@@ -135,14 +157,18 @@ export const DrawerCloseButton = React.forwardRef<HTMLButtonElement, DrawerClose
 );
 DrawerCloseButton.displayName = 'Drawer.CloseButton';
 
-export interface DrawerBodyProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'style'> {
-  style?: stylex.StyleXStyles;
+export interface DrawerBodyProps extends React.HTMLAttributes<HTMLDivElement> {
+  stylex?: stylex.StyleXStyles;
 }
 
 export const DrawerBody = React.forwardRef<HTMLDivElement, DrawerBodyProps>(
-  ({ children, style, ...props }, ref) => {
+  ({ children, stylex: stylexProp, className, style, ...props }, ref) => {
     return (
-      <div ref={ref} {...props} {...stylex.props(styles.body, style)}>
+      <div 
+        ref={ref} 
+        {...props}
+        {...mergeStyles(stylex.props(styles.body, stylexProp), className, style)}
+      >
         {children}
       </div>
     );
@@ -150,14 +176,18 @@ export const DrawerBody = React.forwardRef<HTMLDivElement, DrawerBodyProps>(
 );
 DrawerBody.displayName = 'Drawer.Body';
 
-export interface DrawerFooterProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'style'> {
-  style?: stylex.StyleXStyles;
+export interface DrawerFooterProps extends React.HTMLAttributes<HTMLDivElement> {
+  stylex?: stylex.StyleXStyles;
 }
 
 export const DrawerFooter = React.forwardRef<HTMLDivElement, DrawerFooterProps>(
-  ({ children, style, ...props }, ref) => {
+  ({ children, stylex: stylexProp, className, style, ...props }, ref) => {
     return (
-      <div ref={ref} {...props} {...stylex.props(styles.footer, style)}>
+      <div 
+        ref={ref} 
+        {...props}
+        {...mergeStyles(stylex.props(styles.footer, stylexProp), className, style)}
+      >
         {children}
       </div>
     );

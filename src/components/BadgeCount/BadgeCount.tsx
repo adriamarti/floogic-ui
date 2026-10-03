@@ -1,12 +1,13 @@
 import React, { forwardRef } from 'react';
 import * as stylex from '@stylexjs/stylex';
 import { styles } from './BadgeCount.stylex';
+import { mergeStyles } from '../../utils/mergeStyles';
 
 export type BadgeCountTone = 'neutral' | 'brand' | 'error' | 'warning' | 'success' | 'information';
 export type BadgeCountEmphasis = 'strong' | 'moderate' | 'weak';
 export type BadgeCountSize = 'small' | 'medium' | 'large';
 
-export interface BadgeCountProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'className' | 'style'> {
+export interface BadgeCountProps extends React.HTMLAttributes<HTMLSpanElement> {
   /**
    * The number to display in the badge
    */
@@ -36,11 +37,11 @@ export interface BadgeCountProps extends Omit<React.HTMLAttributes<HTMLSpanEleme
    * @default false
    */
   showZero?: boolean;
-  style?: stylex.StyleXStyles;
+  stylex?: stylex.StyleXStyles;
 }
 
 const BadgeCountRoot = forwardRef<HTMLSpanElement, BadgeCountProps>(
-  ({ count, emphasis = 'strong', tone = 'error', size = 'medium', max = 99, showZero = false, style, ...props }, ref) => {
+  ({ count, emphasis = 'strong', tone = 'error', size = 'medium', max = 99, showZero = false, stylex: stylexProp, className, style, ...props }, ref) => {
     if (count === 0 && !showZero) {
       return null;
     }
@@ -50,19 +51,20 @@ const BadgeCountRoot = forwardRef<HTMLSpanElement, BadgeCountProps>(
     const sizeStyle = styles[`size${size.charAt(0).toUpperCase() + size.slice(1)}` as keyof typeof styles];
     const toneStyle = styles[`${emphasis}_${tone}` as keyof typeof styles];
 
-    const resolved = stylex.props(
-      styles.root,
-      sizeStyle,
-      toneStyle,
-      style
-    );
-
     return (
       <span
         ref={ref}
-        className={resolved.className}
-        style={resolved.style}
         {...props}
+        {...mergeStyles(
+          stylex.props(
+            styles.root,
+            sizeStyle,
+            toneStyle,
+            stylexProp
+          ),
+          className,
+          style
+        )}
       >
         {displayCount}
       </span>

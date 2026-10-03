@@ -1,6 +1,8 @@
 import * as stylex from '@stylexjs/stylex';
 import React, { forwardRef } from 'react';
 import { styles } from './Button.stylex';
+import { ButtonGroupContext } from '../ButtonGroup';
+import { mergeStyles } from '../../utils/mergeStyles';
 
 // ---------------------------------------------------------------------------
 // Context
@@ -21,38 +23,34 @@ export function useButtonContext() {
 // Sub-components (Button.Label, Button.Icon)
 // ---------------------------------------------------------------------------
 
-export interface ButtonLabelProps extends Omit<React.ComponentPropsWithoutRef<'span'>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface ButtonLabelProps extends React.ComponentPropsWithoutRef<'span'> {
+  stylex?: stylex.StyleXStyles;
 }
 
 const ButtonLabel = forwardRef<HTMLSpanElement, ButtonLabelProps>(
-  ({ style, ...props }, ref) => {
-    const resolved = stylex.props(styles.label, style);
+  ({ stylex: stylexProp, className, style, ...props }, ref) => {
     return (
       <span 
         ref={ref} 
-        className={resolved.className}
-        style={resolved.style}
-        {...props} 
+        {...props}
+        {...mergeStyles(stylex.props(styles.label, stylexProp), className, style)}
       />
     );
   }
 );
 ButtonLabel.displayName = 'Button.Label';
 
-export interface ButtonIconProps extends Omit<React.ComponentPropsWithoutRef<'span'>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface ButtonIconProps extends React.ComponentPropsWithoutRef<'span'> {
+  stylex?: stylex.StyleXStyles;
 }
 
 const ButtonIcon = forwardRef<HTMLSpanElement, ButtonIconProps>(
-  ({ style, ...props }, ref) => {
-    const resolved = stylex.props(styles.icon, style);
+  ({ stylex: stylexProp, className, style, ...props }, ref) => {
     return (
       <span 
         ref={ref} 
-        className={resolved.className}
-        style={resolved.style}
-        {...props} 
+        {...props}
+        {...mergeStyles(stylex.props(styles.icon, stylexProp), className, style)}
       />
     );
   }
@@ -63,14 +61,12 @@ ButtonIcon.displayName = 'Button.Icon';
 // Root Component
 // ---------------------------------------------------------------------------
 
-import { ButtonGroupContext } from '../ButtonGroup';
-
-export interface ButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'className' | 'style'> {
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'tertiary';
   tone?: 'brand' | 'neutral' | 'destructive' | 'inverse';
   size?: 'small' | 'medium' | 'large';
   iconOnly?: boolean;
-  style?: stylex.StyleXStyles;
+  stylex?: stylex.StyleXStyles;
 }
 
 /**
@@ -85,24 +81,28 @@ export interface ButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonE
  * </Button>
  */
 const ButtonRoot = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ variant = 'primary', tone = 'brand', size = 'medium', iconOnly = false, style, children, ...props }, ref) => {
-    
+  ({ type = 'button', variant = 'primary', tone = 'brand', size = 'medium', iconOnly = false, stylex: stylexProp, className, style, children, ...props }, ref) => {
     const inGroup = React.useContext(ButtonGroupContext);
 
     return (
       <ButtonContext.Provider value={{ size, tone }}>
         <button
           ref={ref}
-          {...stylex.props([
-            styles.root,
-            styles[variant],
-            styles[`${variant}_${tone}` as keyof typeof styles],
-            styles[size],
-            iconOnly && styles[`iconOnly_${size}` as keyof typeof styles],
-            inGroup && styles.inGroup,
-            style,
-          ])}
+          type={type}
           {...props}
+          {...mergeStyles(
+            stylex.props(
+              styles.root,
+              styles[variant],
+              styles[`${variant}_${tone}` as keyof typeof styles],
+              styles[size],
+              iconOnly && styles[`iconOnly_${size}` as keyof typeof styles],
+              inGroup && styles.inGroup,
+              stylexProp
+            ),
+            className,
+            style
+          )}
         >
           {children}
         </button>

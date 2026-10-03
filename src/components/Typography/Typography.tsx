@@ -1,6 +1,7 @@
 import React, { forwardRef } from 'react';
 import * as stylex from '@stylexjs/stylex';
 import { styles } from './Typography.stylex';
+import { mergeStyles } from '../../utils/mergeStyles';
 
 export type TypographyVariant =
   | 'displayLg'
@@ -58,13 +59,13 @@ const defaultTags: Record<TypographyVariant, React.ElementType> = {
   captionSm: 'span',
 };
 
-export interface TypographyProps extends Omit<React.ComponentPropsWithoutRef<'p'>, 'className' | 'style'> {
+export interface TypographyProps extends React.ComponentPropsWithoutRef<'p'> {
   variant?: TypographyVariant;
   as?: React.ElementType;
   color?: TypographyColor;
   align?: TypographyAlign;
   weight?: TypographyWeight;
-  style?: stylex.StyleXStyles;
+  stylex?: stylex.StyleXStyles;
 }
 
 export const Typography = forwardRef<HTMLElement, TypographyProps>(
@@ -75,6 +76,8 @@ export const Typography = forwardRef<HTMLElement, TypographyProps>(
       color,
       align,
       weight,
+      stylex: stylexProp,
+      className,
       style,
       children,
       ...props
@@ -89,17 +92,23 @@ export const Typography = forwardRef<HTMLElement, TypographyProps>(
       finalColor = isHeading ? 'strong' : 'weak';
     }
 
-    const resolved = stylex.props(
-      styles.base,
-      styles[variant],
-      styles[finalColor],
-      align && styles[align],
-      weight && styles[weight],
-      style
-    );
-
     return (
-      <Component ref={ref as any} className={resolved.className} style={resolved.style} {...props}>
+      <Component 
+        ref={ref as any} 
+        {...props}
+        {...mergeStyles(
+          stylex.props(
+            styles.base,
+            styles[variant],
+            styles[finalColor],
+            align && styles[align],
+            weight && styles[weight],
+            stylexProp
+          ),
+          className,
+          style
+        )}
+      >
         {children}
       </Component>
     );

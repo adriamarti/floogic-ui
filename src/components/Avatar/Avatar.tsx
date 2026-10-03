@@ -2,6 +2,7 @@ import React, { forwardRef } from 'react';
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
 import * as stylex from '@stylexjs/stylex';
 import { styles, dynamicStyles } from './Avatar.stylex';
+import { mergeStyles } from '../../utils/mergeStyles';
 
 // ---------------------------------------------------------------------------
 // Types & Context
@@ -24,8 +25,8 @@ export function useAvatarContext() {
 // Root Component
 // ---------------------------------------------------------------------------
 
-export interface AvatarProps extends Omit<React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface AvatarProps extends React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root> {
+  stylex?: stylex.StyleXStyles;
   size?: AvatarSize;
 }
 
@@ -35,9 +36,8 @@ export interface AvatarProps extends Omit<React.ComponentPropsWithoutRef<typeof 
  * A visual representation of a user or entity. Supports images, initials, or icons as fallback.
  */
 const AvatarRoot = forwardRef<HTMLDivElement, AvatarProps>(
-  ({ size = 'medium', style, children, ...props }, ref) => {
+  ({ size = 'medium', stylex: stylexProp, className, style, children, ...props }, ref) => {
     const sizeStyle = styles[`size${size.charAt(0).toUpperCase() + size.slice(1)}` as keyof typeof styles];
-    const resolvedRoot = stylex.props(styles.root, sizeStyle, style);
     const resolvedContainer = stylex.props(styles.container);
 
     const avatarChildren: React.ReactNode[] = [];
@@ -62,7 +62,10 @@ const AvatarRoot = forwardRef<HTMLDivElement, AvatarProps>(
 
     return (
       <AvatarContext.Provider value={{ size }}>
-        <div ref={ref} className={resolvedRoot.className} style={resolvedRoot.style}>
+        <div 
+          ref={ref} 
+          {...mergeStyles(stylex.props(styles.root, sizeStyle, stylexProp), className, style)}
+        >
           <AvatarPrimitive.Root className={resolvedContainer.className} style={resolvedContainer.style} {...props}>
             {avatarChildren}
           </AvatarPrimitive.Root>
@@ -78,69 +81,67 @@ AvatarRoot.displayName = 'Avatar';
 // Sub-components
 // ---------------------------------------------------------------------------
 
-export interface AvatarImageProps extends Omit<React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface AvatarImageProps extends React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image> {
+  stylex?: stylex.StyleXStyles;
 }
 
 const AvatarImage = forwardRef<React.ElementRef<typeof AvatarPrimitive.Image>, AvatarImageProps>(
-  ({ style, ...props }, ref) => {
-    const resolved = stylex.props(styles.image, style);
+  ({ stylex: stylexProp, className, style, ...props }, ref) => {
     return (
       <AvatarPrimitive.Image 
         ref={ref} 
-        className={resolved.className}
-        style={resolved.style}
-        {...props} 
+        {...props}
+        {...mergeStyles(stylex.props(styles.image, stylexProp), className, style)}
       />
     );
   }
 );
 AvatarImage.displayName = 'Avatar.Image';
 
-export interface AvatarFallbackProps extends Omit<React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Fallback>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface AvatarFallbackProps extends React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Fallback> {
+  stylex?: stylex.StyleXStyles;
   tone?: AvatarTone;
 }
 
 const AvatarFallback = forwardRef<React.ElementRef<typeof AvatarPrimitive.Fallback>, AvatarFallbackProps>(
-  ({ tone = 'neutral', style, ...props }, ref) => {
+  ({ tone = 'neutral', stylex: stylexProp, className, style, ...props }, ref) => {
     const toneStyle = styles[`tone${tone.charAt(0).toUpperCase() + tone.slice(1)}` as keyof typeof styles];
-    const resolved = stylex.props(styles.fallbackBase, toneStyle, style);
 
     return (
       <AvatarPrimitive.Fallback 
         ref={ref} 
-        className={resolved.className}
-        style={resolved.style}
-        {...props} 
+        {...props}
+        {...mergeStyles(stylex.props(styles.fallbackBase, toneStyle, stylexProp), className, style)}
       />
     );
   }
 );
 AvatarFallback.displayName = 'Avatar.Fallback';
 
-export interface AvatarBadgeProps extends Omit<React.ComponentPropsWithoutRef<'span'>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface AvatarBadgeProps extends React.ComponentPropsWithoutRef<'span'> {
+  stylex?: stylex.StyleXStyles;
   position?: 'bottom-right' | 'top-right';
   withRing?: boolean;
 }
 
 const AvatarBadge = forwardRef<HTMLSpanElement, AvatarBadgeProps>(
-  ({ position = 'bottom-right', withRing = true, style, children, ...props }, ref) => {
+  ({ position = 'bottom-right', withRing = true, stylex: stylexProp, className, style, children, ...props }, ref) => {
     const positionStyle = position === 'bottom-right' ? styles.badgeBottomRight : styles.badgeTopRight;
-    const resolved = stylex.props(
-      styles.badgeContainer, 
-      positionStyle,
-      withRing && styles.badgeRing,
-      style
-    );
 
     return (
       <span 
         ref={ref} 
-        className={resolved.className}
-        style={resolved.style}
-        {...props} 
+        {...props}
+        {...mergeStyles(
+          stylex.props(
+            styles.badgeContainer, 
+            positionStyle,
+            withRing && styles.badgeRing,
+            stylexProp
+          ),
+          className,
+          style
+        )}
       >
         {children}
       </span>
@@ -153,15 +154,13 @@ AvatarBadge.displayName = 'Avatar.Badge';
 // Group Component (Stack)
 // ---------------------------------------------------------------------------
 
-export interface AvatarGroupProps extends Omit<React.ComponentPropsWithoutRef<'div'>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface AvatarGroupProps extends React.ComponentPropsWithoutRef<'div'> {
+  stylex?: stylex.StyleXStyles;
   limit?: number;
 }
 
 const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(
-  ({ limit, style, children, ...props }, ref) => {
-    const resolved = stylex.props(styles.group, style);
-    
+  ({ limit, stylex: stylexProp, className, style, children, role = 'group', ...props }, ref) => {
     const childrenArray = React.Children.toArray(children);
     const showMore = limit !== undefined && childrenArray.length > limit;
     const visibleChildren = showMore ? childrenArray.slice(0, limit) : childrenArray;
@@ -170,9 +169,9 @@ const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(
     return (
       <div 
         ref={ref} 
-        className={resolved.className}
-        style={resolved.style}
-        {...props} 
+        role={role}
+        {...props}
+        {...mergeStyles(stylex.props(styles.group, stylexProp), className, style)}
       >
         {visibleChildren.map((child, index) => {
           const isFirst = index === 0;
@@ -211,16 +210,15 @@ AvatarGroup.displayName = 'Avatar.Group';
 // Labelled layout component
 // ---------------------------------------------------------------------------
 
-export interface AvatarLabelProps extends Omit<React.ComponentPropsWithoutRef<'div'>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface AvatarLabelProps extends React.ComponentPropsWithoutRef<'div'> {
+  stylex?: stylex.StyleXStyles;
   title: string;
   description?: string;
   avatarSize?: AvatarSize;
 }
 
 const AvatarLabel = forwardRef<HTMLDivElement, AvatarLabelProps>(
-  ({ title, description, avatarSize = 'medium', style, children, ...props }, ref) => {
-    const resolvedLayout = stylex.props(styles.labelled, style);
+  ({ title, description, avatarSize = 'medium', stylex: stylexProp, className, style, children, ...props }, ref) => {
     const resolvedContainer = stylex.props(styles.labelContainer);
     
     const titleStyle = avatarSize === 'small' ? styles.labelTitleSmall : avatarSize === 'large' ? styles.labelTitleLarge : styles.labelTitleMedium;
@@ -229,9 +227,8 @@ const AvatarLabel = forwardRef<HTMLDivElement, AvatarLabelProps>(
     return (
       <div 
         ref={ref} 
-        className={resolvedLayout.className}
-        style={resolvedLayout.style}
-        {...props} 
+        {...props}
+        {...mergeStyles(stylex.props(styles.labelled, stylexProp), className, style)}
       >
         {children}
         <div className={resolvedContainer.className} style={resolvedContainer.style}>

@@ -1,8 +1,9 @@
 import React from 'react';
 import * as stylex from '@stylexjs/stylex';
 import { styles } from './IconContainer.stylex';
+import { mergeStyles } from '../../utils/mergeStyles';
 
-export interface IconContainerProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'style'> {
+export interface IconContainerProps extends React.HTMLAttributes<HTMLDivElement> {
   /** 
    * Semantic tone of the container.
    * @default 'neutral'
@@ -30,7 +31,7 @@ export interface IconContainerProps extends Omit<React.HTMLAttributes<HTMLDivEle
   /**
    * Extensible styles via StyleX
    */
-  style?: stylex.StyleXStyles;
+  stylex?: stylex.StyleXStyles;
 }
 
 export const IconContainer = React.forwardRef<HTMLDivElement, IconContainerProps>(({
@@ -38,22 +39,28 @@ export const IconContainer = React.forwardRef<HTMLDivElement, IconContainerProps
   variant = 'filled',
   shape = 'circle',
   size = 'md',
+  stylex: stylexProp,
+  className,
   style,
   children,
   ...props
 }, ref) => {
-  
   const variantKey = `${variant}_${tone}` as keyof typeof styles;
   
   return (
     <div
       ref={ref}
+      aria-hidden="true"
       {...props}
-      {...stylex.props(
-        styles.root,
-        styles[`size_${size}`],
-        styles[`shape_${shape}`],
-        styles[variantKey],
+      {...mergeStyles(
+        stylex.props(
+          styles.root,
+          styles[`size_${size}`],
+          styles[`shape_${shape}`],
+          styles[variantKey],
+          stylexProp
+        ),
+        className,
         style
       )}
     >

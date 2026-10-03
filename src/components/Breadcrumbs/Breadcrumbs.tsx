@@ -1,19 +1,20 @@
 import React, { forwardRef, useState } from 'react';
 import * as stylex from '@stylexjs/stylex';
 import { styles } from './Breadcrumbs.stylex';
+import { mergeStyles } from '../../utils/mergeStyles';
 
 // ==========================================
 // Breadcrumbs.Item
 // ==========================================
 
-export interface BreadcrumbsItemProps extends Omit<React.ComponentPropsWithoutRef<'a'>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface BreadcrumbsItemProps extends React.ComponentPropsWithoutRef<'a'> {
+  stylex?: stylex.StyleXStyles;
   as?: React.ElementType;
   isCurrent?: boolean;
 }
 
 const BreadcrumbsItem = forwardRef<HTMLElement, BreadcrumbsItemProps>(
-  ({ as: Component = 'a', isCurrent, style, ...props  }, ref) => {
+  ({ as: Component = 'a', isCurrent, stylex: stylexProp, className, style, ...props }, ref) => {
     // If it's current, we might want to remove href if it's an anchor.
     const resolvedProps = isCurrent && Component === 'a' ? { ...props, href: undefined } : props;
     
@@ -25,8 +26,8 @@ const BreadcrumbsItem = forwardRef<HTMLElement, BreadcrumbsItemProps>(
       <FinalComponent
         ref={ref}
         aria-current={isCurrent ? 'page' : undefined}
-        {...stylex.props(isCurrent ? styles.current : styles.link, style)}
         {...resolvedProps}
+        {...mergeStyles(stylex.props(isCurrent ? styles.current : styles.link, stylexProp), className, style)}
       />
     );
   }
@@ -37,14 +38,14 @@ BreadcrumbsItem.displayName = 'Breadcrumbs.Item';
 // Breadcrumbs
 // ==========================================
 
-export interface BreadcrumbsProps extends Omit<React.ComponentPropsWithoutRef<'nav'>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface BreadcrumbsProps extends React.ComponentPropsWithoutRef<'nav'> {
+  stylex?: stylex.StyleXStyles;
   itemsBeforeCollapse?: number;
   separator?: React.ReactNode;
 }
 
 const BreadcrumbsRoot = forwardRef<HTMLElement, BreadcrumbsProps>(
-  ({ itemsBeforeCollapse = 3, separator = '/', style, children, ...props  }, ref) => {
+  ({ itemsBeforeCollapse = 3, separator = '/', stylex: stylexProp, className, style, children, 'aria-label': ariaLabel = 'Breadcrumb', ...props }, ref) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
     // Filter out falsy children
@@ -106,7 +107,12 @@ const BreadcrumbsRoot = forwardRef<HTMLElement, BreadcrumbsProps>(
     }
 
     return (
-      <nav aria-label="Breadcrumb" ref={ref} {...stylex.props(styles.nav)} {...props}>
+      <nav 
+        ref={ref} 
+        aria-label={ariaLabel}
+        {...props}
+        {...mergeStyles(stylex.props(styles.nav, stylexProp), className, style)}
+      >
         <ol {...stylex.props(styles.list)}>
           {itemsToRender}
         </ol>

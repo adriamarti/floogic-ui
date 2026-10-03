@@ -2,43 +2,41 @@ import * as stylex from '@stylexjs/stylex';
 import React, { forwardRef } from 'react';
 import * as TabsPrimitive from '@radix-ui/react-tabs';
 import { styles } from './Tabs.stylex';
+import { mergeStyles } from '../../utils/mergeStyles';
 
 // ---------------------------------------------------------------------------
 // Sub-components (Tabs.Label, Tabs.Icon)
 // ---------------------------------------------------------------------------
 
-export interface TabsLabelProps extends Omit<React.ComponentPropsWithoutRef<'span'>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface TabsLabelProps extends React.ComponentPropsWithoutRef<'span'> {
+  stylex?: stylex.StyleXStyles;
 }
 
 const TabsLabel = forwardRef<HTMLSpanElement, TabsLabelProps>(
-  ({ style, ...props }, ref) => {
-    const resolved = stylex.props(styles.label, style);
+  ({ stylex: stylexProp, className, style, ...props }, ref) => {
     return (
       <span 
         ref={ref} 
-        className={resolved.className}
-        style={resolved.style}
-        {...props} 
+        {...props}
+        {...mergeStyles(stylex.props(styles.label, stylexProp), className, style)}
       />
     );
   }
 );
 TabsLabel.displayName = 'Tabs.Label';
 
-export interface TabsIconProps extends Omit<React.ComponentPropsWithoutRef<'span'>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface TabsIconProps extends React.ComponentPropsWithoutRef<'span'> {
+  stylex?: stylex.StyleXStyles;
 }
 
 const TabsIcon = forwardRef<HTMLSpanElement, TabsIconProps>(
-  ({ style, ...props }, ref) => {
-    const resolved = stylex.props(styles.icon, style);
+  ({ stylex: stylexProp, className, style, ...props }, ref) => {
     return (
       <span 
         ref={ref} 
-        className={resolved.className}
-        style={resolved.style}
-        {...props} 
+        aria-hidden="true"
+        {...props}
+        {...mergeStyles(stylex.props(styles.icon, stylexProp), className, style)}
       />
     );
   }
@@ -51,13 +49,13 @@ TabsIcon.displayName = 'Tabs.Icon';
 
 const TabsContext = React.createContext<{ value: string; size: 'small' | 'medium' }>({ value: '', size: 'medium' });
 
-export interface TabsProps extends Omit<React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface TabsProps extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root> {
+  stylex?: stylex.StyleXStyles;
   size?: 'small' | 'medium';
 }
 
 const TabsRoot = forwardRef<HTMLDivElement, TabsProps>(
-  ({ value, defaultValue, onValueChange, size = 'medium', style, ...props }, ref) => {
+  ({ value, defaultValue, onValueChange, size = 'medium', stylex: stylexProp, className, style, ...props }, ref) => {
     const [localValue, setLocalValue] = React.useState(value || defaultValue || '');
 
     React.useEffect(() => {
@@ -81,7 +79,7 @@ const TabsRoot = forwardRef<HTMLDivElement, TabsProps>(
           defaultValue={defaultValue}
           onValueChange={handleValueChange}
           {...props}
-          {...stylex.props(styles.root, style)}
+          {...mergeStyles(stylex.props(styles.root, stylexProp), className, style)}
         />
       </TabsContext.Provider>
     );
@@ -89,29 +87,29 @@ const TabsRoot = forwardRef<HTMLDivElement, TabsProps>(
 );
 TabsRoot.displayName = 'Tabs';
 
-export interface TabsListProps extends Omit<React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface TabsListProps extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.List> {
+  stylex?: stylex.StyleXStyles;
 }
 
 const TabsList = forwardRef<HTMLDivElement, TabsListProps>(
-  ({ style, ...props }, ref) => {
+  ({ stylex: stylexProp, className, style, ...props }, ref) => {
     return (
       <TabsPrimitive.List
         ref={ref}
         {...props}
-        {...stylex.props(styles.list, style)}
+        {...mergeStyles(stylex.props(styles.list, stylexProp), className, style)}
       />
     );
   }
 );
 TabsList.displayName = 'Tabs.List';
 
-export interface TabsItemProps extends Omit<React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface TabsItemProps extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger> {
+  stylex?: stylex.StyleXStyles;
 }
 
 const TabsItem = forwardRef<HTMLButtonElement, TabsItemProps>(
-  ({ style, value, ...props }, ref) => {
+  ({ stylex: stylexProp, className, style, value, ...props }, ref) => {
     const context = React.useContext(TabsContext);
     const isActive = context.value === value;
 
@@ -120,10 +118,14 @@ const TabsItem = forwardRef<HTMLButtonElement, TabsItemProps>(
         ref={ref}
         value={value}
         {...props}
-        {...stylex.props(
-          styles.item, 
-          context.size === 'medium' ? styles.itemMedium : styles.itemSmall,
-          isActive && styles.itemActive, 
+        {...mergeStyles(
+          stylex.props(
+            styles.item, 
+            context.size === 'medium' ? styles.itemMedium : styles.itemSmall,
+            isActive && styles.itemActive, 
+            stylexProp
+          ),
+          className,
           style
         )}
       />
@@ -132,17 +134,17 @@ const TabsItem = forwardRef<HTMLButtonElement, TabsItemProps>(
 );
 TabsItem.displayName = 'Tabs.Item';
 
-export interface TabsPanelProps extends Omit<React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface TabsPanelProps extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content> {
+  stylex?: stylex.StyleXStyles;
 }
 
 const TabsPanel = forwardRef<HTMLDivElement, TabsPanelProps>(
-  ({ style, ...props }, ref) => {
+  ({ stylex: stylexProp, className, style, ...props }, ref) => {
     return (
       <TabsPrimitive.Content
         ref={ref}
         {...props}
-        {...stylex.props(styles.panel, style)}
+        {...mergeStyles(stylex.props(styles.panel, stylexProp), className, style)}
       />
     );
   }
