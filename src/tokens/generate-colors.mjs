@@ -112,7 +112,7 @@ const elements = [
 
 // Generar el contenido del archivo
 let stylexContent = `import * as stylex from '@stylexjs/stylex';\n\n`;
-stylexContent += `// Mapeo semántico generado automáticamente (Practical UI)\n`;
+stylexContent += `// Mapeo semántico generado automáticamente (Practical UI) con soporte nativo para media queries del sistema\n`;
 stylexContent += `export const colors = stylex.defineVars({\n`;
 
 elements.forEach(el => {
@@ -121,15 +121,23 @@ elements.forEach(el => {
     return part.charAt(0).toUpperCase() + part.slice(1);
   }).join('');
 
-  stylexContent += `  ${camelCaseName}: '${el.l.val}',\n`;
+  stylexContent += `  ${camelCaseName}: {\n`;
+  stylexContent += `    default: '${el.l.val}',\n`;
+  stylexContent += `    '@media (prefers-color-scheme: dark)': '${el.d.val}',\n`;
+  stylexContent += `  },\n`;
 });
 
-stylexContent += `  accent: 'rgba(31, 158, 204, 1)',\n`;
-stylexContent += `  focus: 'rgba(31, 158, 204, 1)',\n`;
+stylexContent += `  accent: {\n`;
+stylexContent += `    default: 'rgba(31, 158, 204, 1)',\n`;
+stylexContent += `    '@media (prefers-color-scheme: dark)': 'rgba(115, 218, 255, 1)',\n`;
+stylexContent += `  },\n`;
+stylexContent += `  focus: {\n`;
+stylexContent += `    default: 'rgba(31, 158, 204, 1)',\n`;
+stylexContent += `    '@media (prefers-color-scheme: dark)': 'rgba(115, 218, 255, 1)',\n`;
+stylexContent += `  },\n`;
 stylexContent += `});\n\n`;
 
 stylexContent += `export const darkTheme = stylex.createTheme(colors, {\n`;
-
 elements.forEach(el => {
   const camelCaseName = el.name.split('.').map((part, index) => {
     if (index === 0) return part;
@@ -138,9 +146,21 @@ elements.forEach(el => {
 
   stylexContent += `  ${camelCaseName}: '${el.d.val}',\n`;
 });
-
 stylexContent += `  accent: 'rgba(115, 218, 255, 1)',\n`;
 stylexContent += `  focus: 'rgba(115, 218, 255, 1)',\n`;
+stylexContent += `});\n\n`;
+
+stylexContent += `export const lightTheme = stylex.createTheme(colors, {\n`;
+elements.forEach(el => {
+  const camelCaseName = el.name.split('.').map((part, index) => {
+    if (index === 0) return part;
+    return part.charAt(0).toUpperCase() + part.slice(1);
+  }).join('');
+
+  stylexContent += `  ${camelCaseName}: '${el.l.val}',\n`;
+});
+stylexContent += `  accent: 'rgba(31, 158, 204, 1)',\n`;
+stylexContent += `  focus: 'rgba(31, 158, 204, 1)',\n`;
 stylexContent += `});\n`;
 
 fs.writeFileSync('src/tokens/colors.stylex.ts', stylexContent);

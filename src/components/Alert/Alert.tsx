@@ -2,15 +2,14 @@ import React, { createContext, useContext, forwardRef } from 'react';
 import * as stylex from '@stylexjs/stylex';
 import { styles, iconColorStyles, borderLeftColorStyles } from './Alert.stylex';
 import { IconButton, IconButtonProps } from '../IconButton';
+import { mergeStyles } from '../../utils/mergeStyles';
 
 export type AlertTone = 'error' | 'warning' | 'success' | 'information' | 'neutral' | 'brand' | 'inverse-neutral' | 'inverse-brand';
-export type AlertSize = 'small' | 'large';
 export type AlertLayout = 'vertical' | 'horizontal';
 
-export interface AlertProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
+  stylex?: stylex.StyleXStyles;
   tone?: AlertTone;
-  size?: AlertSize;
   layout?: AlertLayout;
   borderLeft?: boolean;
 }
@@ -32,31 +31,34 @@ const useAlertContext = () => {
 
 // Root Component
 const AlertRoot = forwardRef<HTMLDivElement, AlertProps>(
-  ({ children, tone = 'neutral', size = 'large', layout = 'vertical', borderLeft = false, style, ...props  }, ref) => {
-    const resolved = stylex.props(
-      styles.root,
-      layout === 'horizontal' ? styles.layoutHorizontal : styles.layoutVertical,
-      size === 'small' ? styles.sizeSmall : styles.sizeLarge,
-      tone === 'error' && styles.toneError,
-      tone === 'warning' && styles.toneWarning,
-      tone === 'success' && styles.toneSuccess,
-      tone === 'information' && styles.toneInformation,
-      tone === 'neutral' && styles.toneNeutral,
-      tone === 'brand' && styles.toneBrand,
-      tone === 'inverse-neutral' && styles.toneInverseNeutral,
-      tone === 'inverse-brand' && styles.toneInverseBrand,
-      borderLeft && styles.borderLeft,
-      borderLeft && borderLeftColorStyles[tone],
-      style
-    );
+  ({ children, tone = 'neutral', layout = 'vertical', borderLeft = false, stylex: stylexProp, className, style, role, ...props }, ref) => {
+    const defaultRole = tone === 'error' || tone === 'warning' ? 'alert' : 'status';
+
     return (
       <AlertContext.Provider value={{ tone, layout }}>
         <div
           ref={ref}
-          className={resolved.className}
-          style={resolved.style}
+          role={role || defaultRole}
           {...props}
-          role="alert"
+          {...mergeStyles(
+            stylex.props(
+              styles.root,
+              layout === 'horizontal' ? styles.layoutHorizontal : styles.layoutVertical,
+              tone === 'error' && styles.toneError,
+              tone === 'warning' && styles.toneWarning,
+              tone === 'success' && styles.toneSuccess,
+              tone === 'information' && styles.toneInformation,
+              tone === 'neutral' && styles.toneNeutral,
+              tone === 'brand' && styles.toneBrand,
+              tone === 'inverse-neutral' && styles.toneInverseNeutral,
+              tone === 'inverse-brand' && styles.toneInverseBrand,
+              borderLeft && styles.borderLeft,
+              borderLeft && borderLeftColorStyles[tone],
+              stylexProp
+            ),
+            className,
+            style
+          )}
         >
           {children}
         </div>
@@ -68,22 +70,28 @@ AlertRoot.displayName = 'Alert';
 
 // Sub-components
 
-export interface AlertIconProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'className' | 'style'> { style?: stylex.StyleXStyles; }
+export interface AlertIconProps extends React.HTMLAttributes<HTMLDivElement> {
+  stylex?: stylex.StyleXStyles;
+}
+
 const AlertIcon = forwardRef<HTMLDivElement, AlertIconProps>(
-  ({ children, style, ...props  }, ref) => {
+  ({ children, stylex: stylexProp, className, style, ...props }, ref) => {
     const { tone, layout } = useAlertContext();
-    const resolved = stylex.props(
-      styles.iconContainer, 
-      iconColorStyles[tone],
-      layout === 'horizontal' && styles.iconContainerHorizontal,
-      style
-    );
     return (
       <div
         ref={ref}
-        className={resolved.className}
-        style={resolved.style}
+        aria-hidden="true"
         {...props}
+        {...mergeStyles(
+          stylex.props(
+            styles.iconContainer, 
+            iconColorStyles[tone],
+            layout === 'horizontal' && styles.iconContainerHorizontal,
+            stylexProp
+          ),
+          className,
+          style
+        )}
       >
         {children}
       </div>
@@ -92,12 +100,18 @@ const AlertIcon = forwardRef<HTMLDivElement, AlertIconProps>(
 );
 AlertIcon.displayName = 'Alert.Icon';
 
-export interface AlertContentProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'className' | 'style'> { style?: stylex.StyleXStyles; }
+export interface AlertContentProps extends React.HTMLAttributes<HTMLDivElement> {
+  stylex?: stylex.StyleXStyles;
+}
+
 const AlertContent = forwardRef<HTMLDivElement, AlertContentProps>(
-  ({ children, style, ...props  }, ref) => {
-    const resolved = stylex.props(styles.content, style);
+  ({ children, stylex: stylexProp, className, style, ...props }, ref) => {
     return (
-      <div ref={ref} className={resolved.className} style={resolved.style} {...props}>
+      <div 
+        ref={ref} 
+        {...props}
+        {...mergeStyles(stylex.props(styles.content, stylexProp), className, style)}
+      >
         {children}
       </div>
     );
@@ -105,12 +119,18 @@ const AlertContent = forwardRef<HTMLDivElement, AlertContentProps>(
 );
 AlertContent.displayName = 'Alert.Content';
 
-export interface AlertHeadingProps extends Omit<React.HTMLAttributes<HTMLHeadingElement>, 'className' | 'style'> { style?: stylex.StyleXStyles; }
+export interface AlertHeadingProps extends React.HTMLAttributes<HTMLHeadingElement> {
+  stylex?: stylex.StyleXStyles;
+}
+
 const AlertHeading = forwardRef<HTMLHeadingElement, AlertHeadingProps>(
-  ({ children, style, ...props  }, ref) => {
-    const resolved = stylex.props(styles.heading, style);
+  ({ children, stylex: stylexProp, className, style, ...props }, ref) => {
     return (
-      <h5 ref={ref} className={resolved.className} style={resolved.style} {...props}>
+      <h5 
+        ref={ref} 
+        {...props}
+        {...mergeStyles(stylex.props(styles.heading, stylexProp), className, style)}
+      >
         {children}
       </h5>
     );
@@ -118,25 +138,37 @@ const AlertHeading = forwardRef<HTMLHeadingElement, AlertHeadingProps>(
 );
 AlertHeading.displayName = 'Alert.Heading';
 
-export interface AlertDescriptionProps extends Omit<React.HTMLAttributes<HTMLParagraphElement>, 'className' | 'style'> { style?: stylex.StyleXStyles; }
+export interface AlertDescriptionProps extends React.HTMLAttributes<HTMLParagraphElement> {
+  stylex?: stylex.StyleXStyles;
+}
+
 const AlertDescription = forwardRef<HTMLParagraphElement, AlertDescriptionProps>(
-  ({ children, style, ...props  }, ref) => {
-    const resolved = stylex.props(styles.description, style);
+  ({ children, stylex: stylexProp, className, style, ...props }, ref) => {
     return (
-      <div ref={ref} className={resolved.className} style={resolved.style} {...props}>
+      <p 
+        ref={ref} 
+        {...props}
+        {...mergeStyles(stylex.props(styles.description, stylexProp), className, style)}
+      >
         {children}
-      </div>
+      </p>
     );
   }
 );
 AlertDescription.displayName = 'Alert.Description';
 
-export interface AlertActionsProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'className' | 'style'> { style?: stylex.StyleXStyles; }
+export interface AlertActionsProps extends React.HTMLAttributes<HTMLDivElement> {
+  stylex?: stylex.StyleXStyles;
+}
+
 const AlertActions = forwardRef<HTMLDivElement, AlertActionsProps>(
-  ({ children, style, ...props  }, ref) => {
-    const resolved = stylex.props(styles.actions, style);
+  ({ children, stylex: stylexProp, className, style, ...props }, ref) => {
     return (
-      <div ref={ref} className={resolved.className} style={resolved.style} {...props}>
+      <div 
+        ref={ref} 
+        {...props}
+        {...mergeStyles(stylex.props(styles.actions, stylexProp), className, style)}
+      >
         {children}
       </div>
     );
@@ -144,13 +176,13 @@ const AlertActions = forwardRef<HTMLDivElement, AlertActionsProps>(
 );
 AlertActions.displayName = 'Alert.Actions';
 
-export interface AlertCloseButtonProps extends Omit<Partial<IconButtonProps>, 'className' | 'style'> {
+export interface AlertCloseButtonProps extends Partial<IconButtonProps> {
   'aria-label': string;
-  style?: stylex.StyleXStyles;
+  stylex?: stylex.StyleXStyles;
 }
 
 const AlertCloseButton = forwardRef<HTMLButtonElement, AlertCloseButtonProps>(
-  ({ style, variant = 'tertiary', tone: _ignoredTone, size = 'small', children, 'aria-label': ariaLabel, ...props  }, ref) => {
+  ({ stylex: stylexProp, variant = 'tertiary', tone: _ignoredTone, size = 'small', children, 'aria-label': ariaLabel, className, style, ...props }, ref) => {
     const { tone } = useAlertContext();
     
     // Map alert tone to IconButton tone
@@ -163,9 +195,12 @@ const AlertCloseButton = forwardRef<HTMLButtonElement, AlertCloseButtonProps>(
       <div {...stylex.props(styles.closeButtonContainer)}>
         <IconButton
           ref={ref}
+          type="button"
           variant={variant}
           tone={buttonTone}
           size={size}
+          stylex={stylexProp}
+          className={className}
           style={style}
           aria-label={ariaLabel}
           {...props}

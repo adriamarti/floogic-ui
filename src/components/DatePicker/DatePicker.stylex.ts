@@ -4,7 +4,7 @@ import { spacing } from '../../tokens/spacing.stylex';
 import { borders } from '../../tokens/borders.stylex';
 import { shape } from '../../tokens/shape.stylex';
 import { elevation } from '../../tokens/elevation.stylex';
-import { fonts, fontSizes, fontWeights } from '../../tokens/typography.stylex';
+import { fonts, fontSizes, fontWeights, lineHeights } from '../../tokens/typography.stylex';
 import { durations, easings } from '../../tokens/motion.stylex';
 
 const fadeIn = stylex.keyframes({
@@ -26,7 +26,8 @@ export const styles = stylex.create({
   },
   label: {
     fontFamily: fonts.sans,
-    fontSize: fontSizes.h6,
+    fontSize: fontSizes.bodyMd,
+    lineHeight: lineHeights.bodyMd,
     fontWeight: fontWeights.medium,
     color: colors.textStrong,
   },
@@ -35,16 +36,16 @@ export const styles = stylex.create({
   },
   hint: {
     fontFamily: fonts.sans,
-    fontSize: fontSizes.caption,
+    fontSize: fontSizes.bodyMd,
+    lineHeight: lineHeights.bodyMd,
+    fontWeight: fontWeights.regular,
     color: colors.textWeak,
-    marginBottom: spacing.space05,
   },
   errorContainer: {
     display: 'flex',
     alignItems: 'flex-start',
     gap: spacing.space1,
     color: colors.textError,
-    marginBottom: spacing.space05,
   },
   errorIcon: {
     flexShrink: 0,
@@ -52,7 +53,9 @@ export const styles = stylex.create({
   },
   errorText: {
     fontFamily: fonts.sans,
-    fontSize: fontSizes.caption,
+    fontSize: fontSizes.bodyMd,
+    lineHeight: lineHeights.bodyMd,
+    fontWeight: fontWeights.regular,
     color: colors.textError,
   },
   trigger: {
@@ -61,7 +64,8 @@ export const styles = stylex.create({
     justifyContent: 'space-between',
     width: '100%',
     fontFamily: fonts.sans,
-    fontSize: fontSizes.h6,
+    fontSize: fontSizes.bodyMd,
+    lineHeight: lineHeights.bodyMd,
     color: colors.textStrong,
     backgroundColor: {
       default: colors.backgroundBase,
@@ -155,7 +159,7 @@ export const styles = stylex.create({
     height: spacing.space8,
   },
   rdpCaptionLabel: {
-    fontSize: fontSizes.h6,
+    fontSize: fontSizes.bodyMd,
     fontWeight: fontWeights.semiBold,
     color: colors.textStrong,
   },
@@ -180,13 +184,14 @@ export const styles = stylex.create({
     width: spacing.space8,
     height: spacing.space8,
     borderRadius: shape.radiusSm,
+    color: colors.textStrong,
     cursor: 'pointer',
     pointerEvents: 'auto',
     backgroundColor: {
       default: 'transparent',
       ':hover': colors.fillWeak,
     },
-    transitionProperty: 'background-color',
+    transitionProperty: 'background-color, color',
     transitionDuration: durations.fast,
     transitionTimingFunction: easings.standard,
   },
@@ -198,7 +203,7 @@ export const styles = stylex.create({
   rdpHeadRow: {},
   rdpHeadCell: {
     color: colors.textWeak,
-    fontSize: fontSizes.caption,
+    fontSize: fontSizes.bodySm,
     fontWeight: fontWeights.medium,
     width: spacing.space8,
     height: spacing.space8,
@@ -223,7 +228,8 @@ export const styles = stylex.create({
     width: spacing.space8,
     height: spacing.space8,
     borderRadius: shape.radiusSm,
-    fontSize: fontSizes.caption,
+    fontSize: fontSizes.bodySm,
+    color: colors.textStrong,
     cursor: 'pointer',
     backgroundColor: {
       default: 'transparent',

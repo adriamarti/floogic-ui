@@ -2,12 +2,13 @@ import React, { createContext, useContext, forwardRef } from 'react';
 import * as stylex from '@stylexjs/stylex';
 import { styles, iconColorStyles } from './AlertGlobal.stylex';
 import { IconButton, IconButtonProps } from '../IconButton';
+import { mergeStyles } from '../../utils/mergeStyles';
 
 export type AlertGlobalTone = 'error' | 'warning' | 'success' | 'information' | 'neutral' | 'brand' | 'inverse-neutral' | 'inverse-brand';
 export type AlertGlobalVariant = 'solid' | 'transparent';
 
-export interface AlertGlobalProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface AlertGlobalProps extends React.HTMLAttributes<HTMLDivElement> {
+  stylex?: stylex.StyleXStyles;
   tone?: AlertGlobalTone;
   variant?: AlertGlobalVariant;
 }
@@ -29,24 +30,21 @@ const useAlertGlobalContext = () => {
 
 // Root Component
 const AlertGlobalRoot = forwardRef<HTMLDivElement, AlertGlobalProps>(
-  ({ children, tone = 'neutral', variant = 'solid', style, ...props  }, ref) => {
-    
+  ({ children, tone = 'neutral', variant = 'solid', stylex: stylexProp, className, style, role = 'alert', ...props }, ref) => {
     // Map tone to stylex key format
     let toneKey = tone as string;
     if (tone === 'inverse-neutral') toneKey = 'inverseNeutral';
     if (tone === 'inverse-brand') toneKey = 'inverseBrand';
 
     const variantToneKey = `${variant}_${toneKey}` as keyof typeof styles;
-    const resolved = stylex.props(styles.root, styles[variantToneKey], style);
 
     return (
       <AlertGlobalContext.Provider value={{ tone, variant }}>
         <div
           ref={ref}
-          className={resolved.className}
-          style={resolved.style}
+          role={role}
           {...props}
-          role="alert"
+          {...mergeStyles(stylex.props(styles.root, styles[variantToneKey], stylexProp), className, style)}
         >
           {children}
         </div>
@@ -58,21 +56,27 @@ AlertGlobalRoot.displayName = 'AlertGlobal';
 
 // Sub-components
 
-export interface AlertGlobalIconProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'className' | 'style'> { style?: stylex.StyleXStyles; }
+export interface AlertGlobalIconProps extends React.HTMLAttributes<HTMLDivElement> {
+  stylex?: stylex.StyleXStyles;
+}
+
 const AlertGlobalIcon = forwardRef<HTMLDivElement, AlertGlobalIconProps>(
-  ({ children, style, ...props  }, ref) => {
+  ({ children, stylex: stylexProp, className, style, ...props }, ref) => {
     const { tone } = useAlertGlobalContext();
-    const resolved = stylex.props(
-      styles.iconContainer, 
-      iconColorStyles[tone],
-      style
-    );
     return (
       <div
         ref={ref}
-        className={resolved.className}
-        style={resolved.style}
+        aria-hidden="true"
         {...props}
+        {...mergeStyles(
+          stylex.props(
+            styles.iconContainer, 
+            iconColorStyles[tone],
+            stylexProp
+          ),
+          className,
+          style
+        )}
       >
         {children}
       </div>
@@ -81,12 +85,18 @@ const AlertGlobalIcon = forwardRef<HTMLDivElement, AlertGlobalIconProps>(
 );
 AlertGlobalIcon.displayName = 'AlertGlobal.Icon';
 
-export interface AlertGlobalContentProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'className' | 'style'> { style?: stylex.StyleXStyles; }
+export interface AlertGlobalContentProps extends React.HTMLAttributes<HTMLDivElement> {
+  stylex?: stylex.StyleXStyles;
+}
+
 const AlertGlobalContent = forwardRef<HTMLDivElement, AlertGlobalContentProps>(
-  ({ children, style, ...props  }, ref) => {
-    const resolved = stylex.props(styles.content, style);
+  ({ children, stylex: stylexProp, className, style, ...props }, ref) => {
     return (
-      <div ref={ref} className={resolved.className} style={resolved.style} {...props}>
+      <div 
+        ref={ref} 
+        {...props}
+        {...mergeStyles(stylex.props(styles.content, stylexProp), className, style)}
+      >
         {children}
       </div>
     );
@@ -94,25 +104,37 @@ const AlertGlobalContent = forwardRef<HTMLDivElement, AlertGlobalContentProps>(
 );
 AlertGlobalContent.displayName = 'AlertGlobal.Content';
 
-export interface AlertGlobalDescriptionProps extends Omit<React.HTMLAttributes<HTMLParagraphElement>, 'className' | 'style'> { style?: stylex.StyleXStyles; }
+export interface AlertGlobalDescriptionProps extends React.HTMLAttributes<HTMLParagraphElement> {
+  stylex?: stylex.StyleXStyles;
+}
+
 const AlertGlobalDescription = forwardRef<HTMLParagraphElement, AlertGlobalDescriptionProps>(
-  ({ children, style, ...props  }, ref) => {
-    const resolved = stylex.props(styles.description, style);
+  ({ children, stylex: stylexProp, className, style, ...props }, ref) => {
     return (
-      <div ref={ref} className={resolved.className} style={resolved.style} {...props}>
+      <p 
+        ref={ref} 
+        {...props}
+        {...mergeStyles(stylex.props(styles.description, stylexProp), className, style)}
+      >
         {children}
-      </div>
+      </p>
     );
   }
 );
 AlertGlobalDescription.displayName = 'AlertGlobal.Description';
 
-export interface AlertGlobalActionsProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'className' | 'style'> { style?: stylex.StyleXStyles; }
+export interface AlertGlobalActionsProps extends React.HTMLAttributes<HTMLDivElement> {
+  stylex?: stylex.StyleXStyles;
+}
+
 const AlertGlobalActions = forwardRef<HTMLDivElement, AlertGlobalActionsProps>(
-  ({ children, style, ...props  }, ref) => {
-    const resolved = stylex.props(styles.actions, style);
+  ({ children, stylex: stylexProp, className, style, ...props }, ref) => {
     return (
-      <div ref={ref} className={resolved.className} style={resolved.style} {...props}>
+      <div 
+        ref={ref} 
+        {...props}
+        {...mergeStyles(stylex.props(styles.actions, stylexProp), className, style)}
+      >
         {children}
       </div>
     );
@@ -120,13 +142,13 @@ const AlertGlobalActions = forwardRef<HTMLDivElement, AlertGlobalActionsProps>(
 );
 AlertGlobalActions.displayName = 'AlertGlobal.Actions';
 
-export interface AlertGlobalCloseButtonProps extends Omit<Partial<IconButtonProps>, 'className' | 'style'> {
+export interface AlertGlobalCloseButtonProps extends Partial<IconButtonProps> {
   'aria-label': string;
-  style?: stylex.StyleXStyles;
+  stylex?: stylex.StyleXStyles;
 }
 
 const AlertGlobalCloseButton = forwardRef<HTMLButtonElement, AlertGlobalCloseButtonProps>(
-  ({ style, variant = 'tertiary', size = 'small', children, 'aria-label': ariaLabel, ...props  }, ref) => {
+  ({ stylex: stylexProp, variant = 'tertiary', size = 'small', children, 'aria-label': ariaLabel, className, style, ...props }, ref) => {
     const { tone } = useAlertGlobalContext();
     
     // Map alert tone to IconButton tone
@@ -139,9 +161,12 @@ const AlertGlobalCloseButton = forwardRef<HTMLButtonElement, AlertGlobalCloseBut
       <div {...stylex.props(styles.closeButtonContainer)}>
         <IconButton
           ref={ref}
+          type="button"
           variant={variant}
           tone={buttonTone}
           size={size}
+          stylex={stylexProp}
+          className={className}
           style={style}
           aria-label={ariaLabel}
           {...props}

@@ -28,61 +28,70 @@ All components in `floogic-ui` must strictly adhere to the following **7 core ru
   export type { CardProps, CardContentProps, CardHeadingProps } from './Card';
   ```
 
-### 2. Universal `style` Prop Support (`StyleXStyles`)
-- **Rule**: Every root component and subcomponent must accept the `style` prop typed as `style?: stylex.StyleXStyles`.
+### 2. Universal `stylex` Prop Support (`StyleXStyles`)
+- **Rule**: Every root component and subcomponent must accept the `stylex` prop typed as `stylex?: stylex.StyleXStyles`.
 - **Implementation**:
-  - `style` must be applied inside the component using `stylex.props(...)`.
+  - `stylex` is applied inside the component using `stylex.props(...)`.
+  - Merged with consumer `className` and native `style` via `mergeStyles(...)`.
   - Always allow passing single style objects or arrays of style objects.
 - **Example**:
   ```tsx
-  export interface ButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'className' | 'style'> {
-    style?: stylex.StyleXStyles;
+  export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    stylex?: stylex.StyleXStyles;
   }
   ```
 
 ### 3. Radix Primitive Integration & Props Inheritance
 - **Rule**: Components extending Radix UI primitives must expose and forward Radix component props without restriction.
 - **Implementation**:
-  - Extend Radix props interfaces while omitting native `className` and `style` to enforce StyleX usage.
+  - Extend Radix props interfaces directly, preserving native `className` and `style`.
 - **Example**:
   ```tsx
-  export interface DialogProps extends Omit<React.ComponentPropsWithoutRef<typeof DialogPrimitive.Root>, 'className' | 'style'> {
-    style?: stylex.StyleXStyles;
+  export interface DialogProps extends DialogPrimitive.DialogProps {
+    stylex?: stylex.StyleXStyles;
   }
   ```
 
 ### 4. HTML Element Props & Accessibility Support
-- **Rule**: All components must permit standard HTML element attributes (`React.HTMLAttributes<T>` or `React.ComponentPropsWithoutRef<T>`) to support accessibility (`aria-*`, `data-*`, `id`, `tabIndex`, event handlers).
+- **Rule**: All components must permit standard HTML element attributes (`React.HTMLAttributes<T>` or `React.ComponentPropsWithoutRef<T>`) to support accessibility (`aria-*`, `data-*`, `id`, `tabIndex`, event handlers) and standard style overrides (`className`, `style`).
+- **Default HTML tags**: Use semantic HTML elements and accessible defaults (e.g. `type="button"` on buttons, `type="text"` on inputs).
 - **Example**:
   ```tsx
-  export interface BadgeProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'className' | 'style'> {
+  export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
     tone?: BadgeTone;
-    style?: stylex.StyleXStyles;
+    stylex?: stylex.StyleXStyles;
   }
   ```
 
 ### 5. Strict Token Usage (No Hardcoded Styles)
 - **Rule**: NEVER hardcode raw pixels (`16px`, `8px`), radii (`9999px`), numerical dimensions, font sizes, or color hex/rgba strings in `.stylex.ts` or `.tsx` files.
-- **Always import tokens from `src/tokens/`**:
+- **Internal package imports**: import directly from `src/tokens/*.stylex`.
+- **Consumer application imports**:
+  - Unified import (recommended): `import { colors, fonts, spacing, shape } from '@floogic/ui/tokens';`
+  - Root import: `import { colors, spacing, shape } from '@floogic/ui';`
+  - Granular subpath imports: `import { colors } from '@floogic/ui/tokens/colors.stylex';`
+- **Token Domains**:
   - `colors`: `colors.textStrong`, `colors.fillBrandStrong`, `colors.strokeWeak`, `colors.fillOverlay`, etc.
   - `spacing`: `spacing.space1`, `spacing.space2`, `spacing.space4`, `spacing.space6`, etc.
   - `shape`: `shape.radiusSm`, `shape.radiusMd`, `shape.radiusLg`, `shape.radiusFull`, etc.
   - `borders`: `borders.hairline`, `borders.medium`, `borders.accent`.
-  - `typography`: `fonts.sans`, `fontSizes.h6`, `fontSizes.caption`, `fontWeights.medium`, `lineHeights.body`.
+  - `typography`: `fonts.sans`, `fontSizes.h6`, `fontSizes.bodySm`, `fontWeights.medium`, `lineHeights.bodyMd`.
   - `elevation`: `elevation.elev1`, `elevation.elev2`, `elevation.elev3`.
   - `motion`: `durations.fast`, `easings.standard`.
 
-### 6. StyleX Styling Only (No Native React `style={{ ... }}`)
-- **Rule**: ALL component styles must be configured via StyleX (`stylex.props(...)`). Direct inline `style={{ ... }}` attributes on JSX elements are **strictly forbidden**.
-- **Dynamic styles**: Use dynamic style functions inside `stylex.create` if runtime values are required.
+### 6. StyleX Styling Combined with Native Overrides
+- **Rule**: Internal component styles are configured via StyleX (`stylex.props(...)`). Consumers can customize components using `stylex={...}`, standard CSS `className="..."`, or native inline `style={{ ... }}`.
+- **Implementation**: Use `mergeStyles(stylex.props(...), className, style)` to cleanly merge styles on the rendered HTML tag.
 - **Example**:
   ```tsx
-  // Correct:
-  const resolved = stylex.props(styles.root, styles.dynamicZIndex(zIndex), style);
-  return <div className={resolved.className} style={resolved.style} />;
-
-  // Incorrect:
-  return <div style={{ zIndex, fontSize: '14px' }} />; // FORBIDDEN!
+  // Inside component:
+  return (
+    <div
+      ref={ref}
+      {...props}
+      {...mergeStyles(stylex.props(styles.root, stylexProp), className, style)}
+    />
+  );
   ```
 
 ### 7. English Code Comments & JSDoc

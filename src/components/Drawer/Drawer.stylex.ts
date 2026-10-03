@@ -4,6 +4,7 @@ import { elevation } from '../../tokens/elevation.stylex';
 import { durations, easings } from '../../tokens/motion.stylex';
 import { spacing } from '../../tokens/spacing.stylex';
 import { borders } from '../../tokens/borders.stylex';
+import { fonts, fontSizes, lineHeights } from '../../tokens/typography.stylex';
 
 const overlayShow = stylex.keyframes({
   from: { opacity: 0 },
@@ -33,7 +34,7 @@ export const styles = stylex.create({
     backdropFilter: 'blur(4px)',
     position: 'fixed',
     inset: 0,
-    zIndex: 50,
+    zIndex: 1000,
     animationName: overlayShow,
     animationDuration: durations.base,
     animationTimingFunction: easings.standard,
@@ -41,7 +42,7 @@ export const styles = stylex.create({
   content: {
     backgroundColor: colors.backgroundOverlay,
     position: 'fixed',
-    zIndex: 50,
+    zIndex: 1000,
     display: 'flex',
     flexDirection: 'column',
     boxShadow: elevation.elev3,
@@ -121,7 +122,7 @@ export const styles = stylex.create({
 
   header: {
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'space-between',
     paddingTop: spacing.space4,
     paddingBottom: spacing.space4,
@@ -136,6 +137,9 @@ export const styles = stylex.create({
     flex: 1,
     overflowY: 'auto',
     padding: spacing.space5,
+    fontFamily: fonts.sans,
+    fontSize: fontSizes.bodyMd,
+    lineHeight: lineHeights.bodyMd,
   },
   footer: {
     display: 'flex',

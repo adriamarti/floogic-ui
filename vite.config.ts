@@ -8,7 +8,14 @@ import { resolve } from 'path';
 const isTest = !!process.env.VITEST;
 
 function getStylexPlugin() {
-  const plugin = stylex.vite();
+  const plugin = stylex.vite({
+    treeshakeCompensation: false,
+    useCSSLayers: true,
+    unstable_moduleResolution: {
+      type: 'commonJS',
+      rootDir: resolve(__dirname, '..'),
+    },
+  });
   if (!isTest) return plugin;
   return {
     ...plugin,
@@ -59,7 +66,10 @@ export default defineConfig({
       output: {
         globals: {
           react: 'React',
-          'react-dom': 'ReactDOM'
+          'react-dom': 'ReactDOM',
+          'react/jsx-runtime': 'jsxRuntime',
+          'react/jsx-dev-runtime': 'jsxDevRuntime',
+          '@stylexjs/stylex': 'stylex'
         }
       }
     }

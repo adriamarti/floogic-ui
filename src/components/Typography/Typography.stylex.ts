@@ -3,7 +3,8 @@ import { colors } from '../../tokens/colors.stylex';
 import { fonts, fontSizes, fontWeights, lineHeights, letterSpacings } from '../../tokens/typography.stylex';
 
 export const styles = stylex.create({
-  root: {
+  // Base Reset
+  base: {
     margin: 0,
     padding: 0,
   },
@@ -15,9 +16,12 @@ export const styles = stylex.create({
   justify: { textAlign: 'justify' },
 
   // Weights
+  extraLight: { fontWeight: fontWeights.extraLight },
   regular: { fontWeight: fontWeights.regular },
   medium: { fontWeight: fontWeights.medium },
   semiBold: { fontWeight: fontWeights.semiBold },
+  bold: { fontWeight: fontWeights.bold },
+  black: { fontWeight: fontWeights.black },
 
   // Colors
   strong: { color: colors.textStrong },
@@ -30,25 +34,42 @@ export const styles = stylex.create({
   inverseStrong: { color: colors.textInverseStrong },
   inverseWeak: { color: colors.textInverseWeak },
 
-  // Variants
-  display: {
+  // Display Variants (Source Serif 4)
+  displayLg: {
     fontFamily: fonts.serif,
-    fontSize: fontSizes.display,
-    lineHeight: lineHeights.display,
-    letterSpacing: letterSpacings.display,
+    fontSize: fontSizes.displayLg,
+    lineHeight: lineHeights.displayLg,
+    letterSpacing: letterSpacings.displayLg,
     fontWeight: fontWeights.regular,
   },
-  h1: {
+  displayMd: {
     fontFamily: fonts.serif,
+    fontSize: fontSizes.displayMd,
+    lineHeight: lineHeights.displayMd,
+    letterSpacing: letterSpacings.displayMd,
+    fontWeight: fontWeights.regular,
+  },
+  displaySm: {
+    fontFamily: fonts.serif,
+    fontSize: fontSizes.displaySm,
+    lineHeight: lineHeights.displaySm,
+    letterSpacing: letterSpacings.displaySm,
+    fontWeight: fontWeights.regular,
+  },
+
+  // Heading Variants (Source Sans 3)
+  h1: {
+    fontFamily: fonts.sans,
     fontSize: fontSizes.h1,
     lineHeight: lineHeights.h1,
     letterSpacing: letterSpacings.h1,
     fontWeight: fontWeights.regular,
   },
   h2: {
-    fontFamily: fonts.serif,
+    fontFamily: fonts.sans,
     fontSize: fontSizes.h2,
     lineHeight: lineHeights.h2,
+    letterSpacing: letterSpacings.h2,
     fontWeight: fontWeights.regular,
   },
   h3: {
@@ -75,22 +96,46 @@ export const styles = stylex.create({
     lineHeight: lineHeights.h6,
     fontWeight: fontWeights.medium,
   },
+
+  // Body Variants (Source Sans 3)
   bodyLg: {
     fontFamily: fonts.sans,
     fontSize: fontSizes.bodyLg,
-    lineHeight: lineHeights.body,
+    lineHeight: lineHeights.bodyLg,
     fontWeight: fontWeights.regular,
   },
-  body: {
+  bodyMd: {
     fontFamily: fonts.sans,
-    fontSize: fontSizes.body,
-    lineHeight: lineHeights.body,
+    fontSize: fontSizes.bodyMd,
+    lineHeight: lineHeights.bodyMd,
     fontWeight: fontWeights.regular,
   },
-  caption: {
+  bodySm: {
     fontFamily: fonts.sans,
-    fontSize: fontSizes.caption,
-    lineHeight: lineHeights.body, // caption usually uses body line-height or 1.4
+    fontSize: fontSizes.bodySm,
+    lineHeight: lineHeights.bodySm,
+    fontWeight: fontWeights.regular,
+  },
+
+  // Caption Variants (Source Code Pro - Mono)
+  captionLg: {
+    fontFamily: fonts.mono,
+    fontSize: fontSizes.captionLg,
+    lineHeight: lineHeights.captionLg,
+    letterSpacing: letterSpacings.caption,
+    fontWeight: fontWeights.regular,
+  },
+  captionMd: {
+    fontFamily: fonts.mono,
+    fontSize: fontSizes.captionMd,
+    lineHeight: lineHeights.captionMd,
+    letterSpacing: letterSpacings.caption,
+    fontWeight: fontWeights.regular,
+  },
+  captionSm: {
+    fontFamily: fonts.mono,
+    fontSize: fontSizes.captionSm,
+    lineHeight: lineHeights.captionSm,
     letterSpacing: letterSpacings.caption,
     fontWeight: fontWeights.regular,
   },

@@ -1,10 +1,11 @@
 {
-  "name": "floogic-ui",
+  "name": "@floogic/ui",
   "description": "Token-driven React Design System built with StyleX and Radix UI Primitives",
-  "generatedAt": "2026-08-24T17:31:00.531Z",
+  "generatedAt": "2026-10-03T22:34:49.828Z",
   "components": [
     {
       "name": "Accordion",
+      "description": "Accordion component",
       "compoundExport": "Accordion.Item, Accordion.Header, Accordion.Trigger, Accordion.Content",
       "subcomponents": [
         "Item",
@@ -12,10 +13,44 @@
         "Trigger",
         "Content"
       ],
+      "keywords": [
+        "collapse",
+        "expansion",
+        "faq",
+        "disclosure",
+        "fold"
+      ],
+      "interfaces": [
+        {
+          "name": "AccordionItemProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "AccordionHeaderProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "AccordionTriggerProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "AccordionContentProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        }
+      ],
       "path": "src/components/Accordion"
     },
     {
       "name": "Alert",
+      "description": "Alert component",
       "compoundExport": "Alert.Icon, Alert.Content, Alert.Heading, Alert.Description, Alert.Actions, Alert.CloseButton",
       "subcomponents": [
         "Icon",
@@ -25,10 +60,68 @@
         "Actions",
         "CloseButton"
       ],
+      "keywords": [
+        "notification",
+        "banner",
+        "message",
+        "warning",
+        "error",
+        "callout",
+        "toast"
+      ],
+      "interfaces": [
+        {
+          "name": "AlertProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles",
+            "tone?: AlertTone",
+            "layout?: AlertLayout",
+            "borderLeft?: boolean"
+          ]
+        },
+        {
+          "name": "AlertIconProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "AlertContentProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "AlertHeadingProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "AlertDescriptionProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "AlertActionsProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "AlertCloseButtonProps",
+          "props": [
+            "'aria-label': string",
+            "stylex?: stylex.StyleXStyles"
+          ]
+        }
+      ],
       "path": "src/components/Alert"
     },
     {
       "name": "AlertGlobal",
+      "description": "AlertGlobal component",
       "compoundExport": "AlertGlobal.Icon, AlertGlobal.Content, AlertGlobal.Description, AlertGlobal.Actions, AlertGlobal.CloseButton",
       "subcomponents": [
         "Icon",
@@ -37,10 +130,58 @@
         "Actions",
         "CloseButton"
       ],
+      "keywords": [
+        "system notice",
+        "top banner",
+        "global alert",
+        "broadcast"
+      ],
+      "interfaces": [
+        {
+          "name": "AlertGlobalProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles",
+            "tone?: AlertGlobalTone",
+            "variant?: AlertGlobalVariant"
+          ]
+        },
+        {
+          "name": "AlertGlobalIconProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "AlertGlobalContentProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "AlertGlobalDescriptionProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "AlertGlobalActionsProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "AlertGlobalCloseButtonProps",
+          "props": [
+            "'aria-label': string",
+            "stylex?: stylex.StyleXStyles"
+          ]
+        }
+      ],
       "path": "src/components/AlertGlobal"
     },
     {
       "name": "Avatar",
+      "description": "Avatar component",
       "compoundExport": "Avatar.Image, Avatar.Fallback, Avatar.Badge, Avatar.Label, Avatar.Group",
       "subcomponents": [
         "Image",
@@ -49,54 +190,244 @@
         "Label",
         "Group"
       ],
+      "keywords": [
+        "profile photo",
+        "user picture",
+        "initials",
+        "avatar fallback"
+      ],
+      "interfaces": [
+        {
+          "name": "AvatarProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles",
+            "size?: AvatarSize"
+          ]
+        },
+        {
+          "name": "AvatarImageProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "AvatarFallbackProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles",
+            "tone?: AvatarTone"
+          ]
+        },
+        {
+          "name": "AvatarBadgeProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles",
+            "position?: 'bottom-right' | 'top-right'",
+            "withRing?: boolean"
+          ]
+        },
+        {
+          "name": "AvatarGroupProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles",
+            "limit?: number"
+          ]
+        },
+        {
+          "name": "AvatarLabelProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles",
+            "title: string",
+            "description?: string",
+            "avatarSize?: AvatarSize"
+          ]
+        }
+      ],
       "path": "src/components/Avatar"
     },
     {
       "name": "Badge",
+      "description": "Badge component",
       "compoundExport": "Badge.Label, Badge.Icon",
       "subcomponents": [
         "Label",
         "Icon"
       ],
+      "keywords": [
+        "tag",
+        "chip",
+        "pill",
+        "label",
+        "status indicator"
+      ],
+      "interfaces": [
+        {
+          "name": "BadgeLabelProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "BadgeIconProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "BadgeProps",
+          "props": [
+            "tone?: BadgeTone",
+            "size?: BadgeSize",
+            "stylex?: stylex.StyleXStyles"
+          ]
+        }
+      ],
       "path": "src/components/Badge"
     },
     {
       "name": "BadgeCount",
+      "description": "BadgeCount component",
       "compoundExport": "BadgeCount",
       "subcomponents": [],
+      "keywords": [
+        "counter",
+        "unread",
+        "notification count",
+        "number badge"
+      ],
+      "interfaces": [
+        {
+          "name": "BadgeCountProps",
+          "props": [
+            "count: number",
+            "emphasis?: BadgeCountEmphasis",
+            "tone?: BadgeCountTone",
+            "size?: BadgeCountSize",
+            "max?: number",
+            "showZero?: boolean",
+            "stylex?: stylex.StyleXStyles"
+          ]
+        }
+      ],
       "path": "src/components/BadgeCount"
     },
     {
       "name": "BadgeDot",
+      "description": "BadgeDot component",
       "compoundExport": "BadgeDot",
       "subcomponents": [],
+      "keywords": [
+        "online status",
+        "presence",
+        "indicator dot"
+      ],
+      "interfaces": [
+        {
+          "name": "BadgeDotProps",
+          "props": [
+            "status?: BadgeDotStatus",
+            "size?: BadgeDotSize",
+            "stylex?: stylex.StyleXStyles"
+          ]
+        }
+      ],
       "path": "src/components/BadgeDot"
     },
     {
       "name": "Breadcrumbs",
+      "description": "Breadcrumbs component",
       "compoundExport": "Breadcrumbs.Item",
       "subcomponents": [
         "Item"
+      ],
+      "keywords": [
+        "navigation",
+        "path",
+        "trail",
+        "hierarchy"
+      ],
+      "interfaces": [
+        {
+          "name": "BreadcrumbsItemProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles",
+            "as?: React.ElementType",
+            "isCurrent?: boolean"
+          ]
+        },
+        {
+          "name": "BreadcrumbsProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles",
+            "itemsBeforeCollapse?: number",
+            "separator?: React.ReactNode"
+          ]
+        }
       ],
       "path": "src/components/Breadcrumbs"
     },
     {
       "name": "Button",
+      "description": "Button component",
       "compoundExport": "Button.Label, Button.Icon",
       "subcomponents": [
         "Label",
         "Icon"
       ],
+      "keywords": [
+        "action",
+        "cta",
+        "click",
+        "submit"
+      ],
+      "interfaces": [
+        {
+          "name": "ButtonLabelProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "ButtonIconProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "ButtonProps",
+          "props": [
+            "variant?: 'primary' | 'secondary' | 'tertiary'",
+            "tone?: 'brand' | 'neutral' | 'destructive' | 'inverse'",
+            "size?: 'small' | 'medium' | 'large'",
+            "iconOnly?: boolean",
+            "stylex?: stylex.StyleXStyles"
+          ]
+        }
+      ],
       "path": "src/components/Button"
     },
     {
       "name": "ButtonGroup",
+      "description": "ButtonGroup component",
       "compoundExport": "ButtonGroup",
       "subcomponents": [],
+      "keywords": [
+        "segmented buttons",
+        "button cluster",
+        "toolbar"
+      ],
+      "interfaces": [
+        {
+          "name": "ButtonGroupProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        }
+      ],
       "path": "src/components/ButtonGroup"
     },
     {
       "name": "Card",
+      "description": "Card component",
       "compoundExport": "Card.Media, Card.Content, Card.Icon, Card.Heading, Card.Description, Card.Footer",
       "subcomponents": [
         "Media",
@@ -106,10 +437,68 @@
         "Description",
         "Footer"
       ],
+      "keywords": [
+        "container",
+        "box",
+        "panel",
+        "tile",
+        "card surface"
+      ],
+      "interfaces": [
+        {
+          "name": "CardProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles",
+            "layout?: CardLayout",
+            "as?: React.ElementType",
+            "reactive?: boolean",
+            "href?: string",
+            "target?: string",
+            "rel?: string"
+          ]
+        },
+        {
+          "name": "CardMediaProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "CardContentProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "CardIconProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "CardHeadingProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "CardDescriptionProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "CardFooterProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        }
+      ],
       "path": "src/components/Card"
     },
     {
       "name": "CheckboxGroup",
+      "description": "CheckboxGroup component",
       "compoundExport": "CheckboxGroup.Label, CheckboxGroup.Hint, CheckboxGroup.Error, CheckboxGroup.Item",
       "subcomponents": [
         "Label",
@@ -117,10 +506,56 @@
         "Error",
         "Item"
       ],
+      "keywords": [
+        "multiple choice",
+        "checkbox list",
+        "form options"
+      ],
+      "interfaces": [
+        {
+          "name": "CheckboxGroupProps",
+          "props": [
+            "value?: string[]",
+            "defaultValue?: string[]",
+            "onValueChange?: (value: string[]) => void",
+            "invalid?: boolean",
+            "required?: boolean",
+            "disabled?: boolean",
+            "layout?: CheckboxGroupLayout",
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "CheckboxGroupLabelProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "CheckboxGroupHintProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "CheckboxGroupErrorProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "CheckboxGroupItemProps",
+          "props": [
+            "value: string",
+            "stylex?: stylex.StyleXStyles"
+          ]
+        }
+      ],
       "path": "src/components/CheckboxGroup"
     },
     {
       "name": "DatePicker",
+      "description": "DatePicker component",
       "compoundExport": "DatePicker.Label, DatePicker.Hint, DatePicker.Error, DatePicker.Trigger",
       "subcomponents": [
         "Label",
@@ -128,16 +563,81 @@
         "Error",
         "Trigger"
       ],
+      "keywords": [
+        "calendar",
+        "date selection",
+        "schedule"
+      ],
+      "interfaces": [
+        {
+          "name": "DatePickerLabelProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "DatePickerHintProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "DatePickerErrorProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "DatePickerTriggerProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles",
+            "placeholder?: string"
+          ]
+        },
+        {
+          "name": "DatePickerProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles",
+            "id?: string",
+            "invalid?: boolean",
+            "required?: boolean",
+            "disabled?: boolean",
+            "value?: Date",
+            "defaultValue?: Date",
+            "onValueChange?: (date: Date | undefined) => void",
+            "open?: boolean",
+            "defaultOpen?: boolean",
+            "onOpenChange?: (open: boolean) => void"
+          ]
+        }
+      ],
       "path": "src/components/DatePicker"
     },
     {
       "name": "Divider",
+      "description": "Divider component",
       "compoundExport": "Divider",
       "subcomponents": [],
+      "keywords": [
+        "separator",
+        "horizontal line",
+        "hr",
+        "vertical divider"
+      ],
+      "interfaces": [
+        {
+          "name": "DividerProps",
+          "props": [
+            "type?: 'weak' | 'strong'",
+            "stylex?: stylex.StyleXStyles"
+          ]
+        }
+      ],
       "path": "src/components/Divider"
     },
     {
       "name": "Drawer",
+      "description": "Drawer component",
       "compoundExport": "Drawer.Trigger, Drawer.Content, Drawer.Header, Drawer.Title, Drawer.Description, Drawer.CloseButton, Drawer.Body, Drawer.Footer",
       "subcomponents": [
         "Trigger",
@@ -149,31 +649,143 @@
         "Body",
         "Footer"
       ],
+      "keywords": [
+        "sidebar",
+        "offcanvas",
+        "sliding panel",
+        "sheet",
+        "drawer overlay"
+      ],
+      "interfaces": [
+        {
+          "name": "DrawerProps",
+          "props": [
+            "open?: boolean",
+            "onOpenChange?: (open: boolean) => void"
+          ]
+        },
+        {
+          "name": "DrawerContentProps",
+          "props": [
+            "position?: 'left' | 'right' | 'top' | 'bottom'",
+            "size?: 'small' | 'medium' | 'large'",
+            "stylex?: stylex.StyleXStyles",
+            "overlayStylex?: stylex.StyleXStyles",
+            "overlayStyle?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "DrawerHeaderProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "DrawerTitleProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "DrawerDescriptionProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "DrawerCloseButtonProps",
+          "props": [
+            "children?: React.ReactNode",
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "DrawerBodyProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "DrawerFooterProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        }
+      ],
       "path": "src/components/Drawer"
     },
     {
       "name": "HoverCard",
+      "description": "HoverCard component",
       "compoundExport": "HoverCard.Trigger, HoverCard.Content",
       "subcomponents": [
         "Trigger",
         "Content"
       ],
+      "keywords": [
+        "popover on hover",
+        "preview card",
+        "tooltip card"
+      ],
+      "interfaces": [
+        {
+          "name": "HoverCardContentProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        }
+      ],
       "path": "src/components/HoverCard"
     },
     {
       "name": "IconButton",
+      "description": "IconButton component",
       "compoundExport": "IconButton",
       "subcomponents": [],
+      "keywords": [
+        "icon action",
+        "close button",
+        "glyph button"
+      ],
+      "interfaces": [
+        {
+          "name": "IconButtonProps",
+          "props": [
+            "children: React.ReactNode",
+            "'aria-label': string; // Enforce aria-label for accessibility since there's no visible text label",
+            "stylex?: stylex.StyleXStyles"
+          ]
+        }
+      ],
       "path": "src/components/IconButton"
     },
     {
       "name": "IconContainer",
+      "description": "IconContainer component",
       "compoundExport": "IconContainer",
       "subcomponents": [],
+      "keywords": [
+        "icon wrapper",
+        "circular icon",
+        "shaped icon"
+      ],
+      "interfaces": [
+        {
+          "name": "IconContainerProps",
+          "props": [
+            "tone?: 'neutral' | 'brand' | 'destructive' | 'warning' | 'success' | 'information'",
+            "variant?: 'filled' | 'stroked' | 'ghost'",
+            "shape?: 'circle' | 'square'",
+            "size?: 'sm' | 'md' | 'lg'",
+            "stylex?: stylex.StyleXStyles"
+          ]
+        }
+      ],
       "path": "src/components/IconContainer"
     },
     {
       "name": "Modal",
+      "description": "Modal component",
       "compoundExport": "Modal.Trigger, Modal.Content, Modal.Header, Modal.Title, Modal.Description, Modal.CloseButton, Modal.Body, Modal.Footer",
       "subcomponents": [
         "Trigger",
@@ -185,32 +797,149 @@
         "Body",
         "Footer"
       ],
+      "keywords": [
+        "dialog",
+        "popup",
+        "alertdialog",
+        "lightbox",
+        "modal window"
+      ],
+      "interfaces": [
+        {
+          "name": "ModalProps",
+          "props": [
+            "open?: boolean",
+            "onOpenChange?: (open: boolean) => void"
+          ]
+        },
+        {
+          "name": "ModalContentProps",
+          "props": [
+            "size?: 'small' | 'medium' | 'large'",
+            "stylex?: stylex.StyleXStyles",
+            "overlayStylex?: stylex.StyleXStyles",
+            "overlayStyle?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "ModalHeaderProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "ModalTitleProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "ModalDescriptionProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "ModalCloseButtonProps",
+          "props": [
+            "children?: React.ReactNode",
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "ModalBodyProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "ModalFooterProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        }
+      ],
       "path": "src/components/Modal"
     },
     {
       "name": "Pagination",
+      "description": "Pagination component",
       "compoundExport": "Pagination",
       "subcomponents": [],
+      "keywords": [
+        "page navigation",
+        "pager",
+        "next previous"
+      ],
+      "interfaces": [
+        {
+          "name": "PaginationProps",
+          "props": [
+            "currentPage: number",
+            "totalPages: number",
+            "onPageChange: (page: number) => void",
+            "siblingCount?: number",
+            "stylex?: stylex.StyleXStyles"
+          ]
+        }
+      ],
       "path": "src/components/Pagination"
     },
     {
       "name": "Popover",
+      "description": "Popover component",
       "compoundExport": "Popover.Trigger, Popover.Content, Popover.Close",
       "subcomponents": [
         "Trigger",
         "Content",
         "Close"
       ],
+      "keywords": [
+        "flyout",
+        "floating card",
+        "dropdown anchor",
+        "popup menu"
+      ],
+      "interfaces": [
+        {
+          "name": "PopoverContentProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        }
+      ],
       "path": "src/components/Popover"
     },
     {
       "name": "Progress",
+      "description": "Progress component",
       "compoundExport": "Progress",
       "subcomponents": [],
+      "keywords": [
+        "progress bar",
+        "meter",
+        "loader",
+        "completion"
+      ],
+      "interfaces": [
+        {
+          "name": "ProgressProps",
+          "props": [
+            "value?: number",
+            "showLabel?: boolean",
+            "stylex?: stylex.StyleXStyles",
+            "trackStylex?: stylex.StyleXStyles",
+            "indicatorStylex?: stylex.StyleXStyles",
+            "trackStyle?: stylex.StyleXStyles",
+            "indicatorStyle?: stylex.StyleXStyles"
+          ]
+        }
+      ],
       "path": "src/components/Progress"
     },
     {
       "name": "RadioGroup",
+      "description": "RadioGroup component",
       "compoundExport": "RadioGroup.Label, RadioGroup.Hint, RadioGroup.Error, RadioGroup.Item",
       "subcomponents": [
         "Label",
@@ -218,20 +947,100 @@
         "Error",
         "Item"
       ],
+      "keywords": [
+        "single choice",
+        "radio buttons",
+        "form selection"
+      ],
+      "interfaces": [
+        {
+          "name": "RadioGroupProps",
+          "props": [
+            "value?: string",
+            "defaultValue?: string",
+            "onValueChange?: (value: string) => void",
+            "invalid?: boolean",
+            "required?: boolean",
+            "disabled?: boolean",
+            "layout?: RadioGroupLayout",
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "RadioGroupLabelProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "RadioGroupHintProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "RadioGroupErrorProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "RadioGroupItemProps",
+          "props": [
+            "value: string",
+            "stylex?: stylex.StyleXStyles"
+          ]
+        }
+      ],
       "path": "src/components/RadioGroup"
     },
     {
       "name": "SegmentedControl",
+      "description": "SegmentedControl component",
       "compoundExport": "SegmentedControl.Item, SegmentedControl.Label, SegmentedControl.Icon",
       "subcomponents": [
         "Item",
         "Label",
         "Icon"
       ],
+      "keywords": [
+        "pill switcher",
+        "toggle group",
+        "segmented tabs"
+      ],
+      "interfaces": [
+        {
+          "name": "SegmentedControlLabelProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "SegmentedControlIconProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "SegmentedControlItemProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles",
+            "iconOnly?: boolean"
+          ]
+        },
+        {
+          "name": "SegmentedControlProps",
+          "props": [
+            "size?: 'small' | 'medium'",
+            "stylex?: stylex.StyleXStyles"
+          ]
+        }
+      ],
       "path": "src/components/SegmentedControl"
     },
     {
       "name": "Select",
+      "description": "Select component",
       "compoundExport": "Select.Label, Select.Hint, Select.Error, Select.Trigger, Select.Content, Select.Item",
       "subcomponents": [
         "Label",
@@ -241,31 +1050,143 @@
         "Content",
         "Item"
       ],
+      "keywords": [
+        "dropdown",
+        "combobox",
+        "picker",
+        "options menu"
+      ],
+      "interfaces": [
+        {
+          "name": "SelectLabelProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "SelectHintProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "SelectErrorProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "SelectTriggerProps",
+          "props": [
+            "placeholder?: string",
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "SelectContentProps",
+          "props": [
+            "emptyMessage?: React.ReactNode",
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "SelectItemProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        }
+      ],
       "path": "src/components/Select"
     },
     {
       "name": "Slider",
+      "description": "Slider component",
       "compoundExport": "Slider",
       "subcomponents": [],
+      "keywords": [
+        "range input",
+        "scrubber",
+        "numeric slider"
+      ],
+      "interfaces": [
+        {
+          "name": "SliderProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles",
+            "label?: React.ReactNode",
+            "formatValue?: (value: number) => string",
+            "min?: number",
+            "max?: number"
+          ]
+        }
+      ],
       "path": "src/components/Slider"
     },
     {
       "name": "Steps",
+      "description": "Steps component",
       "compoundExport": "Steps",
       "subcomponents": [],
+      "keywords": [
+        "stepper",
+        "wizard",
+        "progress steps",
+        "multi-step form"
+      ],
+      "interfaces": [
+        {
+          "name": "StepsProps",
+          "props": [
+            "currentStep: number",
+            "totalSteps: number",
+            "onBack?: () => void",
+            "stylex?: stylex.StyleXStyles"
+          ]
+        }
+      ],
       "path": "src/components/Steps"
     },
     {
       "name": "Switch",
+      "description": "Switch component",
       "compoundExport": "Switch.Field, Switch.Label",
       "subcomponents": [
         "Field",
         "Label"
       ],
+      "keywords": [
+        "toggle",
+        "checkbox switch",
+        "boolean toggle"
+      ],
+      "interfaces": [
+        {
+          "name": "SwitchProps",
+          "props": [
+            "id?: string",
+            "required?: boolean",
+            "disabled?: boolean",
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "SwitchLabelProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "SwitchFieldProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        }
+      ],
       "path": "src/components/Switch"
     },
     {
       "name": "Tabs",
+      "description": "Tabs component",
       "compoundExport": "Tabs.List, Tabs.Item, Tabs.Panel, Tabs.Label, Tabs.Icon",
       "subcomponents": [
         "List",
@@ -274,10 +1195,55 @@
         "Label",
         "Icon"
       ],
+      "keywords": [
+        "tab navigation",
+        "tabbed panel",
+        "segmented views"
+      ],
+      "interfaces": [
+        {
+          "name": "TabsLabelProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "TabsIconProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "TabsProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles",
+            "size?: 'small' | 'medium'"
+          ]
+        },
+        {
+          "name": "TabsListProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "TabsItemProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "TabsPanelProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        }
+      ],
       "path": "src/components/Tabs"
     },
     {
       "name": "TextArea",
+      "description": "TextArea component",
       "compoundExport": "TextArea.Label, TextArea.Hint, TextArea.Error, TextArea.Field",
       "subcomponents": [
         "Label",
@@ -285,10 +1251,53 @@
         "Error",
         "Field"
       ],
+      "keywords": [
+        "multiline input",
+        "text box",
+        "message input"
+      ],
+      "interfaces": [
+        {
+          "name": "TextAreaLabelProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "TextAreaHintProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "TextAreaErrorProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "TextAreaFieldProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles",
+            "rows?: number"
+          ]
+        },
+        {
+          "name": "TextAreaProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles",
+            "id?: string",
+            "invalid?: boolean",
+            "required?: boolean",
+            "disabled?: boolean"
+          ]
+        }
+      ],
       "path": "src/components/TextArea"
     },
     {
       "name": "TextInput",
+      "description": "TextInput component",
       "compoundExport": "TextInput.Label, TextInput.Hint, TextInput.Error, TextInput.Field",
       "subcomponents": [
         "Label",
@@ -296,10 +1305,53 @@
         "Error",
         "Field"
       ],
+      "keywords": [
+        "input field",
+        "text field",
+        "form input",
+        "textbox"
+      ],
+      "interfaces": [
+        {
+          "name": "TextInputLabelProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "TextInputHintProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "TextInputErrorProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "TextInputFieldProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "TextInputProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles",
+            "id?: string",
+            "invalid?: boolean",
+            "required?: boolean",
+            "disabled?: boolean"
+          ]
+        }
+      ],
       "path": "src/components/TextInput"
     },
     {
       "name": "Toast",
+      "description": "Toast component",
       "compoundExport": "Toast.Provider, Toast.Viewport, Toast.Title, Toast.Description, Toast.Action, Toast.Close",
       "subcomponents": [
         "Provider",
@@ -309,22 +1361,103 @@
         "Action",
         "Close"
       ],
+      "keywords": [
+        "snackbar",
+        "transient notification",
+        "toast message"
+      ],
+      "interfaces": [
+        {
+          "name": "ToastViewportProps",
+          "props": [
+            "position?: ToastPosition",
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "ToastProps",
+          "props": [
+            "tone?: AlertProps['tone']",
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "ToastTitleProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "ToastDescriptionProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "ToastCloseProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        }
+      ],
       "path": "src/components/Toast"
     },
     {
       "name": "Tooltip",
+      "description": "Tooltip component",
       "compoundExport": "Tooltip.Provider, Tooltip.Trigger, Tooltip.Content",
       "subcomponents": [
         "Provider",
         "Trigger",
         "Content"
       ],
+      "keywords": [
+        "hint",
+        "hover tooltip",
+        "context title"
+      ],
+      "interfaces": [
+        {
+          "name": "TooltipTriggerProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles"
+          ]
+        },
+        {
+          "name": "TooltipContentProps",
+          "props": [
+            "stylex?: stylex.StyleXStyles",
+            "showArrow?: boolean"
+          ]
+        }
+      ],
       "path": "src/components/Tooltip"
     },
     {
       "name": "Typography",
+      "description": "Typography component",
       "compoundExport": "Typography",
       "subcomponents": [],
+      "keywords": [
+        "text",
+        "heading",
+        "paragraph",
+        "title",
+        "caption"
+      ],
+      "interfaces": [
+        {
+          "name": "TypographyProps",
+          "props": [
+            "variant?: TypographyVariant",
+            "as?: React.ElementType",
+            "color?: TypographyColor",
+            "align?: TypographyAlign",
+            "weight?: TypographyWeight",
+            "stylex?: stylex.StyleXStyles"
+          ]
+        }
+      ],
       "path": "src/components/Typography"
     }
   ],
@@ -342,9 +1475,8 @@
     "easings"
   ],
   "rules": [
-    "Use compound exports exclusively (e.g. Card.Content, Modal.Header)",
-    "Use StyleX style prop exclusively (style?: stylex.StyleXStyles)",
-    "Never use inline styles style={{ ... }} or native CSS className",
-    "Import tokens from floogic-ui instead of hardcoding raw pixel or color values"
+    "Use compound exports exclusively (e.g. Card.Content, Modal.Header, Modal.CloseButton)",
+    "Use StyleX overrides via stylex prop (stylex?: stylex.StyleXStyles). Never pass StyleX objects to native style={...}.",
+    "Import tokens from @floogic/ui instead of hardcoding raw pixel or color values"
   ]
 }

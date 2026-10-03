@@ -2,6 +2,7 @@ import React from 'react';
 import * as PopoverPrimitive from '@radix-ui/react-popover';
 import * as stylex from '@stylexjs/stylex';
 import { styles } from './Popover.stylex';
+import { mergeStyles } from '../../utils/mergeStyles';
 
 export interface PopoverProps extends PopoverPrimitive.PopoverProps {}
 
@@ -11,13 +12,12 @@ const PopoverRoot = ({ ...props }: PopoverProps) => {
 
 export const PopoverTrigger = PopoverPrimitive.Trigger;
 
-export interface PopoverContentProps extends Omit<PopoverPrimitive.PopoverContentProps, 'style'> {
-  style?: stylex.StyleXStyles;
+export interface PopoverContentProps extends PopoverPrimitive.PopoverContentProps {
+  stylex?: stylex.StyleXStyles;
 }
 
 export const PopoverContent = React.forwardRef<HTMLDivElement, PopoverContentProps>(
-  ({ children, side = 'bottom', sideOffset = 4, style, ...props }, ref) => {
-    
+  ({ children, side = 'bottom', sideOffset = 4, stylex: stylexProp, className, style, ...props }, ref) => {
     const sideStyle = 
       side === 'top' ? styles.sideTop :
       side === 'right' ? styles.sideRight :
@@ -31,7 +31,7 @@ export const PopoverContent = React.forwardRef<HTMLDivElement, PopoverContentPro
           side={side}
           sideOffset={sideOffset}
           {...props}
-          {...stylex.props(styles.content, sideStyle, style)}
+          {...mergeStyles(stylex.props(styles.content, sideStyle, stylexProp), className, style)}
         >
           {children}
         </PopoverPrimitive.Content>

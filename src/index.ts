@@ -1,3 +1,5 @@
+import './styles/reset.css';
+
 export * from './components/Badge';
 export * from './components/BadgeCount';
 export * from './components/BadgeDot';
@@ -32,15 +34,15 @@ export * from './components/Tabs';
 export * from './components/Slider';
 export * from './components/TextArea';
 export * from './components/Switch';
-export * from './recipes';
+export { mergeStyles } from './utils/mergeStyles';
 
 
-export { colors, darkTheme } from './tokens/colors.stylex';
+export { colors, darkTheme, lightTheme } from './tokens/colors.stylex';
 export { spacing } from './tokens/spacing.stylex';
 export { shape } from './tokens/shape.stylex';
 export { fonts, fontSizes, fontWeights, lineHeights, letterSpacings } from './tokens/typography.stylex';
 export { layout } from './tokens/layout.stylex';
-export { breakpoints } from './tokens/breakpoints';
+export { breakpoints } from './tokens/breakpoints.stylex';
 export { elevation } from './tokens/elevation.stylex';
 export { borders } from './tokens/borders.stylex';
 export { durations, easings } from './tokens/motion.stylex';

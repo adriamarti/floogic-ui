@@ -11,14 +11,16 @@ All multi-part components export child components exclusively as static properti
 - **CORRECT**: `<Card.Content>`, `<Modal.Title>`, `<Accordion.Item>`, `<Alert.Heading>`, `<Select.Item>`, `<Tabs.List>`
 - **FORBIDDEN**: `import { CardContent, ModalTitle } from 'floogic-ui'` (Child components are NOT exported as standalone imports).
 
-### 2. StyleX Styling Engine Only
-Every component accepts custom styling exclusively via the `style?: stylex.StyleXStyles` prop.
-- **CORRECT**: `<Card style={styles.cardCustom}>` where `styles` is created via `stylex.create(...)`.
-- **FORBIDDEN**: Inline style objects (`style={{ marginTop: '16px' }}`) and native CSS class names (`className="card-item"`).
+### 2. StyleX Styling Engine & Native Overrides
+Every component accepts StyleX overrides via the `stylex?: stylex.StyleXStyles` prop.
+- **CORRECT**: `<Card stylex={styles.cardCustom}>` where `styles` is created via `stylex.create(...)`.
+- **NATIVE OVERRIDES**: Native CSS class names (`className="..."`) and standard inline style objects (`style={{ ... }}`) are fully supported and forwarded to underlying HTML elements.
 
 ### 3. Token-Driven Styling (Zero Hardcoded CSS Values)
-Never use hardcoded pixel values, hex colors, or raw fonts. Always import and use design tokens exported by `@floogic/ui`.
-- **Imports**: `import { colors, spacing, shape, borders, fonts, fontSizes, fontWeights, elevation, durations } from '@floogic/ui'` (or subpaths `@floogic/ui/tokens/...`)
+Never use hardcoded pixel values, hex colors, or raw fonts. Always import and use design tokens exported by `@floogic/ui/tokens` or `@floogic/ui`.
+- **Unified Import (Recommended)**: `import { colors, spacing, shape, borders, fonts, fontSizes, fontWeights, elevation, durations, easings } from '@floogic/ui/tokens';`
+- **Root Import**: `import { colors, spacing, shape } from '@floogic/ui';`
+- **Granular Subpaths**: `import { colors } from '@floogic/ui/tokens/colors.stylex';`
 - **Examples**: `colors.fillBrandStrong`, `spacing.space4`, `shape.radiusMd`, `borders.hairline`, `fontSizes.body`.
 
 ### 4. Mandatory Imports & Setup
@@ -84,4 +86,4 @@ import { Button, Card, Modal, colors, spacing } from '@floogic/ui';
 ---
 
 ## Detailed Specification
-For full TypeScript signatures, props interfaces, and complete recipe code examples, refer to [llms-full.txt](./llms-full.txt).
+For full TypeScript signatures, props interfaces, and component specifications, refer to [llms-full.txt](./llms-full.txt).

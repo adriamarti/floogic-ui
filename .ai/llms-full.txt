@@ -12,15 +12,16 @@ All multi-part components are exposed strictly via static properties attached to
 - **DO NOT** attempt to import child components directly (`import { CardContent }` is invalid).
 - **Export Syntax**: `export const Card = Object.assign(CardRoot, { Content: CardContent, Heading: CardHeading, ... })`
 
-### Rule 2: StyleX Styling Engine Only
-Components do NOT support native CSS classes (`className="..."`) or native inline style objects (`style={{ color: 'red' }}`).
-- Custom styling is applied exclusively using StyleX with `style?: stylex.StyleXStyles`.
-- Inside components, styles are resolved using `stylex.props(styles.root, style)`.
+### Rule 2: StyleX Styling Engine & Native Overrides
+Components accept StyleX overrides via the `stylex?: stylex.StyleXStyles` prop.
+- Inside components, styles are resolved using `mergeStyles(...)` combining StyleX, native CSS class names (`className="..."`), and inline styles (`style={{ ... }}`).
+- Both `className` and `style` props are fully supported and forwarded to underlying HTML elements for seamless native integration.
 
 ### Rule 3: Strict Token Hierarchy
 No hardcoded raw numbers, hex colors, or font names.
-- All values must reference design tokens exported by `@floogic/ui`:
-  `import { colors, spacing, shape, borders, fonts, fontSizes, fontWeights, elevation, durations, easings } from '@floogic/ui'` (or token subpaths `@floogic/ui/tokens/...`)
+- All values must reference design tokens exported by `@floogic/ui/tokens` (or `@floogic/ui`):
+  `import { colors, spacing, shape, borders, fonts, fontSizes, fontWeights, elevation, durations, easings } from '@floogic/ui/tokens'`
+  (or granular subpaths like `@floogic/ui/tokens/colors.stylex`)
 
 ### Rule 4: Accessibility & Radix Primitives
 Underneath, interactive components (Modal, Select, Popover, Accordion, CheckboxGroup, RadioGroup, Tabs, Tooltip, HoverCard) wrap Radix UI primitives.

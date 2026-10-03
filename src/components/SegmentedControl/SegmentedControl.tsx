@@ -2,6 +2,7 @@ import * as stylex from '@stylexjs/stylex';
 import React, { forwardRef, createContext, useContext } from 'react';
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
 import { styles } from './SegmentedControl.stylex';
+import { mergeStyles } from '../../utils/mergeStyles';
 
 // ---------------------------------------------------------------------------
 // Context
@@ -22,38 +23,35 @@ export function useSegmentedControlContext() {
 // Sub-components (SegmentedControl.Label, SegmentedControl.Icon)
 // ---------------------------------------------------------------------------
 
-export interface SegmentedControlLabelProps extends Omit<React.ComponentPropsWithoutRef<'span'>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface SegmentedControlLabelProps extends React.ComponentPropsWithoutRef<'span'> {
+  stylex?: stylex.StyleXStyles;
 }
 
 const SegmentedControlLabel = forwardRef<HTMLSpanElement, SegmentedControlLabelProps>(
-  ({ style, ...props }, ref) => {
-    const resolved = stylex.props(styles.label, style);
+  ({ stylex: stylexProp, className, style, ...props }, ref) => {
     return (
       <span 
         ref={ref} 
-        className={resolved.className}
-        style={resolved.style}
-        {...props} 
+        {...props}
+        {...mergeStyles(stylex.props(styles.label, stylexProp), className, style)}
       />
     );
   }
 );
 SegmentedControlLabel.displayName = 'SegmentedControl.Label';
 
-export interface SegmentedControlIconProps extends Omit<React.ComponentPropsWithoutRef<'span'>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface SegmentedControlIconProps extends React.ComponentPropsWithoutRef<'span'> {
+  stylex?: stylex.StyleXStyles;
 }
 
 const SegmentedControlIcon = forwardRef<HTMLSpanElement, SegmentedControlIconProps>(
-  ({ style, ...props }, ref) => {
-    const resolved = stylex.props(styles.icon, style);
+  ({ stylex: stylexProp, className, style, ...props }, ref) => {
     return (
       <span 
         ref={ref} 
-        className={resolved.className}
-        style={resolved.style}
-        {...props} 
+        aria-hidden="true"
+        {...props}
+        {...mergeStyles(stylex.props(styles.icon, stylexProp), className, style)}
       />
     );
   }
@@ -64,21 +62,13 @@ SegmentedControlIcon.displayName = 'SegmentedControl.Icon';
 // Item Component
 // ---------------------------------------------------------------------------
 
-// Radix RadioGroup handles state, but to style via StyleX dynamically we need the checked state.
-// We can use a small wrapper around RadioGroup context if Radix exports it, but it doesn't.
-// Let's use global CSS for the checked state via className, since StyleX pseudo-class `[data-state=checked]` might not be supported.
-// Actually, StyleX allows defining CSS inside standard CSS files. Let's just create a `segmented-control.css` for this specific selector, OR we can use the `value` prop if we manage state ourselves.
-// But Radix provides `data-state="checked"` on the DOM.
-// StyleX does not support arbitrary attributes in `stylex.create`.
-// Instead, let's just make the SegmentedControl controlled locally to apply styles, OR just use an inline style / className!
-
-export interface SegmentedControlItemProps extends Omit<React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface SegmentedControlItemProps extends React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item> {
+  stylex?: stylex.StyleXStyles;
   iconOnly?: boolean;
 }
 
 const SegmentedControlItem = forwardRef<HTMLButtonElement, SegmentedControlItemProps>(
-  ({ style, iconOnly, value, ...props }, ref) => {
+  ({ stylex: stylexProp, iconOnly, value, className, style, children, ...props }, ref) => {
     const { size, selectedValue } = useSegmentedControlContext();
     const isChecked = selectedValue === value;
 
@@ -87,16 +77,20 @@ const SegmentedControlItem = forwardRef<HTMLButtonElement, SegmentedControlItemP
         ref={ref}
         value={value}
         {...props}
-        {...stylex.props(
-          styles.item,
-          isChecked && styles.itemChecked,
-          size === 'medium' ? styles.itemMedium : styles.itemSmall,
-          iconOnly && size === 'medium' ? styles.itemMediumIconOnly : null,
-          iconOnly && size === 'small' ? styles.itemSmallIconOnly : null,
+        {...mergeStyles(
+          stylex.props(
+            styles.item,
+            isChecked && styles.itemChecked,
+            size === 'medium' ? styles.itemMedium : styles.itemSmall,
+            iconOnly && size === 'medium' ? styles.itemMediumIconOnly : null,
+            iconOnly && size === 'small' ? styles.itemSmallIconOnly : null,
+            stylexProp
+          ),
+          className,
           style
         )}
       >
-        {props.children}
+        {children}
       </RadioGroupPrimitive.Item>
     );
   }
@@ -107,19 +101,15 @@ SegmentedControlItem.displayName = 'SegmentedControl.Item';
 // Root Component
 // ---------------------------------------------------------------------------
 
-export interface SegmentedControlProps extends Omit<React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>, 'className' | 'style'> {
+export interface SegmentedControlProps extends React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root> {
   size?: 'small' | 'medium';
-  style?: stylex.StyleXStyles;
+  stylex?: stylex.StyleXStyles;
 }
 
 const SegmentedControlRoot = forwardRef<HTMLDivElement, SegmentedControlProps>(
-  ({ size = 'medium', style, value, defaultValue, onValueChange, ...props }, ref) => {
-    
-    // We need to know the selected value to style items via stylex.
-    // If it's uncontrolled, we track it locally.
+  ({ size = 'medium', stylex: stylexProp, className, style, value, defaultValue, onValueChange, ...props }, ref) => {
     const [localValue, setLocalValue] = React.useState(value || defaultValue || '');
     
-    // If controlled, sync it.
     React.useEffect(() => {
       if (value !== undefined) {
         setLocalValue(value || '');
@@ -141,7 +131,7 @@ const SegmentedControlRoot = forwardRef<HTMLDivElement, SegmentedControlProps>(
           defaultValue={defaultValue}
           onValueChange={handleValueChange}
           {...props}
-          {...stylex.props(styles.root, style)}
+          {...mergeStyles(stylex.props(styles.root, stylexProp), className, style)}
         />
       </SegmentedControlContext.Provider>
     );

@@ -5,6 +5,7 @@ import { DayPicker, DayButton } from 'react-day-picker';
 import { format } from 'date-fns';
 import * as stylex from '@stylexjs/stylex';
 import { styles } from './DatePicker.stylex';
+import { mergeStyles } from '../../utils/mergeStyles';
 
 // ---------------------------------------------------------------------------
 // Context
@@ -35,20 +36,20 @@ export function useDatePickerContext() {
 // Sub-components
 // ---------------------------------------------------------------------------
 
-export interface DatePickerLabelProps extends Omit<React.ComponentPropsWithoutRef<'label'>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface DatePickerLabelProps extends React.ComponentPropsWithoutRef<'label'> {
+  stylex?: stylex.StyleXStyles;
 }
 
 const Label = forwardRef<HTMLLabelElement, DatePickerLabelProps>(
-  ({ style, children, ...props }, ref) => {
+  ({ stylex: stylexProp, className, style, children, ...props }, ref) => {
     const context = useDatePickerContext();
     return (
       <div {...stylex.props(styles.labelContainer)}>
         <LabelPrimitive.Root
           ref={ref}
           htmlFor={context.id}
-          {...stylex.props(styles.label, style)}
           {...props}
+          {...mergeStyles(stylex.props(styles.label, stylexProp), className, style)}
         >
           {children}
           {context.required && (
@@ -61,20 +62,20 @@ const Label = forwardRef<HTMLLabelElement, DatePickerLabelProps>(
 );
 Label.displayName = 'DatePicker.Label';
 
-export interface DatePickerHintProps extends Omit<React.ComponentPropsWithoutRef<'div'>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface DatePickerHintProps extends React.ComponentPropsWithoutRef<'div'> {
+  stylex?: stylex.StyleXStyles;
 }
 
 const Hint = forwardRef<HTMLDivElement, DatePickerHintProps>(
-  ({ style, children, ...props }, ref) => {
+  ({ stylex: stylexProp, className, style, children, ...props }, ref) => {
     const context = useDatePickerContext();
     if (context.invalid) return null;
 
     return (
       <div 
         ref={ref} 
-        {...stylex.props(styles.hint, style)} 
-        {...props} 
+        {...props}
+        {...mergeStyles(stylex.props(styles.hint, stylexProp), className, style)}
       >
         {children}
       </div>
@@ -83,37 +84,21 @@ const Hint = forwardRef<HTMLDivElement, DatePickerHintProps>(
 );
 Hint.displayName = 'DatePicker.Hint';
 
-export interface DatePickerErrorProps extends Omit<React.ComponentPropsWithoutRef<'div'>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface DatePickerErrorProps extends React.ComponentPropsWithoutRef<'div'> {
+  stylex?: stylex.StyleXStyles;
 }
 
 const ErrorMsg = forwardRef<HTMLDivElement, DatePickerErrorProps>(
-  ({ style, children, ...props }, ref) => {
+  ({ stylex: stylexProp, className, style, children, ...props }, ref) => {
     const context = useDatePickerContext();
     if (!context.invalid) return null;
 
     return (
       <div 
         ref={ref} 
-        {...stylex.props(styles.errorContainer, style)} 
-        {...props} 
+        {...props}
+        {...mergeStyles(stylex.props(styles.errorContainer, stylexProp), className, style)}
       >
-        <svg 
-          xmlns="http://www.w3.org/2000/svg" 
-          width="14" 
-          height="14" 
-          viewBox="0 0 24 24" 
-          fill="none" 
-          stroke="currentColor" 
-          strokeWidth="2" 
-          strokeLinecap="round" 
-          strokeLinejoin="round" 
-          {...stylex.props(styles.errorIcon)}
-        >
-          <circle cx="12" cy="12" r="10" />
-          <path d="m15 9-6 6" />
-          <path d="m9 9 6 6" />
-        </svg>
         <span {...stylex.props(styles.errorText)}>{children}</span>
       </div>
     );
@@ -121,13 +106,13 @@ const ErrorMsg = forwardRef<HTMLDivElement, DatePickerErrorProps>(
 );
 ErrorMsg.displayName = 'DatePicker.Error';
 
-export interface DatePickerTriggerProps extends Omit<React.ComponentPropsWithoutRef<'button'>, 'className' | 'style' | 'value' | 'defaultValue'> {
-  style?: stylex.StyleXStyles;
+export interface DatePickerTriggerProps extends Omit<React.ComponentPropsWithoutRef<'button'>, 'value' | 'defaultValue'> {
+  stylex?: stylex.StyleXStyles;
   placeholder?: string;
 }
 
 const Trigger = forwardRef<HTMLButtonElement, DatePickerTriggerProps>(
-  ({ style, placeholder = "dd/mm/yyyy", ...props }, ref) => {
+  ({ stylex: stylexProp, className, style, placeholder = "dd/mm/yyyy", type = 'button', ...props }, ref) => {
     const context = useDatePickerContext();
 
     return (
@@ -135,16 +120,21 @@ const Trigger = forwardRef<HTMLButtonElement, DatePickerTriggerProps>(
         <PopoverPrimitive.Trigger asChild>
           <button
             ref={ref}
+            type={type}
             id={context.id}
             aria-invalid={context.invalid}
             disabled={context.disabled}
-            {...stylex.props(
-              styles.trigger,
-              context.invalid && styles.triggerInvalid,
-              context.disabled && styles.triggerDisabled,
+            {...props}
+            {...mergeStyles(
+              stylex.props(
+                styles.trigger,
+                context.invalid && styles.triggerInvalid,
+                context.disabled && styles.triggerDisabled,
+                stylexProp
+              ),
+              className,
               style
             )}
-            {...props}
           >
             {context.value ? (
               <span>{format(context.value, 'dd/MM/yyyy')}</span>
@@ -203,8 +193,8 @@ const Trigger = forwardRef<HTMLButtonElement, DatePickerTriggerProps>(
                 disabled: stylex.props(styles.rdpDayDisabled).className as string,
               }}
               components={{
-                DayButton: (props) => {
-                  const { day, modifiers, ...buttonProps } = props;
+                DayButton: (dayProps) => {
+                  const { day, modifiers, ...buttonProps } = dayProps;
                   const isSelected = modifiers.selected;
                   return (
                     <DayButton 
@@ -215,8 +205,8 @@ const Trigger = forwardRef<HTMLButtonElement, DatePickerTriggerProps>(
                     />
                   );
                 },
-                Chevron: (props) => {
-                  if (props.orientation === 'left') {
+                Chevron: (chevronProps) => {
+                  if (chevronProps.orientation === 'left') {
                     return <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>;
                   }
                   return <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>;
@@ -235,8 +225,8 @@ Trigger.displayName = 'DatePicker.Trigger';
 // Root Component
 // ---------------------------------------------------------------------------
 
-export interface DatePickerProps extends Omit<React.ComponentPropsWithoutRef<'div'>, 'className' | 'style' | 'value' | 'defaultValue'> {
-  style?: stylex.StyleXStyles;
+export interface DatePickerProps extends Omit<React.ComponentPropsWithoutRef<'div'>, 'value' | 'defaultValue'> {
+  stylex?: stylex.StyleXStyles;
   id?: string;
   invalid?: boolean;
   required?: boolean;
@@ -251,7 +241,9 @@ export interface DatePickerProps extends Omit<React.ComponentPropsWithoutRef<'di
 
 const DatePickerRoot = forwardRef<HTMLDivElement, DatePickerProps>(
   ({ 
-    style, 
+    stylex: stylexProp, 
+    className,
+    style,
     id: idProp, 
     invalid, 
     required, 
@@ -290,7 +282,7 @@ const DatePickerRoot = forwardRef<HTMLDivElement, DatePickerProps>(
         id, 
         invalid, 
         required, 
-        disabled,
+        disabled, 
         value,
         onValueChange: handleValueChange,
         open,
@@ -298,8 +290,8 @@ const DatePickerRoot = forwardRef<HTMLDivElement, DatePickerProps>(
       }}>
         <div 
           ref={ref} 
-          {...stylex.props(styles.root, style)} 
-          {...props} 
+          {...props}
+          {...mergeStyles(stylex.props(styles.root, stylexProp), className, style)}
         />
       </DatePickerContext.Provider>
     );

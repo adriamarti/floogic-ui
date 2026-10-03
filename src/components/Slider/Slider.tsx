@@ -2,9 +2,10 @@ import * as stylex from '@stylexjs/stylex';
 import React, { forwardRef, useState, useEffect } from 'react';
 import * as RadixSlider from '@radix-ui/react-slider';
 import { styles } from './Slider.stylex';
+import { mergeStyles } from '../../utils/mergeStyles';
 
-export interface SliderProps extends Omit<React.ComponentPropsWithoutRef<typeof RadixSlider.Root>, 'className' | 'style'> {
-  style?: stylex.StyleXStyles;
+export interface SliderProps extends React.ComponentPropsWithoutRef<typeof RadixSlider.Root> {
+  stylex?: stylex.StyleXStyles;
   /** Label to display above the slider */
   label?: React.ReactNode;
   /** Function to format the value displayed next to the label (e.g. adding a % sign) */
@@ -16,7 +17,7 @@ export interface SliderProps extends Omit<React.ComponentPropsWithoutRef<typeof 
 }
 
 export const Slider = forwardRef<HTMLSpanElement, SliderProps>(
-  ({ style, label, formatValue, value, defaultValue, min = 0, max = 100, onValueChange, disabled, ...props }, ref) => {
+  ({ stylex: stylexProp, className, style, label, formatValue, value, defaultValue, min = 0, max = 100, onValueChange, disabled, ...props }, ref) => {
     // We need local state to display the value instantaneously as it slides
     const defaultInitial = min; 
     const initialValue = value !== undefined ? value : (defaultValue !== undefined ? defaultValue : [defaultInitial]);
@@ -42,7 +43,7 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(
     const displayValue = formatValue ? formatValue(localValue[0]) : localValue[0].toString();
 
     return (
-      <div {...stylex.props(styles.wrapper, disabled && styles.disabled, style)}>
+      <div {...mergeStyles(stylex.props(styles.wrapper, disabled && styles.disabled, stylexProp), className, style)}>
         {hasHeader && (
           <div {...stylex.props(styles.header)}>
             {label && <span {...stylex.props(styles.label)}>{label}</span>}

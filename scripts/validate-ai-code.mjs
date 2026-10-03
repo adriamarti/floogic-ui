@@ -28,7 +28,7 @@ if (targetPaths.length > 0) {
     if (fs.existsSync(p)) collectFiles(path.resolve(p));
   }
 } else {
-  collectFiles(path.join(rootDir, 'src/recipes'));
+  collectFiles(path.join(rootDir, 'src/components'));
 }
 
 console.log(`🔍 Auditing ${filesToScan.length} file(s) for Floogic UI AI Compliance...\n`);
@@ -40,29 +40,36 @@ for (const filePath of filesToScan) {
   const content = fs.readFileSync(filePath, 'utf-8');
   const lines = content.split('\n');
 
+  const isTestFile = filePath.endsWith('.test.tsx') || filePath.endsWith('.test.ts') || filePath.endsWith('.spec.tsx');
+
   lines.forEach((line, idx) => {
     const lineNum = idx + 1;
 
-    // Check 1: Forbidden standalone exports (e.g. CardContent, ModalHeader, AlertHeading)
-    const standaloneMatch = line.match(/import\s*\{[^}]*\b(CardContent|CardHeading|ModalHeader|ModalTitle|AlertHeading|AlertDescription)\b[^}]*\}\s*from\s*['"]floogic-ui['"]/);
+    // Check 1: Forbidden standalone exports
+    const standaloneMatch = line.match(
+      /import\s*\{[^}]*\b(CardContent|CardHeading|CardDescription|CardMedia|CardFooter|ModalHeader|ModalTitle|ModalContent|ModalBody|ModalFooter|AlertHeading|AlertDescription|AlertIcon|AccordionItem|AccordionTrigger|AccordionContent|TabsList|TabsItem|TabsPanel|SelectItem|SelectTrigger|SelectContent)\b[^}]*\}\s*from\s*['"](@floogic\/ui|floogic-ui)['"]/
+    );
     if (standaloneMatch) {
-      console.error(`❌ [${relPath}:${lineNum}] Forbidden standalone import: '${standaloneMatch[1]}'. Use compound parent syntax like '<Card.${standaloneMatch[1].replace('Card', '')}>' instead.`);
+      console.error(`❌ [${relPath}:${lineNum}] Forbidden standalone import: '${standaloneMatch[1]}'. Use compound parent syntax (e.g. '<Card.Content>') from '@floogic/ui'.`);
       totalErrors++;
     }
 
-    // Check 2: Forbidden native className usage
-    if (line.includes('className=')) {
-      console.warn(`⚠️ [${relPath}:${lineNum}] Native 'className' detected. Ensure you use 'style?: stylex.StyleXStyles' and StyleX for styling.`);
-    }
+    // Only warn on consumer code, skip test files
+    if (!isTestFile) {
+      // Check 2: Native className usage warning
+      if (line.includes('className=') && !line.includes('//') && !line.includes('mergeStyles')) {
+        console.warn(`⚠️ [${relPath}:${lineNum}] Native 'className' detected. Consider using 'stylex={styles.custom}' with StyleX for design system consistency.`);
+      }
 
-    // Check 3: Forbidden inline style object style={{ ... }}
-    if (/style\s*=\s*\{\{\s*[^}]+\}\}/.test(line) && !line.includes('//') && !line.includes('*')) {
-      console.warn(`⚠️ [${relPath}:${lineNum}] Native inline style={{ ... }} detected. Floogic UI strictly enforces StyleX styles.`);
-    }
+      // Check 3: Forbidden inline style object style={{ ... }}
+      if (/style\s*=\s*\{\{\s*[^}]+\}\}/.test(line) && !line.includes('//') && !line.includes('*')) {
+        console.warn(`⚠️ [${relPath}:${lineNum}] Native inline style={{ ... }} detected. Prefer 'stylex={styles.custom}' with Floogic UI design tokens.`);
+      }
 
-    // Check 4: Hardcoded color hex strings
-    if (/#([0-9a-fA-F]{3}){1,2}\b/.test(line)) {
-      console.warn(`⚠️ [${relPath}:${lineNum}] Hardcoded hex color found. Use 'colors.*' design tokens from floogic-ui.`);
+      // Check 4: Hardcoded color hex strings
+      if (/#([0-9a-fA-F]{3}){1,2}\b/.test(line)) {
+        console.warn(`⚠️ [${relPath}:${lineNum}] Hardcoded hex color found. Use 'colors.*' design tokens from '@floogic/ui'.`);
+      }
     }
   });
 }

@@ -1,15 +1,16 @@
 import React from 'react';
 import * as stylex from '@stylexjs/stylex';
 import { styles } from './Steps.stylex';
+import { mergeStyles } from '../../utils/mergeStyles';
 
-export interface StepsProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'style'> {
+export interface StepsProps extends React.HTMLAttributes<HTMLDivElement> {
   /** The current step (1-indexed) */
   currentStep: number;
   /** The total number of steps */
   totalSteps: number;
   /** Callback fired when the back button is clicked. If not provided, the back button is hidden. */
   onBack?: () => void;
-  style?: stylex.StyleXStyles;
+  stylex?: stylex.StyleXStyles;
 }
 
 const ArrowLeftIcon = () => (
@@ -19,9 +20,14 @@ const ArrowLeftIcon = () => (
 );
 
 export const Steps = React.forwardRef<HTMLDivElement, StepsProps>(
-  ({ currentStep, totalSteps, onBack, style, ...props }, ref) => {
+  ({ currentStep, totalSteps, onBack, stylex: stylexProp, className, style, ...props }, ref) => {
     return (
-      <div ref={ref} {...props} {...stylex.props(styles.container, style)} aria-label={`Step ${currentStep} of ${totalSteps}`}>
+      <div 
+        ref={ref} 
+        aria-label={`Step ${currentStep} of ${totalSteps}`}
+        {...props} 
+        {...mergeStyles(stylex.props(styles.container, stylexProp), className, style)}
+      >
         <div {...stylex.props(styles.label)} aria-hidden="true">
           Step {currentStep} of {totalSteps}
         </div>

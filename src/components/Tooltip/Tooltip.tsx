@@ -2,39 +2,68 @@ import React, { forwardRef } from 'react';
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
 import * as stylex from '@stylexjs/stylex';
 import { styles } from './Tooltip.stylex';
+import { mergeStyles } from '../../utils/mergeStyles';
 
-const Provider = TooltipPrimitive.Provider;
+export type TooltipProviderProps = TooltipPrimitive.TooltipProviderProps;
+
+const Provider = ({
+  delayDuration = 200,
+  skipDelayDuration = 300,
+  disableHoverableContent = true,
+  children,
+  ...props
+}: TooltipProviderProps) => (
+  <TooltipPrimitive.Provider
+    delayDuration={delayDuration}
+    skipDelayDuration={skipDelayDuration}
+    disableHoverableContent={disableHoverableContent}
+    {...props}
+  >
+    {children}
+  </TooltipPrimitive.Provider>
+);
 
 export type TooltipProps = TooltipPrimitive.TooltipProps;
 
-const Root = TooltipPrimitive.Root;
+const Root = ({
+  delayDuration = 200,
+  disableHoverableContent = true,
+  children,
+  ...props
+}: TooltipProps) => (
+  <TooltipPrimitive.Root
+    delayDuration={delayDuration}
+    disableHoverableContent={disableHoverableContent}
+    {...props}
+  >
+    {children}
+  </TooltipPrimitive.Root>
+);
 
-export type TooltipTriggerProps = Omit<TooltipPrimitive.TooltipTriggerProps, 'style'> & {
-  style?: stylex.StyleXStyles;
-};
+export interface TooltipTriggerProps extends TooltipPrimitive.TooltipTriggerProps {
+  stylex?: stylex.StyleXStyles;
+}
 
 const Trigger = forwardRef<HTMLButtonElement, TooltipTriggerProps>(
-  ({ style, ...props }, ref) => {
-    const resolved = stylex.props(style);
+  ({ stylex: stylexProp, className, style, ...props }, ref) => {
     return (
       <TooltipPrimitive.Trigger
         ref={ref}
-        className={resolved.className}
-        style={resolved.style}
         {...props}
+        {...mergeStyles(stylexProp ? stylex.props(stylexProp) : undefined, className, style)}
       />
     );
   }
 );
 Trigger.displayName = 'Tooltip.Trigger';
 
-export type TooltipContentProps = Omit<TooltipPrimitive.TooltipContentProps, 'style'> & {
-  style?: stylex.StyleXStyles;
+export interface TooltipContentProps extends TooltipPrimitive.TooltipContentProps {
+  stylex?: stylex.StyleXStyles;
   showArrow?: boolean;
-};
+}
 
 const Content = forwardRef<HTMLDivElement, TooltipContentProps>(
-  ({ style, sideOffset = 4, showArrow = true, children, ...props }, ref) => {
+  ({ stylex: stylexProp, className, style, sideOffset = 4, showArrow = true, children, ...props }, ref) => {
     const sideClass = props.side === 'top' ? styles.sideTop :
                       props.side === 'right' ? styles.sideRight :
                       props.side === 'bottom' ? styles.sideBottom :
@@ -45,8 +74,8 @@ const Content = forwardRef<HTMLDivElement, TooltipContentProps>(
         <TooltipPrimitive.Content
           ref={ref}
           sideOffset={sideOffset}
-          {...stylex.props(styles.content, sideClass, style)}
           {...props}
+          {...mergeStyles(stylex.props(styles.content, sideClass, stylexProp), className, style)}
         >
           {children}
           {showArrow && (

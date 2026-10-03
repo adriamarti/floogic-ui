@@ -42,4 +42,17 @@ describe('Button Component', () => {
     fireEvent.click(button);
     expect(handleClick).not.toHaveBeenCalled();
   });
+
+  it('defaults to type="button" and supports className, style, and stylex', () => {
+    render(
+      <Button className="custom-test-class" style={{ marginTop: '20px' }}>
+        <Button.Label>Styled</Button.Label>
+      </Button>
+    );
+
+    const button = screen.getByRole('button');
+    expect(button).toHaveAttribute('type', 'button');
+    expect(button.className).toContain('custom-test-class');
+    expect(button.style.marginTop).toBe('20px');
+  });
 });

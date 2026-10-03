@@ -100,7 +100,7 @@ export const styles = stylex.create({
     flex: '1 1 auto',
     minWidth: 0,
     padding: spacing.space6,
-    gap: spacing.space4,
+    gap: spacing.space2,
   },
 
   // Media (Image)
@@ -108,10 +108,12 @@ export const styles = stylex.create({
     display: 'block',
     objectFit: 'cover',
     width: '100%',
+    aspectRatio: '16 / 9',
     flexShrink: 0,
   },
   mediaVertical: {
-    height: spacing.space20,
+    width: '100%',
+    height: 'auto',
   },
   mediaHorizontal: {
     width: spacing.space20,
@@ -134,19 +136,19 @@ export const styles = stylex.create({
   // Typography
   heading: {
     fontFamily: fonts.sans,
-    fontSize: fontSizes.h5,
+    fontSize: fontSizes.bodyLg,
     fontWeight: fontWeights.semiBold,
     color: colors.textStrong,
     margin: 0,
-    lineHeight: lineHeights.h5,
+    lineHeight: lineHeights.bodyLg,
   },
   description: {
     fontFamily: fonts.sans,
-    fontSize: fontSizes.caption,
+    fontSize: fontSizes.bodyMd,
     fontWeight: fontWeights.regular,
     color: colors.textWeak,
     margin: 0,
-    lineHeight: lineHeights.body,
+    lineHeight: lineHeights.bodySm,
   },
 
   // Footer

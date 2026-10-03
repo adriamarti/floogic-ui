@@ -1,14 +1,14 @@
 import React, { createContext, useContext, useId, useState, forwardRef } from 'react';
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
 import * as LabelPrimitive from '@radix-ui/react-label';
+import { Check } from 'lucide-react';
 import * as stylex from '@stylexjs/stylex';
 import { styles } from './CheckboxGroup.stylex';
+import { mergeStyles } from '../../utils/mergeStyles';
 
 // ---------------------------------------------------------------------------
 // Context
 // ---------------------------------------------------------------------------
-
-export type CheckboxGroupSize = 'small' | 'large';
 
 type CheckboxGroupContextValue = {
   id: string;
@@ -17,7 +17,6 @@ type CheckboxGroupContextValue = {
   invalid: boolean;
   required: boolean;
   disabled: boolean;
-  size: CheckboxGroupSize;
 };
 
 const CheckboxGroupContext = createContext<CheckboxGroupContextValue | undefined>(undefined);
@@ -36,18 +35,16 @@ const useCheckboxGroupContext = () => {
 
 export type CheckboxGroupLayout = 'horizontal' | 'vertical';
 
-export type CheckboxGroupProps = {
+export interface CheckboxGroupProps extends React.ComponentPropsWithoutRef<'div'> {
   value?: string[];
   defaultValue?: string[];
   onValueChange?: (value: string[]) => void;
   invalid?: boolean;
   required?: boolean;
   disabled?: boolean;
-  size?: CheckboxGroupSize;
   layout?: CheckboxGroupLayout;
-  style?: stylex.StyleXStyles;
-  children: React.ReactNode;
-};
+  stylex?: stylex.StyleXStyles;
+}
 
 const CheckboxGroupRoot = forwardRef<HTMLDivElement, CheckboxGroupProps>(
   ({ 
@@ -57,10 +54,13 @@ const CheckboxGroupRoot = forwardRef<HTMLDivElement, CheckboxGroupProps>(
     invalid = false, 
     required = false, 
     disabled = false, 
-    size = 'small', 
     layout = 'vertical',
-    style, 
-    children 
+    stylex: stylexProp, 
+    className,
+    style,
+    children,
+    role = 'group',
+    ...props 
   }, ref) => {
     const generatedId = useId();
     const [uncontrolledValue, setUncontrolledValue] = useState<string[]>(defaultValue);
@@ -108,9 +108,14 @@ const CheckboxGroupRoot = forwardRef<HTMLDivElement, CheckboxGroupProps>(
         invalid,
         required,
         disabled,
-        size
       }}>
-        <div ref={ref} {...stylex.props(styles.root, style)} role="group" aria-labelledby={`${generatedId}-label`}>
+        <div 
+          ref={ref} 
+          role={role} 
+          aria-labelledby={`${generatedId}-label`}
+          {...props}
+          {...mergeStyles(stylex.props(styles.root, stylexProp), className, style)}
+        >
           {groupedChildren}
         </div>
       </CheckboxGroupContext.Provider>
@@ -121,23 +126,20 @@ CheckboxGroupRoot.displayName = 'CheckboxGroup';
 
 // ---------------------------------------------------------------------------
 
-export type CheckboxGroupLabelProps = Omit<React.ComponentPropsWithoutRef<'label'>, 'style'> & {
-  style?: stylex.StyleXStyles;
-};
+export interface CheckboxGroupLabelProps extends React.ComponentPropsWithoutRef<'label'> {
+  stylex?: stylex.StyleXStyles;
+}
 
 const Label = forwardRef<HTMLLabelElement, CheckboxGroupLabelProps>(
-  ({ children, style, ...props }, ref) => {
+  ({ children, stylex: stylexProp, className, style, ...props }, ref) => {
     const context = useCheckboxGroupContext();
     return (
       <div {...stylex.props(styles.labelContainer)}>
         <label
           ref={ref}
           id={`${context.id}-label`}
-          {...stylex.props(
-            styles.label, 
-            style
-          )}
           {...props}
+          {...mergeStyles(stylex.props(styles.label, stylexProp), className, style)}
         >
           {children}
           {context.required && (
@@ -152,26 +154,22 @@ Label.displayName = 'CheckboxGroup.Label';
 
 // ---------------------------------------------------------------------------
 
-export type CheckboxGroupHintProps = Omit<React.ComponentPropsWithoutRef<'p'>, 'style'> & {
-  style?: stylex.StyleXStyles;
-};
+export interface CheckboxGroupHintProps extends React.ComponentPropsWithoutRef<'div'> {
+  stylex?: stylex.StyleXStyles;
+}
 
-const Hint = forwardRef<HTMLParagraphElement, CheckboxGroupHintProps>(
-  ({ children, style, ...props }, ref) => {
+const Hint = forwardRef<HTMLDivElement, CheckboxGroupHintProps>(
+  ({ children, stylex: stylexProp, className, style, ...props }, ref) => {
     const context = useCheckboxGroupContext();
     if (context.invalid) return null;
     return (
-      <p 
+      <div 
         ref={ref} 
-        {...stylex.props(
-          styles.hint, 
-          context.size === 'small' ? styles.hintSmall : styles.hintLarge,
-          style
-        )} 
         {...props}
+        {...mergeStyles(stylex.props(styles.hint, stylexProp), className, style)} 
       >
         {children}
-      </p>
+      </div>
     );
   }
 );
@@ -179,25 +177,21 @@ Hint.displayName = 'CheckboxGroup.Hint';
 
 // ---------------------------------------------------------------------------
 
-export type CheckboxGroupErrorProps = Omit<React.ComponentPropsWithoutRef<'div'>, 'style'> & {
-  style?: stylex.StyleXStyles;
-};
+export interface CheckboxGroupErrorProps extends React.ComponentPropsWithoutRef<'div'> {
+  stylex?: stylex.StyleXStyles;
+}
 
 const ErrorMessage = forwardRef<HTMLDivElement, CheckboxGroupErrorProps>(
-  ({ children, style, ...props }, ref) => {
+  ({ children, stylex: stylexProp, className, style, ...props }, ref) => {
     const context = useCheckboxGroupContext();
     if (!context.invalid) return null;
     return (
-      <div ref={ref} {...stylex.props(styles.errorContainer, style)} {...props}>
-        <svg xmlns="http://www.w3.org/2000/svg" width={context.size === 'small' ? "12" : "14"} height={context.size === 'small' ? "12" : "14"} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...stylex.props(styles.errorIcon)}>
-          <circle cx="12" cy="12" r="10" />
-          <path d="m15 9-6 6" />
-          <path d="m9 9 6 6" />
-        </svg>
-        <span {...stylex.props(
-          styles.errorText,
-          context.size === 'small' ? styles.errorTextSmall : styles.errorTextLarge
-        )}>
+      <div 
+        ref={ref} 
+        {...props}
+        {...mergeStyles(stylex.props(styles.errorContainer, stylexProp), className, style)}
+      >
+        <span {...stylex.props(styles.errorText)}>
           {children}
         </span>
       </div>
@@ -208,13 +202,13 @@ ErrorMessage.displayName = 'CheckboxGroup.Error';
 
 // ---------------------------------------------------------------------------
 
-export type CheckboxGroupItemProps = Omit<React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>, 'style' | 'checked' | 'onCheckedChange'> & {
+export interface CheckboxGroupItemProps extends Omit<React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>, 'checked' | 'onCheckedChange'> {
   value: string;
-  style?: stylex.StyleXStyles;
-};
+  stylex?: stylex.StyleXStyles;
+}
 
 const Item = forwardRef<HTMLButtonElement, CheckboxGroupItemProps>(
-  ({ children, value, style, disabled, ...props }, ref) => {
+  ({ children, value, stylex: stylexProp, className, style, disabled, ...props }, ref) => {
     const context = useCheckboxGroupContext();
     const id = `${context.id}-item-${value}`;
     
@@ -237,20 +231,22 @@ const Item = forwardRef<HTMLButtonElement, CheckboxGroupItemProps>(
           checked={isChecked}
           onCheckedChange={handleCheckedChange}
           disabled={isDisabled}
-          {...stylex.props(
-            styles.checkboxRoot,
-            context.size === 'small' ? styles.checkboxSmall : styles.checkboxLarge,
-            isChecked && styles.checkboxRootChecked,
-            context.invalid && !isChecked && styles.checkboxRootInvalid,
-            isDisabled && styles.checkboxRootDisabled,
+          {...props}
+          {...mergeStyles(
+            stylex.props(
+              styles.checkboxRoot,
+              styles.checkboxControl,
+              isChecked && styles.checkboxRootChecked,
+              context.invalid && !isChecked && styles.checkboxRootInvalid,
+              isDisabled && styles.checkboxRootDisabled,
+              stylexProp
+            ),
+            className,
             style
           )}
-          {...props}
         >
           <CheckboxPrimitive.Indicator {...stylex.props(styles.indicator)}>
-            <svg xmlns="http://www.w3.org/2000/svg" width={context.size === 'small' ? "10" : "12"} height={context.size === 'small' ? "10" : "12"} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="20 6 9 17 4 12" />
-            </svg>
+            <Check size={10} strokeWidth={3} />
           </CheckboxPrimitive.Indicator>
         </CheckboxPrimitive.Root>
         {children && (
@@ -258,7 +254,6 @@ const Item = forwardRef<HTMLButtonElement, CheckboxGroupItemProps>(
             htmlFor={id}
             {...stylex.props(
               styles.itemLabel,
-              context.size === 'small' ? styles.itemLabelSmall : styles.itemLabelLarge,
               isDisabled && styles.itemLabelDisabled
             )}
           >
