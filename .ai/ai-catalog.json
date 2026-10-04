@@ -1,7 +1,7 @@
 {
   "name": "@floogic/ui",
   "description": "Token-driven React Design System built with StyleX and Radix UI Primitives",
-  "generatedAt": "2026-10-03T22:34:49.828Z",
+  "generatedAt": "2026-10-04T10:09:29.118Z",
   "components": [
     {
       "name": "Accordion",
